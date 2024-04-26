@@ -20,7 +20,7 @@ public class CoachEntity {
     @OneToMany(fetch = FetchType.EAGER)
     private Set<AthleteEntity> athletes;
 
-    //private Set<Long> trainingPlanEntitiesIds;
+    private Set<Long> trainingPlanEntitiesIds;
 
     @Column(name = "has_user")
     private boolean isAssignedToUser = false;
@@ -57,13 +57,13 @@ public class CoachEntity {
         this.athletes = athletes;
     }
 
-//    public Set<Long> getTrainingPlanEntitiesIds() {
-//        return trainingPlanEntitiesIds;
-//    }
-//
-//    public void setTrainingPlanEntitiesIds(Set<Long> trainingPlanEntitiesIds) {
-//        this.trainingPlanEntitiesIds = trainingPlanEntitiesIds;
-//    }
+    public Set<Long> getTrainingPlanEntitiesIds() {
+        return trainingPlanEntitiesIds;
+    }
+
+    public void setTrainingPlanEntitiesIds(Set<Long> trainingPlanEntitiesIds) {
+        this.trainingPlanEntitiesIds = trainingPlanEntitiesIds;
+    }
 
     public Boolean isAssignedToUser() {
         return isAssignedToUser;

@@ -47,22 +47,8 @@ public class Coach {
         if (coachEntity.getAthletes() != null) {
             coach.setAthletes(setAthletesView(coachEntity));
         }
-//        if (coachEntity.getTrainingPlanEntitiesIds() != null) {
-//            coach.setTrainingPlans(setTrainingPlansView(coachEntity));
-//        }
         return coach;
     }
-    // do I need this? It is used?
-//    private static Set<String> setTrainingPlansView(CoachEntity coach) {
-//
-//        Set<String> trainingPlansTypeAndName = new HashSet<>();
-//
-//        Set<TrainingPlanEntity> trainingPlans = coach.getTrainingPlans();
-//        for (TrainingPlanEntity plan : trainingPlans) {
-//            trainingPlansTypeAndName.add(plan.getTrainingType() + ": " + plan.getName());
-//        }
-//        return trainingPlansTypeAndName;
-//    }
 
     private static Set<String> setAthletesView(CoachEntity coach) {
 

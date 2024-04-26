@@ -1,6 +1,7 @@
-package pl.koneckimarcin.functionsservice.coach;
+package pl.koneckimarcin.functionsservice.coach.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import pl.koneckimarcin.functionsservice.coach.CoachEntity;
 
 import java.util.Optional;
 

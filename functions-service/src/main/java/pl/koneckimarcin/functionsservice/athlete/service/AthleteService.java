@@ -7,7 +7,7 @@ import pl.koneckimarcin.functionsservice.athlete.AthleteEntity;
 import pl.koneckimarcin.functionsservice.athlete.dto.Athlete;
 import pl.koneckimarcin.functionsservice.athlete.dto.AthleteResponseDto;
 import pl.koneckimarcin.functionsservice.athlete.repository.AthleteRepository;
-import pl.koneckimarcin.functionsservice.coach.CoachRepository;
+import pl.koneckimarcin.functionsservice.coach.repository.CoachRepository;
 import pl.koneckimarcin.functionsservice.exceptions.ResourceNotFoundException;
 
 import java.util.ArrayList;

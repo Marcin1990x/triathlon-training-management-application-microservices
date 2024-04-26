@@ -1,4 +1,4 @@
-package pl.koneckimarcin.functionsservice.coach;
+package pl.koneckimarcin.functionsservice.coach.service;
 
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -6,8 +6,10 @@ import org.springframework.stereotype.Service;
 import pl.koneckimarcin.functionsservice.athlete.AthleteEntity;
 import pl.koneckimarcin.functionsservice.athlete.repository.AthleteRepository;
 import pl.koneckimarcin.functionsservice.athlete.service.AthleteService;
+import pl.koneckimarcin.functionsservice.coach.CoachEntity;
 import pl.koneckimarcin.functionsservice.coach.dto.Coach;
 import pl.koneckimarcin.functionsservice.coach.dto.CoachResponseDto;
+import pl.koneckimarcin.functionsservice.coach.repository.CoachRepository;
 import pl.koneckimarcin.functionsservice.exceptions.ResourceNotFoundException;
 
 import java.util.Optional;

@@ -1,4 +1,4 @@
-package pl.koneckimarcin.functionsservice.coach;
+package pl.koneckimarcin.functionsservice.coach.controller;
 
 import org.springframework.web.bind.annotation.*;
 import pl.koneckimarcin.functionsservice.coach.dto.Coach;

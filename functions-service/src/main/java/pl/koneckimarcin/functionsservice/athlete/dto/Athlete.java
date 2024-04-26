@@ -64,26 +64,11 @@ public class Athlete {
         if (athleteEntity.getTrainingRealizationsIds() != null) {
             athlete.setTrainingRealizationsIds(athleteEntity.getTrainingRealizationsIds());
         }
-//        if (athleteEntity.getTrainingPlansIds() != null) {
-//            athlete.setTrainings(setTrainingPlansInformation(athleteEntity));
-//        }
         if (athleteEntity.getTrainingPlansIds() != null) {
             athlete.setTrainingPlansIds(athleteEntity.getTrainingPlansIds());
         }
         return athlete;
     }
-
-    // do I need this? It is used?
-//    private static List<String> setTrainingPlansInformation(AthleteEntity athlete) {
-//
-//        List<String> trainingPlansInformation = new ArrayList<>();
-//
-//        List<TrainingPlanEntity> trainingPlans = athlete.getTrainingPlans();
-//        for (TrainingPlanEntity plan : trainingPlans) {
-//            trainingPlansInformation.add(plan.getPlannedDate() + ": " + plan.getTrainingType() + " - " + plan.getName());
-//        }
-//        return trainingPlansInformation;
-//    }
 
     public Long getId() {
         return id;

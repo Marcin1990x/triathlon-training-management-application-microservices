@@ -1,7 +1,8 @@
-package pl.koneckimarcin.functionsservice.coach;
+package pl.koneckimarcin.functionsservice.coach.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
+import pl.koneckimarcin.functionsservice.coach.service.CoachService;
 import pl.koneckimarcin.functionsservice.coach.dto.Coach;
 import pl.koneckimarcin.functionsservice.coach.dto.CoachResponseDto;
 
