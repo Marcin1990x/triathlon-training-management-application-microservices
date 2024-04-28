@@ -107,4 +107,14 @@ public class CoachService {
         athlete.setCoachId(coachId);
         athleteRepository.save(athlete);
     }
+
+    public void setAssignedToUser(Long coachId) {
+
+        if (!checkIfIsNotNull(coachId)) {
+            throw new ResourceNotFoundException("Coach", "id", String.valueOf(coachId));
+        }
+        CoachEntity coach = coachRepository.findById(coachId).get();
+        coach.setAssignedToUser(true);
+        coachRepository.save(coach);
+    }
 }
