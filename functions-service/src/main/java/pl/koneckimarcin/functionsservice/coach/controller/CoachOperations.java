@@ -26,4 +26,7 @@ public interface CoachOperations {
     //@PreAuthorize("hasAuthority('COACH') AND @authenticatedUserService.hasValidId(#coachId)")
     @PutMapping("coaches/{coachId}/athletes/{athleteId}/remove")
     public Coach removeAthleteFromCoach(@PathVariable Long coachId, @PathVariable Long athleteId);
+
+    @PutMapping("coaches/{coachId}/setAssignedToUser")
+    public void setAssignedToUser(@PathVariable Long coachId);
 }
