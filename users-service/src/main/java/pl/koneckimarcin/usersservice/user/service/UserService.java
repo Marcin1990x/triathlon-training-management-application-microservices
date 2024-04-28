@@ -1,9 +1,16 @@
-package pl.koneckimarcin.usersservice.user;
+package pl.koneckimarcin.usersservice.user.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+import pl.koneckimarcin.usersservice.exception.IsAlreadyAssignedException;
 import pl.koneckimarcin.usersservice.exception.ResourceNotFoundException;
+import pl.koneckimarcin.usersservice.exception.RestTemplateResponseErrorHandler;
+import pl.koneckimarcin.usersservice.user.UserEntity;
 import pl.koneckimarcin.usersservice.user.dto.User;
+import pl.koneckimarcin.usersservice.user.external.Coach;
+import pl.koneckimarcin.usersservice.user.repository.UserRepository;
 import pl.koneckimarcin.usersservice.user.role.Role;
 import pl.koneckimarcin.usersservice.user.role.RoleEntity;
 import pl.koneckimarcin.usersservice.user.role.RoleRepository;
@@ -24,6 +31,7 @@ public class UserService {
     @Autowired
     private RoleRepository roleRepository;
 
+
 //    @Autowired
 //    private CoachService coachService;
 //
@@ -35,6 +43,14 @@ public class UserService {
 //
 //    @Autowired
 //    private StravaClient stravaClient;
+
+    public RestTemplate createRestTemplate() {
+
+        RestTemplate rest = new RestTemplate();
+        rest.setErrorHandler(new RestTemplateResponseErrorHandler());
+
+        return rest;
+    }
 
     public boolean checkIfIsNotNull(Long id) {
         Optional<UserEntity> userEntity = userRepository.findById(id);
@@ -64,37 +80,49 @@ public class UserService {
         }
     }
 
-//    public User addCoachToUser(Long userId, Long coachId) {
-//
-//        UserEntity userToUpdate = userRepository.findById(userId).get();
-//        CoachEntity coach = coachRepository.findById(coachId).get();
-//
-//        addCoachToUserCheckForExceptions(userToUpdate, coach, userId, coachId);
-//
-//        coach.setAssignedToUser(true);
-//        coachRepository.save(coach);
-//        userToUpdate.setCoachEntity(coach);
-//
-//        UserEntity userWithUpdatedRoles = updateRoles(userToUpdate, Role.COACH);
-//
-//        return User.fromUserEntity(userRepository.save(userWithUpdatedRoles));
-//    }
+    public User addCoachToUser(Long userId, Long coachId) {
 
-//    private void addCoachToUserCheckForExceptions(UserEntity user, CoachEntity coach, Long userId, Long coachId) {
-//
-//        if (!checkIfIsNotNull(userId)) {
-//            throw new ResourceNotFoundException("User", "id", String.valueOf(userId));
-//        }
-//        if (!coachService.checkIfIsNotNull(coachId)) {
-//            throw new ResourceNotFoundException("Coach", "id", String.valueOf(coachId));
-//        }
-//        if (user.hasAssignedCoach()) {
-//            throw new IsAlreadyAssignedException("User", String.valueOf(userId));
-//        }
-//        if (coach.isAssignedToUser()) {
-//            throw new IsAlreadyAssignedException("Coach", String.valueOf(coachId));
-//        }
-//    }
+        UserEntity userToUpdate = userRepository.findById(userId).get();
+        Coach coach = getCoachById(coachId); // todo: replace with check if is not null
+        // and if is already assigned
+
+        addCoachToUserCheckForExceptions(userToUpdate, coach, userId, coachId);
+
+        setCoachAssignedToUser(coachId);
+        userToUpdate.setCoachEntityId(coachId);
+
+        UserEntity userWithUpdatedRoles = updateRoles(userToUpdate, Role.COACH);
+
+        return User.fromUserEntity(userRepository.save(userWithUpdatedRoles));
+    }
+
+    private void addCoachToUserCheckForExceptions(UserEntity user, Coach coach, Long userId, Long coachId) {
+
+        if (!checkIfIsNotNull(userId)) {
+            throw new ResourceNotFoundException("User", "id", String.valueOf(userId));
+        }
+        if (user.hasAssignedCoach()) {
+            throw new IsAlreadyAssignedException("User", String.valueOf(userId));
+        }
+        if (coach.isAssignedToUser()) {
+            throw new IsAlreadyAssignedException("Coach", String.valueOf(coachId));
+        }
+    }
+
+    private Coach getCoachById(Long coachId) {
+
+        Coach coach = createRestTemplate().getForObject(
+                "http://localhost:8081/coaches/" + coachId, Coach.class
+        );
+        return coach;
+    }
+    private void setCoachAssignedToUser(Long coachId) {
+
+        createRestTemplate().exchange(
+                "http://localhost:8081/coaches/" + coachId + "/setAssignedToUser",
+                HttpMethod.PUT, null, Void.class
+        );
+    }
 
 //    public User addAthleteToUser(Long userId, Long athleteId) {
 //

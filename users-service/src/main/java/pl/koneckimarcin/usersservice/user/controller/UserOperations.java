@@ -1,4 +1,4 @@
-package pl.koneckimarcin.usersservice.user;
+package pl.koneckimarcin.usersservice.user.controller;
 
 
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,8 +21,8 @@ public interface UserOperations {
     public User getUserById(@PathVariable Long userId);
 
 //    //@PreAuthorize("hasAnyAuthority('ADMIN', 'NEW')")
-//    @PutMapping("/users/{userId}/coaches/{coachId}/add")
-//    public User addCoachToUser(@PathVariable Long userId, @PathVariable Long coachId);
+    @PutMapping("/users/{userId}/coaches/{coachId}/add")
+    public User addCoachToUser(@PathVariable Long userId, @PathVariable Long coachId);
 //
 //    //@PreAuthorize("hasAnyAuthority('ADMIN', 'NEW')")
 //    @PutMapping("/users/{userId}/athletes/{athleteId}/add")

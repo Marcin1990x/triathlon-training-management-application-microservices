@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.koneckimarcin.usersservice.exception.ResourceNotFoundException;
 import pl.koneckimarcin.usersservice.user.UserEntity;
-import pl.koneckimarcin.usersservice.user.UserRepository;
+import pl.koneckimarcin.usersservice.user.repository.UserRepository;
 
 @Service
 public class RoleService {

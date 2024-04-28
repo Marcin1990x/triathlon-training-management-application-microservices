@@ -1,7 +1,8 @@
-package pl.koneckimarcin.usersservice.user;
+package pl.koneckimarcin.usersservice.user.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
+import pl.koneckimarcin.usersservice.user.service.UserService;
 import pl.koneckimarcin.usersservice.user.dto.User;
 
 import java.util.List;
@@ -22,11 +23,11 @@ public class UserController implements UserOperations {
         return userService.getUserById(id);
     }
 
-//    @Override
-//    public User addCoachToUser(Long userId, Long coachId) {
-//
-//        return userService.addCoachToUser(userId, coachId);
-//    }
+    @Override
+    public User addCoachToUser(Long userId, Long coachId) {
+
+        return userService.addCoachToUser(userId, coachId);
+    }
 //
 //    @Override
 //    public User addAthleteToUser(Long userId, Long athleteId) {

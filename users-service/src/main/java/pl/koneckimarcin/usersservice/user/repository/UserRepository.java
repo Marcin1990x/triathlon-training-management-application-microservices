@@ -1,7 +1,8 @@
-package pl.koneckimarcin.usersservice.user;
+package pl.koneckimarcin.usersservice.user.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+import pl.koneckimarcin.usersservice.user.UserEntity;
 
 import java.util.Optional;
 
