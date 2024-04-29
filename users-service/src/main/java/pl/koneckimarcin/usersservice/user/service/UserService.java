@@ -7,10 +7,13 @@ import org.springframework.web.client.RestTemplate;
 import pl.koneckimarcin.usersservice.exception.IsAlreadyAssignedException;
 import pl.koneckimarcin.usersservice.exception.ResourceNotFoundException;
 import pl.koneckimarcin.usersservice.exception.RestTemplateResponseErrorHandler;
+import pl.koneckimarcin.usersservice.exception.StravaRefreshTokenNotFoundException;
 import pl.koneckimarcin.usersservice.user.UserEntity;
 import pl.koneckimarcin.usersservice.user.dto.User;
+import pl.koneckimarcin.usersservice.user.dto.UserStravaDto;
 import pl.koneckimarcin.usersservice.user.external.Athlete;
 import pl.koneckimarcin.usersservice.user.external.Coach;
+import pl.koneckimarcin.usersservice.user.external.StravaAccessTokenDto;
 import pl.koneckimarcin.usersservice.user.repository.UserRepository;
 import pl.koneckimarcin.usersservice.user.role.Role;
 import pl.koneckimarcin.usersservice.user.role.RoleEntity;
@@ -27,8 +30,6 @@ public class UserService {
     private UserRepository userRepository;
     @Autowired
     private RoleRepository roleRepository;
-//    @Autowired
-//    private StravaClient stravaClient;
 
     public RestTemplate createRestTemplate() {
 
@@ -155,35 +156,36 @@ public class UserService {
         );
     }
 
-//    public UserStravaDto refreshAccessTokenForUser(Long userId) {
-//
-//        UserEntity userToUpdate = userRepository.findById(userId).get();
-//        String userRefreshToken = getRefreshTokenForUser(userToUpdate);
-//
-//        AccessTokenDto accessTokenDto = stravaClient.refreshAccessToken(userRefreshToken);
-//
-//        updateUserWithNewToken(userToUpdate, accessTokenDto);
-//
-//        return new UserStravaDto(accessTokenDto.getExpiresAt());
-//    }
+    public UserStravaDto refreshAccessTokenForUser(Long userId) {
 
-//    private void updateUserWithNewToken(UserEntity userToUpdate, AccessTokenDto accessTokenDto) {
-//
-//        userToUpdate.setStravaAccessToken(accessTokenDto.getAccessToken());
-//        userToUpdate.setStravaAccessTokenExpirationTime(accessTokenDto.getExpiresAt());
-//
-//        userRepository.save(userToUpdate);
-//    }
+        UserEntity userToUpdate = userRepository.findById(userId).get();
+        String userRefreshToken = getRefreshTokenForUser(userToUpdate);
 
-//    private String getRefreshTokenForUser(UserEntity user) {
-//
-//        String refreshToken = user.getStravaRefreshToken();
-//
-//        if (refreshToken == null) {
-//            throw new RefreshTokenNotFoundException(user.getId());
-//        }
-//        return refreshToken;
-//    }
+        //do below with controller in strava service
+        //StravaAccessTokenDto stravaAccessTokenDto = stravaClient.refreshAccessToken(userRefreshToken);
+
+        updateUserWithNewToken(userToUpdate, stravaAccessTokenDto);
+
+        return new UserStravaDto(stravaAccessTokenDto.getExpiresAt());
+    }
+
+    private void updateUserWithNewToken(UserEntity userToUpdate, StravaAccessTokenDto stravaAccessTokenDto) {
+
+        userToUpdate.setStravaAccessToken(stravaAccessTokenDto.getAccessToken());
+        userToUpdate.setStravaAccessTokenExpirationTime(stravaAccessTokenDto.getExpiresAt());
+
+        userRepository.save(userToUpdate);
+    }
+
+    private String getRefreshTokenForUser(UserEntity user) {
+
+        String refreshToken = user.getStravaRefreshToken();
+
+        if (refreshToken == null) {
+            throw new StravaRefreshTokenNotFoundException(user.getId());
+        }
+        return refreshToken;
+    }
 
     private UserEntity updateRoles(UserEntity user, Role role) {
 

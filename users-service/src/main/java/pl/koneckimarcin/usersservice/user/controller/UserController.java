@@ -2,6 +2,7 @@ package pl.koneckimarcin.usersservice.user.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
+import pl.koneckimarcin.usersservice.user.dto.UserStravaDto;
 import pl.koneckimarcin.usersservice.user.service.UserService;
 import pl.koneckimarcin.usersservice.user.dto.User;
 
@@ -34,9 +35,9 @@ public class UserController implements UserOperations {
         return userService.addAthleteToUser(userId, athleteId);
     }
 //
-//    @Override
-//    public UserStravaDto refreshAccessTokenForUser(Long id) {
-//
-//        return userService.refreshAccessTokenForUser(id);
-//    }
+    @Override
+    public UserStravaDto refreshAccessTokenForUser(Long id) {
+
+        return userService.refreshAccessTokenForUser(id);
+    }
 }

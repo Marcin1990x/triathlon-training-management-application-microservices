@@ -8,9 +8,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
-import pl.koneckimarcin.triathlontrainingmanagement.exception.RefreshTokenException;
-import pl.koneckimarcin.triathlontrainingmanagement.strava.dto.AccessTokenDto;
-import pl.koneckimarcin.triathlontrainingmanagement.strava.dto.ActivityClientDto;
+import pl.koneckimarcin.stravaservice.dto.AccessTokenDto;
+import pl.koneckimarcin.stravaservice.dto.ActivityClientDto;
+import pl.koneckimarcin.stravaservice.exception.RefreshTokenException;
 
 import java.time.ZoneId;
 import java.time.ZonedDateTime;

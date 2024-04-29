@@ -22,6 +22,7 @@ public class GlobalExceptionHandler {
         );
         return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
     }
+
     @ExceptionHandler(EmailAddressAlreadyExistException.class)
     public ResponseEntity<ErrorDetails> handleEmailAddressAlreadyExistException(EmailAddressAlreadyExistException exception,
                                                                                 WebRequest webRequest) {
@@ -56,5 +57,17 @@ public class GlobalExceptionHandler {
                 "Assign error."
         );
         return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(StravaRefreshTokenNotFoundException.class)
+    public ResponseEntity<ErrorDetails> handleRefreshTokenNotFoundException(StravaRefreshTokenNotFoundException exception,
+                                                                            WebRequest webRequest) {
+        ErrorDetails errorDetails = new ErrorDetails(
+                LocalDateTime.now(),
+                exception.getMessage(),
+                webRequest.getDescription(false),
+                "Refresh token not found."
+        );
+        return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
     }
 }

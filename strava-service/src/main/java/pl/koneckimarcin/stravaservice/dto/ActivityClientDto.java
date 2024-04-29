@@ -1,8 +1,5 @@
 package pl.koneckimarcin.stravaservice.dto;
 
-import pl.koneckimarcin.triathlontrainingmanagement.training.trainingPlan.constant.TrainingType;
-import pl.koneckimarcin.triathlontrainingmanagement.training.trainingRealization.TrainingRealizationEntity;
-
 import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -126,24 +123,24 @@ public class ActivityClientDto {
                 '}';
     }
 
-    public TrainingRealizationEntity mapToRealizationEntity() {
-
-        TrainingRealizationEntity trainingRealization = new TrainingRealizationEntity();
-
-        trainingRealization.setStravaId(this.getId());
-        trainingRealization.setStravaAthleteId(this.getAthlete().getId());
-        trainingRealization.setName(this.getName());
-        trainingRealization.setDistanceInMeters(this.getDistance());
-        trainingRealization.setTimeInSeconds(this.getMoving_time());
-        trainingRealization.setType(setTypeFromStrava(this.type));
-        trainingRealization.setRealizationDate(setDateFromStrava(this.start_date));
-        trainingRealization.setAverageWatts(this.getAverage_watts());
-        trainingRealization.setMaxWatts(this.getMax_watts());
-        trainingRealization.setAverageHeartrate(this.getAverage_heartrate());
-        trainingRealization.setMaxHeartrate(this.getMax_heartrate());
-
-        return trainingRealization;
-    }
+//    public TrainingRealizationEntity mapToRealizationEntity() {
+//
+//        TrainingRealizationEntity trainingRealization = new TrainingRealizationEntity();
+//
+//        trainingRealization.setStravaId(this.getId());
+//        trainingRealization.setStravaAthleteId(this.getAthlete().getId());
+//        trainingRealization.setName(this.getName());
+//        trainingRealization.setDistanceInMeters(this.getDistance());
+//        trainingRealization.setTimeInSeconds(this.getMoving_time());
+//        trainingRealization.setType(setTypeFromStrava(this.type));
+//        trainingRealization.setRealizationDate(setDateFromStrava(this.start_date));
+//        trainingRealization.setAverageWatts(this.getAverage_watts());
+//        trainingRealization.setMaxWatts(this.getMax_watts());
+//        trainingRealization.setAverageHeartrate(this.getAverage_heartrate());
+//        trainingRealization.setMaxHeartrate(this.getMax_heartrate());
+//
+//        return trainingRealization;
+//    }
 
     private Date setDateFromStrava(String dateToConvert) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
@@ -157,22 +154,22 @@ public class ActivityClientDto {
         return sqlDate;
     }
 
-    private TrainingType setTypeFromStrava(String stravaType) {
-
-        switch (stravaType) {
-            case "Ride" -> {
-                return TrainingType.BIKE;
-            }
-            case "Run" -> {
-                return TrainingType.RUN;
-            }
-            case "WeightTraining" -> {
-                return TrainingType.WEIGHT;
-            }
-            case "Swim" -> {
-                return TrainingType.SWIM;
-            }
-        }
-        return TrainingType.UNKNOWN; // todo: throw exception instead of unknown
-    }
+//    private TrainingType setTypeFromStrava(String stravaType) {
+//
+//        switch (stravaType) {
+//            case "Ride" -> {
+//                return TrainingType.BIKE;
+//            }
+//            case "Run" -> {
+//                return TrainingType.RUN;
+//            }
+//            case "WeightTraining" -> {
+//                return TrainingType.WEIGHT;
+//            }
+//            case "Swim" -> {
+//                return TrainingType.SWIM;
+//            }
+//        }
+//        return TrainingType.UNKNOWN; // todo: throw exception instead of unknown
+//    }
 }

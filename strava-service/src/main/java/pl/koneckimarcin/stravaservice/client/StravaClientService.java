@@ -8,10 +8,10 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
-import pl.koneckimarcin.triathlontrainingmanagement.exception.JsonMapperException;
-import pl.koneckimarcin.triathlontrainingmanagement.strava.StravaPropertyReader;
-import pl.koneckimarcin.triathlontrainingmanagement.strava.dto.AccessTokenDto;
-import pl.koneckimarcin.triathlontrainingmanagement.strava.dto.RefreshTokenResponseDto;
+import pl.koneckimarcin.stravaservice.StravaPropertyReader;
+import pl.koneckimarcin.stravaservice.dto.AccessTokenDto;
+import pl.koneckimarcin.stravaservice.dto.RefreshTokenResponseDto;
+import pl.koneckimarcin.stravaservice.exception.JsonMapperException;
 
 @Service
 public class StravaClientService {
