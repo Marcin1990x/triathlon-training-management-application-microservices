@@ -25,8 +25,8 @@ public interface UserOperations {
     public User addCoachToUser(@PathVariable Long userId, @PathVariable Long coachId);
 //
 //    //@PreAuthorize("hasAnyAuthority('ADMIN', 'NEW')")
-//    @PutMapping("/users/{userId}/athletes/{athleteId}/add")
-//    public User addAthleteToUser(@PathVariable Long userId, @PathVariable Long athleteId);
+    @PutMapping("/users/{userId}/athletes/{athleteId}/add")
+    public User addAthleteToUser(@PathVariable Long userId, @PathVariable Long athleteId);
 //
 //    //@PreAuthorize("hasAuthority('ATHLETE') AND @authenticatedUserService.hasValidId(#id)")
 //    @PostMapping("/users/{id}/refreshAccessToken")

@@ -42,4 +42,10 @@ public class AthleteController implements AthleteOperations {
 
         athleteService.deleteById(id);
     }
+
+    @Override
+    public void setAssignedToUser(Long athleteId) {
+
+        athleteService.setAssignedToUser(athleteId);
+    }
 }

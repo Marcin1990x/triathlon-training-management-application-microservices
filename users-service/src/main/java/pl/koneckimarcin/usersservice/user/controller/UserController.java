@@ -28,12 +28,11 @@ public class UserController implements UserOperations {
 
         return userService.addCoachToUser(userId, coachId);
     }
-//
-//    @Override
-//    public User addAthleteToUser(Long userId, Long athleteId) {
-//
-//        return userService.addAthleteToUser(userId, athleteId);
-//    }
+    @Override
+    public User addAthleteToUser(Long userId, Long athleteId) {
+
+        return userService.addAthleteToUser(userId, athleteId);
+    }
 //
 //    @Override
 //    public UserStravaDto refreshAccessTokenForUser(Long id) {

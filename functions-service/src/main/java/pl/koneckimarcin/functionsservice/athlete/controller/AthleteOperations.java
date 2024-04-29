@@ -28,4 +28,7 @@ public interface AthleteOperations {
     //@PreAuthorize("hasAuthority('ADMIN')")
     @DeleteMapping("athletes/{id}")
     public void deleteById(@PathVariable Long id);
+
+    @PutMapping("athletes/{athleteId}/setAssignedToUser")
+    public void setAssignedToUser(@PathVariable Long athleteId);
 }

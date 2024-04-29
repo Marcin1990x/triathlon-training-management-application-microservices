@@ -9,6 +9,7 @@ import pl.koneckimarcin.usersservice.exception.ResourceNotFoundException;
 import pl.koneckimarcin.usersservice.exception.RestTemplateResponseErrorHandler;
 import pl.koneckimarcin.usersservice.user.UserEntity;
 import pl.koneckimarcin.usersservice.user.dto.User;
+import pl.koneckimarcin.usersservice.user.external.Athlete;
 import pl.koneckimarcin.usersservice.user.external.Coach;
 import pl.koneckimarcin.usersservice.user.repository.UserRepository;
 import pl.koneckimarcin.usersservice.user.role.Role;
@@ -24,23 +25,8 @@ public class UserService {
 
     @Autowired
     private UserRepository userRepository;
-
-//    @Autowired
-//    private CoachRepository coachRepository;
-
     @Autowired
     private RoleRepository roleRepository;
-
-
-//    @Autowired
-//    private CoachService coachService;
-//
-//    @Autowired
-//    private AthleteService athleteService;
-//
-//    @Autowired
-//    private AthleteRepository athleteRepository;
-//
 //    @Autowired
 //    private StravaClient stravaClient;
 
@@ -116,6 +102,7 @@ public class UserService {
         );
         return coach;
     }
+
     private void setCoachAssignedToUser(Long coachId) {
 
         createRestTemplate().exchange(
@@ -124,37 +111,49 @@ public class UserService {
         );
     }
 
-//    public User addAthleteToUser(Long userId, Long athleteId) {
-//
-//        UserEntity userToUpdate = userRepository.findById(userId).get();
-//        AthleteEntity athlete = athleteRepository.findById(athleteId).get();
-//
-//        addAthleteToUserCheckForExceptions(userToUpdate, athlete, userId, athleteId);
-//
-//        athlete.setAssignedToUser(true);
-//        athleteRepository.save(athlete);
-//        userToUpdate.setAthleteEntity(athlete);
-//
-//        UserEntity userWithUpdatedRoles = updateRoles(userToUpdate, Role.ATHLETE);
-//
-//        return User.fromUserEntity(userRepository.save(userWithUpdatedRoles));
-//    }
+    public User addAthleteToUser(Long userId, Long athleteId) {
 
-//    private void addAthleteToUserCheckForExceptions(UserEntity user, AthleteEntity athlete, Long userId, Long athleteId) {
-//
-//        if (!checkIfIsNotNull(userId)) {
-//            throw new ResourceNotFoundException("User", "id", String.valueOf(userId));
-//        }
-//        if (!athleteService.checkIfIsNotNull(athleteId)) {
-//            throw new ResourceNotFoundException("Athlete", "id", String.valueOf(athleteId));
-//        }
-//        if (user.hasAssignedAthlete()) {
-//            throw new IsAlreadyAssignedException("User", String.valueOf(userId));
-//        }
-//        if (athlete.isAssignedToUser()) {
-//            throw new IsAlreadyAssignedException("Athlete", String.valueOf(athleteId));
-//        }
-//    }
+        UserEntity userToUpdate = userRepository.findById(userId).get();
+        Athlete athlete = getAthleteById(athleteId);
+
+        addAthleteToUserCheckForExceptions(userToUpdate, athlete, userId, athleteId);
+
+        setAthleteAssignedToUser(athleteId);
+        userToUpdate.setAthleteEntityId(athleteId);
+
+        UserEntity userWithUpdatedRoles = updateRoles(userToUpdate, Role.ATHLETE);
+
+        return User.fromUserEntity(userRepository.save(userWithUpdatedRoles));
+    }
+
+    private Athlete getAthleteById(Long athleteId) {
+
+        Athlete athlete = createRestTemplate().getForObject(
+                "http://localhost:8081/athletes/" + athleteId, Athlete.class
+        );
+        return athlete;
+    }
+
+    private void addAthleteToUserCheckForExceptions(UserEntity user, Athlete athlete, Long userId, Long athleteId) {
+
+        if (!checkIfIsNotNull(userId)) {
+            throw new ResourceNotFoundException("User", "id", String.valueOf(userId));
+        }
+        if (user.hasAssignedAthlete()) {
+            throw new IsAlreadyAssignedException("User", String.valueOf(userId));
+        }
+        if (athlete.isAssignedToUser()) {
+            throw new IsAlreadyAssignedException("Athlete", String.valueOf(athleteId));
+        }
+    }
+
+    private void setAthleteAssignedToUser(Long athleteId) {
+
+        createRestTemplate().exchange(
+                "http://localhost:8081/athletes/" + athleteId + "/setAssignedToUser",
+                HttpMethod.PUT, null, Void.class
+        );
+    }
 
 //    public UserStravaDto refreshAccessTokenForUser(Long userId) {
 //

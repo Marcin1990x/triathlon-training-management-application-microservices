@@ -84,4 +84,14 @@ public class AthleteService {
         }
         return athletes;
     }
+
+    public void setAssignedToUser(Long athleteId) {
+
+        if (!checkIfIsNotNull(athleteId)) {
+            throw new ResourceNotFoundException("Athlete", "id", String.valueOf(athleteId));
+        }
+        AthleteEntity athlete = athleteRepository.findById(athleteId).get();
+        athlete.setAssignedToUser(true);
+        athleteRepository.save(athlete);
+    }
 }
