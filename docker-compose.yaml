@@ -1,4 +1,11 @@
 services:
+    mongodb:
+        container_name: mongodb_container
+        image: mongo
+        ports:
+          - "27017:27017"
+        volumes:
+          - mongodb_data:/data/db
     postgres:
         container_name: postgres_container
         image: postgres
@@ -35,3 +42,4 @@ networks:
 volumes:
   postgres:
   pgadmin:
+  mongodb_data:
