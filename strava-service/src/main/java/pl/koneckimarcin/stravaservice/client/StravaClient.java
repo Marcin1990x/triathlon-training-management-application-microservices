@@ -1,16 +1,8 @@
 package pl.koneckimarcin.stravaservice.client;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
-import pl.koneckimarcin.stravaservice.dto.AccessTokenDto;
 import pl.koneckimarcin.stravaservice.dto.ActivityClientDto;
-import pl.koneckimarcin.stravaservice.exception.RefreshTokenException;
 
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -18,8 +10,6 @@ import java.time.ZonedDateTime;
 @Component
 public class StravaClient {
 
-    @Autowired
-    private StravaClientService stravaClientService;
 
     private RestTemplate rest = new RestTemplate();
     private final String STRAVA_URL = "https://www.strava.com/api/v3/";
@@ -42,22 +32,5 @@ public class StravaClient {
         return rest.getForObject(STRAVA_URL +
                         "athlete/activities?access_token={accessToken}&after={after}&per_page=100",
                 ActivityClientDto[].class, accessToken, after.toEpochSecond());
-    }
-
-    public AccessTokenDto refreshAccessToken(String refreshToken) {
-
-        HttpEntity<MultiValueMap<String, String>> requestBody = stravaClientService.createRequestBody(refreshToken);
-
-        ResponseEntity<String> response = rest.exchange(
-                STRAVA_URL_REFRESH,
-                HttpMethod.POST,
-                requestBody,
-                String.class
-        );
-        if (response.getStatusCode() == HttpStatus.OK) {
-            return stravaClientService.retrieveTokenFromResponse(response.getBody());
-        } else {
-            throw new RefreshTokenException(response.getStatusCode(), "Test");
-        }
     }
 }

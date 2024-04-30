@@ -161,12 +161,22 @@ public class UserService {
         UserEntity userToUpdate = userRepository.findById(userId).get();
         String userRefreshToken = getRefreshTokenForUser(userToUpdate);
 
-        //do below with controller in strava service
-        //StravaAccessTokenDto stravaAccessTokenDto = stravaClient.refreshAccessToken(userRefreshToken);
+        StravaAccessTokenDto stravaAccessTokenDto = refreshAccessToken(userRefreshToken);
 
         updateUserWithNewToken(userToUpdate, stravaAccessTokenDto);
 
         return new UserStravaDto(stravaAccessTokenDto.getExpiresAt());
+    }
+
+    private StravaAccessTokenDto refreshAccessToken(String userRefreshToken) {
+
+        String url = "http://localhost:8082/refreshAccessToken";
+        String parameter = "?refreshToken=";
+
+        StravaAccessTokenDto accessToken = createRestTemplate().getForObject(
+                url + parameter + userRefreshToken, StravaAccessTokenDto.class
+        );
+        return accessToken;
     }
 
     private void updateUserWithNewToken(UserEntity userToUpdate, StravaAccessTokenDto stravaAccessTokenDto) {
