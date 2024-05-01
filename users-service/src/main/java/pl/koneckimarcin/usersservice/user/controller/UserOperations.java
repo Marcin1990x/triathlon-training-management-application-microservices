@@ -3,10 +3,9 @@ package pl.koneckimarcin.usersservice.user.controller;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import pl.koneckimarcin.usersservice.user.dto.User;
-import pl.koneckimarcin.usersservice.user.dto.UserStravaDto;
+import pl.koneckimarcin.usersservice.user.external.StravaUserData;
 
 import java.util.List;
 
@@ -28,9 +27,10 @@ public interface UserOperations {
 //    //@PreAuthorize("hasAnyAuthority('ADMIN', 'NEW')")
     @PutMapping("/users/{userId}/athletes/{athleteId}/add")
     public User addAthleteToUser(@PathVariable Long userId, @PathVariable Long athleteId);
-//
+
+    //
 //    //@PreAuthorize("hasAuthority('ATHLETE') AND @authenticatedUserService.hasValidId(#id)")
-    @PostMapping("/users/{id}/refreshAccessToken")
-    public UserStravaDto refreshAccessTokenForUser(@PathVariable Long id);
+    @PutMapping("/users/{id}/refreshAccessToken")
+    public StravaUserData refreshAccessTokenForUser(@PathVariable Long id);
 }
 

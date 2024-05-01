@@ -7,13 +7,11 @@ import org.springframework.web.client.RestTemplate;
 import pl.koneckimarcin.usersservice.exception.IsAlreadyAssignedException;
 import pl.koneckimarcin.usersservice.exception.ResourceNotFoundException;
 import pl.koneckimarcin.usersservice.exception.RestTemplateResponseErrorHandler;
-import pl.koneckimarcin.usersservice.exception.StravaRefreshTokenNotFoundException;
 import pl.koneckimarcin.usersservice.user.UserEntity;
 import pl.koneckimarcin.usersservice.user.dto.User;
-import pl.koneckimarcin.usersservice.user.dto.UserStravaDto;
 import pl.koneckimarcin.usersservice.user.external.Athlete;
 import pl.koneckimarcin.usersservice.user.external.Coach;
-import pl.koneckimarcin.usersservice.user.external.StravaAccessTokenDto;
+import pl.koneckimarcin.usersservice.user.external.StravaUserData;
 import pl.koneckimarcin.usersservice.user.repository.UserRepository;
 import pl.koneckimarcin.usersservice.user.role.Role;
 import pl.koneckimarcin.usersservice.user.role.RoleEntity;
@@ -155,48 +153,31 @@ public class UserService {
                 HttpMethod.PUT, null, Void.class
         );
     }
+    public StravaUserData refreshAccessTokenForUser(Long userId) {
 
-    public UserStravaDto refreshAccessTokenForUser(Long userId) {
-
-        UserEntity userToUpdate = userRepository.findById(userId).get();
-        String userRefreshToken = getRefreshTokenForUser(userToUpdate);
-
-        StravaAccessTokenDto stravaAccessTokenDto = refreshAccessToken(userRefreshToken);
-
-        updateUserWithNewToken(userToUpdate, stravaAccessTokenDto);
-
-        return new UserStravaDto(stravaAccessTokenDto.getExpiresAt());
-    }
-
-    private StravaAccessTokenDto refreshAccessToken(String userRefreshToken) {
-
-        String url = "http://localhost:8082/refreshAccessToken";
-        String parameter = "?refreshToken=";
-
-        StravaAccessTokenDto accessToken = createRestTemplate().getForObject(
-                url + parameter + userRefreshToken, StravaAccessTokenDto.class
-        );
-        return accessToken;
-    }
-
-    private void updateUserWithNewToken(UserEntity userToUpdate, StravaAccessTokenDto stravaAccessTokenDto) {
-
-        userToUpdate.setStravaAccessToken(stravaAccessTokenDto.getAccessToken());
-        userToUpdate.setStravaAccessTokenExpirationTime(stravaAccessTokenDto.getExpiresAt());
-
-        userRepository.save(userToUpdate);
-    }
-
-    private String getRefreshTokenForUser(UserEntity user) {
-
-        String refreshToken = user.getStravaRefreshToken();
-
-        if (refreshToken == null) {
-            throw new StravaRefreshTokenNotFoundException(user.getId());
+        if (!checkIfIsNotNull(userId)) {
+            throw new ResourceNotFoundException("User", "id", String.valueOf(userId));
         }
-        return refreshToken;
+        refreshAccessToken(userId);
+
+        return getStravaUserDataById(userId);
     }
 
+    private void refreshAccessToken(Long userId) {
+
+        String url = "http://localhost:8082/strava/" + userId + "/refreshAccessToken";
+
+        createRestTemplate().exchange(url, HttpMethod.PUT, null, Void.class);
+    }
+
+    private StravaUserData getStravaUserDataById(Long userId) {
+
+        String url = "http://localhost:8082/strava/" + userId;
+
+        return createRestTemplate().getForObject(
+                url, StravaUserData.class
+        );
+    }
     private UserEntity updateRoles(UserEntity user, Role role) {
 
         RoleEntity roleToAdd = roleRepository.findByRole(role);

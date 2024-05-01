@@ -35,15 +35,6 @@ public class UserEntity {
 
     private Long coachEntityId;
 
-    @Column(name = "refresh")
-    private String stravaRefreshToken;
-
-    @Column(name = "access")
-    private String stravaAccessToken;
-
-    @Column(name = "access_expiration")
-    private String stravaAccessTokenExpirationTime;
-
     public Long getId() {
         return id;
     }
@@ -100,30 +91,6 @@ public class UserEntity {
         this.coachEntityId = coachEntityId;
     }
 
-    public String getStravaRefreshToken() {
-        return stravaRefreshToken;
-    }
-
-    public void setStravaRefreshToken(String stravaRefreshToken) {
-        this.stravaRefreshToken = stravaRefreshToken;
-    }
-
-    public String getStravaAccessToken() {
-        return stravaAccessToken;
-    }
-
-    public void setStravaAccessToken(String stravaAccessToken) {
-        this.stravaAccessToken = stravaAccessToken;
-    }
-
-    public String getStravaAccessTokenExpirationTime() {
-        return stravaAccessTokenExpirationTime;
-    }
-
-    public void setStravaAccessTokenExpirationTime(String stravaAccessTokenExpirationTime) {
-        this.stravaAccessTokenExpirationTime = stravaAccessTokenExpirationTime;
-    }
-
     public boolean hasAssignedAthlete() {
         return this.athleteEntityId != null;
     }
@@ -142,9 +109,6 @@ public class UserEntity {
                 ", roles=" + roles +
                 ", athleteEntityId=" + athleteEntityId +
                 ", coachEntityId=" + coachEntityId +
-                ", stravaRefreshToken='" + stravaRefreshToken + '\'' +
-                ", stravaAccessToken='" + stravaAccessToken + '\'' +
-                ", stravaAccessTokenExpirationTime='" + stravaAccessTokenExpirationTime + '\'' +
                 '}';
     }
 }

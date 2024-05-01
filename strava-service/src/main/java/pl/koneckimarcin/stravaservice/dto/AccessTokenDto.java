@@ -17,4 +17,12 @@ public class AccessTokenDto {
     public String getExpiresAt() {
         return expiresAt;
     }
+
+    @Override
+    public String toString() {
+        return "AccessTokenDto{" +
+                "accessToken='" + accessToken + '\'' +
+                ", expiresAt='" + expiresAt + '\'' +
+                '}';
+    }
 }

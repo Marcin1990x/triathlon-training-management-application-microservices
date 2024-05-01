@@ -27,8 +27,8 @@ public class StravaController implements StravaOperations {
     }
 
     @Override
-    public AccessTokenDto refreshAccessToken(String refreshToken) {
+    public void refreshAccessToken(Long userId) {
 
-        return stravaService.refreshAccessToken(refreshToken);
+        stravaService.refreshAccessToken(userId);
     }
 }

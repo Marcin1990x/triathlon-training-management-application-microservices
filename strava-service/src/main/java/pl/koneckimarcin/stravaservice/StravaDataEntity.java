@@ -67,4 +67,15 @@ public class StravaDataEntity {
     public void setExpirationTime(String expirationTime) {
         this.expirationTime = expirationTime;
     }
+
+    @Override
+    public String toString() {
+        return "StravaDataEntity{" +
+                "id='" + id + '\'' +
+                ", userId=" + userId +
+                ", refreshToken='" + refreshToken + '\'' +
+                ", accessToken='" + accessToken + '\'' +
+                ", expirationTime='" + expirationTime + '\'' +
+                '}';
+    }
 }
