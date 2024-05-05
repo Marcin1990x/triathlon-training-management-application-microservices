@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import pl.koneckimarcin.usersservice.exception.IsAlreadyAssignedException;
 import pl.koneckimarcin.usersservice.exception.ResourceNotFoundException;
-import pl.koneckimarcin.usersservice.exception.RestTemplateResponseErrorHandler;
 import pl.koneckimarcin.usersservice.user.UserEntity;
 import pl.koneckimarcin.usersservice.user.dto.User;
 import pl.koneckimarcin.usersservice.user.external.Athlete;
@@ -29,13 +28,8 @@ public class UserService {
     @Autowired
     private RoleRepository roleRepository;
 
-    public RestTemplate createRestTemplate() {
-
-        RestTemplate rest = new RestTemplate();
-        rest.setErrorHandler(new RestTemplateResponseErrorHandler());
-
-        return rest;
-    }
+    @Autowired
+    private RestTemplate restTemplate;
 
     public boolean checkIfIsNotNull(Long id) {
         Optional<UserEntity> userEntity = userRepository.findById(id);
@@ -96,16 +90,16 @@ public class UserService {
 
     private Coach getCoachById(Long coachId) {
 
-        Coach coach = createRestTemplate().getForObject(
-                "http://localhost:8081/coaches/" + coachId, Coach.class
+        Coach coach = restTemplate.getForObject(
+                "http://FUNCTIONS-SERVICE:8081/coaches/" + coachId, Coach.class
         );
         return coach;
     }
 
     private void setCoachAssignedToUser(Long coachId) {
 
-        createRestTemplate().exchange(
-                "http://localhost:8081/coaches/" + coachId + "/setAssignedToUser",
+        restTemplate.exchange(
+                "http://FUNCTIONS-SERVICE:8081/coaches/" + coachId + "/setAssignedToUser",
                 HttpMethod.PUT, null, Void.class
         );
     }
@@ -127,8 +121,8 @@ public class UserService {
 
     private Athlete getAthleteById(Long athleteId) {
 
-        Athlete athlete = createRestTemplate().getForObject(
-                "http://localhost:8081/athletes/" + athleteId, Athlete.class
+        Athlete athlete = restTemplate.getForObject(
+                "http://FUNCTIONS-SERVICE:8081/athletes/" + athleteId, Athlete.class
         );
         return athlete;
     }
@@ -148,11 +142,12 @@ public class UserService {
 
     private void setAthleteAssignedToUser(Long athleteId) {
 
-        createRestTemplate().exchange(
-                "http://localhost:8081/athletes/" + athleteId + "/setAssignedToUser",
+        restTemplate.exchange(
+                "http://FUNCTIONS-SERVICE:8081/athletes/" + athleteId + "/setAssignedToUser",
                 HttpMethod.PUT, null, Void.class
         );
     }
+
     public StravaUserData refreshAccessTokenForUser(Long userId) {
 
         if (!checkIfIsNotNull(userId)) {
@@ -165,19 +160,20 @@ public class UserService {
 
     private void refreshAccessToken(Long userId) {
 
-        String url = "http://localhost:8082/strava/" + userId + "/refreshAccessToken";
+        String url = "http://STRAVA-SERVICE:8082/strava/" + userId + "/refreshAccessToken";
 
-        createRestTemplate().exchange(url, HttpMethod.PUT, null, Void.class);
+        restTemplate.exchange(url, HttpMethod.PUT, null, Void.class);
     }
 
     private StravaUserData getStravaUserDataById(Long userId) {
 
-        String url = "http://localhost:8082/strava/" + userId;
+        String url = "http://STRAVA-SERVICE:8082/strava/" + userId;
 
-        return createRestTemplate().getForObject(
+        return restTemplate.getForObject(
                 url, StravaUserData.class
         );
     }
+
     private UserEntity updateRoles(UserEntity user, Role role) {
 
         RoleEntity roleToAdd = roleRepository.findByRole(role);
