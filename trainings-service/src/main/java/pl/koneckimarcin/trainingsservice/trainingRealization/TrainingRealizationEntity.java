@@ -1,7 +1,7 @@
-package pl.koneckimarcin.triathlontrainingmanagement.training.trainingRealization;
+package pl.koneckimarcin.trainingsservice.trainingRealization;
 
 import jakarta.persistence.*;
-import pl.koneckimarcin.triathlontrainingmanagement.training.trainingPlan.constant.TrainingType;
+import pl.koneckimarcin.trainingsservice.trainingPlan.constant.TrainingType;
 
 import java.sql.Date;
 

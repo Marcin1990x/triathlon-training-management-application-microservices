@@ -1,9 +1,9 @@
-package pl.koneckimarcin.triathlontrainingmanagement.training.trainingStage.weight;
+package pl.koneckimarcin.trainingsservice.trainingStage.weight;
 
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
-import pl.koneckimarcin.triathlontrainingmanagement.training.trainingStage.StageEntity;
+import pl.koneckimarcin.trainingsservice.trainingStage.StageEntity;
 
 @Entity
 @Table(name = "weight_stage")

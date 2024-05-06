@@ -1,6 +1,6 @@
-package pl.koneckimarcin.triathlontrainingmanagement.training.trainingStage.bike;
+package pl.koneckimarcin.trainingsservice.trainingStage.bike;
 
-import pl.koneckimarcin.triathlontrainingmanagement.training.trainingStage.Stage;
+import pl.koneckimarcin.trainingsservice.trainingStage.Stage;
 
 public class BikeStage extends Stage {
 

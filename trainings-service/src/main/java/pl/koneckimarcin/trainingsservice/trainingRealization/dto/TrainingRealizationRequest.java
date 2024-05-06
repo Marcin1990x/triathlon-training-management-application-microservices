@@ -1,6 +1,7 @@
-package pl.koneckimarcin.triathlontrainingmanagement.training.trainingRealization.dto;
+package pl.koneckimarcin.trainingsservice.trainingRealization.dto;
 
-import pl.koneckimarcin.triathlontrainingmanagement.training.trainingRealization.Feelings;
+
+import pl.koneckimarcin.trainingsservice.trainingRealization.Feelings;
 
 public class TrainingRealizationRequest {
 

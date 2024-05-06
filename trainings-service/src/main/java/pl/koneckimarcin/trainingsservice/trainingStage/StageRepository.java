@@ -1,4 +1,4 @@
-package pl.koneckimarcin.triathlontrainingmanagement.training.trainingStage;
+package pl.koneckimarcin.trainingsservice.trainingStage;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

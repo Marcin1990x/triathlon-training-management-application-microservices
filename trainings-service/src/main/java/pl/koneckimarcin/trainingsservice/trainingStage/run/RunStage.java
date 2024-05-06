@@ -1,6 +1,6 @@
-package pl.koneckimarcin.triathlontrainingmanagement.training.trainingStage.run;
+package pl.koneckimarcin.trainingsservice.trainingStage.run;
 
-import pl.koneckimarcin.triathlontrainingmanagement.training.trainingStage.Stage;
+import pl.koneckimarcin.trainingsservice.trainingStage.Stage;
 
 public class RunStage extends Stage {
 

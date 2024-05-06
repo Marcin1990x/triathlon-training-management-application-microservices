@@ -1,4 +1,4 @@
-package pl.koneckimarcin.triathlontrainingmanagement.training.trainingStage;
+package pl.koneckimarcin.trainingsservice.trainingStage;
 
 public class Stage {
 

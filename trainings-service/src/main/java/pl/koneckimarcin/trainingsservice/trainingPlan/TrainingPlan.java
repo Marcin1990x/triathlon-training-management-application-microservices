@@ -1,11 +1,12 @@
-package pl.koneckimarcin.triathlontrainingmanagement.training.trainingPlan;
+package pl.koneckimarcin.trainingsservice.trainingPlan;
+
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
-import pl.koneckimarcin.triathlontrainingmanagement.training.trainingPlan.constant.TrainingPlanStatus;
-import pl.koneckimarcin.triathlontrainingmanagement.training.trainingPlan.constant.TrainingType;
-import pl.koneckimarcin.triathlontrainingmanagement.training.trainingStage.StageEntity;
+import pl.koneckimarcin.trainingsservice.trainingPlan.constant.TrainingPlanStatus;
+import pl.koneckimarcin.trainingsservice.trainingPlan.constant.TrainingType;
+import pl.koneckimarcin.trainingsservice.trainingStage.StageEntity;
 
 import java.sql.Date;
 import java.util.List;

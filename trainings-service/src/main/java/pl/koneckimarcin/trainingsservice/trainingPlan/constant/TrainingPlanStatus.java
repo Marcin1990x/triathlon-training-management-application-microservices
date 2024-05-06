@@ -1,4 +1,4 @@
-package pl.koneckimarcin.triathlontrainingmanagement.training.trainingPlan.constant;
+package pl.koneckimarcin.trainingsservice.trainingPlan.constant;
 
 public enum TrainingPlanStatus  {
 

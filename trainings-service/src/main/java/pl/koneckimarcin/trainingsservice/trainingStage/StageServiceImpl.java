@@ -1,22 +1,22 @@
-package pl.koneckimarcin.triathlontrainingmanagement.training.trainingStage;
+package pl.koneckimarcin.trainingsservice.trainingStage;
 
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import pl.koneckimarcin.triathlontrainingmanagement.exception.IncompatibleTrainingTypeException;
-import pl.koneckimarcin.triathlontrainingmanagement.exception.ResourceNotFoundException;
-import pl.koneckimarcin.triathlontrainingmanagement.training.trainingPlan.TrainingPlanEntity;
-import pl.koneckimarcin.triathlontrainingmanagement.training.trainingPlan.TrainingPlanRepository;
-import pl.koneckimarcin.triathlontrainingmanagement.training.trainingPlan.TrainingPlanService;
-import pl.koneckimarcin.triathlontrainingmanagement.training.trainingPlan.constant.TrainingType;
-import pl.koneckimarcin.triathlontrainingmanagement.training.trainingStage.bike.BikeStage;
-import pl.koneckimarcin.triathlontrainingmanagement.training.trainingStage.bike.BikeStageEntity;
-import pl.koneckimarcin.triathlontrainingmanagement.training.trainingStage.run.RunStage;
-import pl.koneckimarcin.triathlontrainingmanagement.training.trainingStage.run.RunStageEntity;
-import pl.koneckimarcin.triathlontrainingmanagement.training.trainingStage.swim.SwimStage;
-import pl.koneckimarcin.triathlontrainingmanagement.training.trainingStage.swim.SwimStageEntity;
-import pl.koneckimarcin.triathlontrainingmanagement.training.trainingStage.weight.WeightStage;
-import pl.koneckimarcin.triathlontrainingmanagement.training.trainingStage.weight.WeightStageEntity;
+import pl.koneckimarcin.trainingsservice.exception.IncompatibleTrainingTypeException;
+import pl.koneckimarcin.trainingsservice.exception.ResourceNotFoundException;
+import pl.koneckimarcin.trainingsservice.trainingPlan.TrainingPlanEntity;
+import pl.koneckimarcin.trainingsservice.trainingPlan.TrainingPlanRepository;
+import pl.koneckimarcin.trainingsservice.trainingPlan.TrainingPlanService;
+import pl.koneckimarcin.trainingsservice.trainingPlan.constant.TrainingType;
+import pl.koneckimarcin.trainingsservice.trainingStage.bike.BikeStage;
+import pl.koneckimarcin.trainingsservice.trainingStage.bike.BikeStageEntity;
+import pl.koneckimarcin.trainingsservice.trainingStage.run.RunStage;
+import pl.koneckimarcin.trainingsservice.trainingStage.run.RunStageEntity;
+import pl.koneckimarcin.trainingsservice.trainingStage.swim.SwimStage;
+import pl.koneckimarcin.trainingsservice.trainingStage.swim.SwimStageEntity;
+import pl.koneckimarcin.trainingsservice.trainingStage.weight.WeightStage;
+import pl.koneckimarcin.trainingsservice.trainingStage.weight.WeightStageEntity;
 
 import java.util.List;
 import java.util.Optional;

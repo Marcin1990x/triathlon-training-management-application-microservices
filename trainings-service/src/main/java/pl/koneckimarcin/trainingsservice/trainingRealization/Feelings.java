@@ -1,4 +1,4 @@
-package pl.koneckimarcin.triathlontrainingmanagement.training.trainingRealization;
+package pl.koneckimarcin.trainingsservice.trainingRealization;
 
 public enum Feelings {
 

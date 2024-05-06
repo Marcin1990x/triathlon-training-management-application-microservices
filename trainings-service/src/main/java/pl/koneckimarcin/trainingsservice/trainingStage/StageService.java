@@ -1,9 +1,9 @@
-package pl.koneckimarcin.triathlontrainingmanagement.training.trainingStage;
+package pl.koneckimarcin.trainingsservice.trainingStage;
 
-import pl.koneckimarcin.triathlontrainingmanagement.training.trainingStage.bike.BikeStage;
-import pl.koneckimarcin.triathlontrainingmanagement.training.trainingStage.run.RunStage;
-import pl.koneckimarcin.triathlontrainingmanagement.training.trainingStage.swim.SwimStage;
-import pl.koneckimarcin.triathlontrainingmanagement.training.trainingStage.weight.WeightStage;
+import pl.koneckimarcin.trainingsservice.trainingStage.bike.BikeStage;
+import pl.koneckimarcin.trainingsservice.trainingStage.run.RunStage;
+import pl.koneckimarcin.trainingsservice.trainingStage.swim.SwimStage;
+import pl.koneckimarcin.trainingsservice.trainingStage.weight.WeightStage;
 
 import java.util.List;
 

@@ -1,8 +1,9 @@
-package pl.koneckimarcin.triathlontrainingmanagement.training.trainingRealization.dto;
+package pl.koneckimarcin.trainingsservice.trainingRealization.dto;
 
-import pl.koneckimarcin.triathlontrainingmanagement.training.trainingPlan.constant.TrainingType;
-import pl.koneckimarcin.triathlontrainingmanagement.training.trainingRealization.Feelings;
-import pl.koneckimarcin.triathlontrainingmanagement.training.trainingRealization.TrainingRealizationEntity;
+
+import pl.koneckimarcin.trainingsservice.trainingPlan.constant.TrainingType;
+import pl.koneckimarcin.trainingsservice.trainingRealization.Feelings;
+import pl.koneckimarcin.trainingsservice.trainingRealization.TrainingRealizationEntity;
 
 import java.sql.Date;
 

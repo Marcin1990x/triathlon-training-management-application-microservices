@@ -1,6 +1,6 @@
-package pl.koneckimarcin.triathlontrainingmanagement.training.trainingStage.swim;
+package pl.koneckimarcin.trainingsservice.trainingStage.swim;
 
-import pl.koneckimarcin.triathlontrainingmanagement.training.trainingStage.Stage;
+import pl.koneckimarcin.trainingsservice.trainingStage.Stage;
 
 public class SwimStage extends Stage {
 
@@ -10,6 +10,7 @@ public class SwimStage extends Stage {
     public SwimStage(int paceInSeconds) {
         this.paceInSeconds = paceInSeconds;
     }
+
     public SwimStage(long distanceInMeters, long timeInSeconds, int sequence, int heartRate,
                      String description, int paceInSeconds, int repeat) {
         super(distanceInMeters, timeInSeconds, sequence, heartRate, description, repeat);
@@ -60,7 +61,7 @@ public class SwimStage extends Stage {
 
     @Override
     public String toString() {
-        return super.toString() +  "SwimStage{" +
+        return super.toString() + "SwimStage{" +
                 "paceInSeconds=" + paceInSeconds +
                 '}';
     }

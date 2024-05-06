@@ -1,8 +1,8 @@
-package pl.koneckimarcin.triathlontrainingmanagement.training.trainingStage.bike;
+package pl.koneckimarcin.trainingsservice.trainingStage.bike;
 
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
-import pl.koneckimarcin.triathlontrainingmanagement.training.trainingStage.StageEntity;
+import pl.koneckimarcin.trainingsservice.trainingStage.StageEntity;
 
 @Entity
 @DiscriminatorValue("BIKE")
