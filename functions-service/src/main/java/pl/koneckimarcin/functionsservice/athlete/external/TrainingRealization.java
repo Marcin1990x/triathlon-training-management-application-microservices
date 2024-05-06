@@ -1,15 +1,9 @@
-package pl.koneckimarcin.trainingsservice.trainingRealization;
-
-import jakarta.persistence.*;
-import org.springframework.data.mongodb.core.mapping.Document;
-import pl.koneckimarcin.trainingsservice.trainingPlan.constant.TrainingType;
+package pl.koneckimarcin.functionsservice.athlete.external;
 
 import java.sql.Date;
 
-@Document
-public class TrainingRealizationEntity {
+public class TrainingRealization {
 
-    @Id
     private String id;
 
     private Long athleteId;
@@ -24,7 +18,6 @@ public class TrainingRealizationEntity {
 
     private Integer timeInSeconds;
 
-    @Enumerated(EnumType.STRING)
     private TrainingType type;
 
     private Date realizationDate;
@@ -39,7 +32,6 @@ public class TrainingRealizationEntity {
 
     private String realizationDescription;
 
-    @Enumerated(EnumType.STRING)
     private Feelings feelings;
 
     private int rpeLevel;

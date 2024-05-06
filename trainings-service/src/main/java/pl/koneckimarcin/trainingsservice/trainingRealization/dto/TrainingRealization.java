@@ -9,7 +9,9 @@ import java.sql.Date;
 
 public class TrainingRealization {
 
-    private Long id;
+    private String id;
+
+    private Long athleteId;
 
     private Long stravaId;
 
@@ -44,6 +46,7 @@ public class TrainingRealization {
         TrainingRealizationEntity trainingRealization = new TrainingRealizationEntity();
 
         trainingRealization.setId(this.id);
+        trainingRealization.setAthleteId(this.athleteId);
         trainingRealization.setName(this.name);
         trainingRealization.setDistanceInMeters(this.distanceInMeters);
         trainingRealization.setTimeInSeconds(this.timeInSeconds);
@@ -61,33 +64,42 @@ public class TrainingRealization {
     }
 
     public static TrainingRealization fromTrainingRealizationEntity
-            (TrainingRealizationEntity stravaEntity) {
+            (TrainingRealizationEntity trainingRealizationEntity) {
 
         TrainingRealization trainingRealization = new TrainingRealization();
 
-        trainingRealization.setId(stravaEntity.getId());
-        trainingRealization.setName(stravaEntity.getName());
-        trainingRealization.setDistanceInMeters(stravaEntity.getDistanceInMeters());
-        trainingRealization.setTimeInSeconds(stravaEntity.getTimeInSeconds());
-        trainingRealization.setType(stravaEntity.getType());
-        trainingRealization.setRealizationDate(stravaEntity.getRealizationDate());
-        trainingRealization.setAverageWatts(stravaEntity.getAverageWatts());
-        trainingRealization.setMaxWatts(stravaEntity.getMaxWatts());
-        trainingRealization.setAverageHeartrate(stravaEntity.getAverageHeartrate());
-        trainingRealization.setMaxHeartrate(stravaEntity.getMaxHeartrate());
-        trainingRealization.setRealizationDescription(stravaEntity.getRealizationDescription());
-        trainingRealization.setFeelings(stravaEntity.getFeelings());
-        trainingRealization.setRpeLevel(stravaEntity.getRpeLevel());
+        trainingRealization.setId(trainingRealizationEntity.getId());
+        trainingRealization.setAthleteId(trainingRealizationEntity.getAthleteId());
+        trainingRealization.setName(trainingRealizationEntity.getName());
+        trainingRealization.setDistanceInMeters(trainingRealizationEntity.getDistanceInMeters());
+        trainingRealization.setTimeInSeconds(trainingRealizationEntity.getTimeInSeconds());
+        trainingRealization.setType(trainingRealizationEntity.getType());
+        trainingRealization.setRealizationDate(trainingRealizationEntity.getRealizationDate());
+        trainingRealization.setAverageWatts(trainingRealizationEntity.getAverageWatts());
+        trainingRealization.setMaxWatts(trainingRealizationEntity.getMaxWatts());
+        trainingRealization.setAverageHeartrate(trainingRealizationEntity.getAverageHeartrate());
+        trainingRealization.setMaxHeartrate(trainingRealizationEntity.getMaxHeartrate());
+        trainingRealization.setRealizationDescription(trainingRealizationEntity.getRealizationDescription());
+        trainingRealization.setFeelings(trainingRealizationEntity.getFeelings());
+        trainingRealization.setRpeLevel(trainingRealizationEntity.getRpeLevel());
 
         return trainingRealization;
     }
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
+    }
+
+    public Long getAthleteId() {
+        return athleteId;
+    }
+
+    public void setAthleteId(Long athleteId) {
+        this.athleteId = athleteId;
     }
 
     public Long getStravaId() {

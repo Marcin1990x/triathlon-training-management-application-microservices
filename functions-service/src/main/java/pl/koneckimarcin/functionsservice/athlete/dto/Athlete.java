@@ -18,9 +18,6 @@ public class Athlete {
     private String lastName;
 
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Long> trainingRealizationsIds;
-
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<Long> trainingPlansIds = new ArrayList<>();
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -61,9 +58,6 @@ public class Athlete {
         athlete.setId(athleteEntity.getId());
         athlete.setFirstName(athleteEntity.getFirstName());
         athlete.setLastName(athleteEntity.getLastName());
-        if (athleteEntity.getTrainingRealizationsIds() != null) {
-            athlete.setTrainingRealizationsIds(athleteEntity.getTrainingRealizationsIds());
-        }
         if (athleteEntity.getTrainingPlansIds() != null) {
             athlete.setTrainingPlansIds(athleteEntity.getTrainingPlansIds());
         }
@@ -92,14 +86,6 @@ public class Athlete {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
-    }
-
-    public List<Long> getTrainingRealizationsIds() {
-        return trainingRealizationsIds;
-    }
-
-    public void setTrainingRealizationsIds(List<Long> trainingRealizationsIds) {
-        this.trainingRealizationsIds = trainingRealizationsIds;
     }
 
     public List<Long> getTrainingPlansIds() {

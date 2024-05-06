@@ -8,6 +8,8 @@ import pl.koneckimarcin.trainingsservice.trainingRealization.dto.TrainingRealiza
 import pl.koneckimarcin.trainingsservice.trainingRealization.dto.TrainingRealizationRequest;
 import pl.koneckimarcin.trainingsservice.trainingRealization.repository.TrainingRealizationRepository;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -127,6 +129,25 @@ public class TrainingRealizationService {
         TrainingRealizationEntity updated = trainingRealizationRepository.save(trainingRealizationToUpdate);
 
         return TrainingRealization.fromTrainingRealizationEntity(updated);
+    }
+
+    public TrainingRealization addNew(TrainingRealization trainingRealization) {
+
+        TrainingRealizationEntity added = trainingRealizationRepository.save(trainingRealization.mapToTrainingRealizationEntity());
+        return TrainingRealization.fromTrainingRealizationEntity(added);
+    }
+
+    public List<TrainingRealization> getAllTrainingRealizations(Long athleteId) {
+
+        //check if athlete exists
+        List<TrainingRealization> trainingRealizations = new ArrayList<>();
+        List<TrainingRealizationEntity> trainingRealizationEntities
+                = trainingRealizationRepository.findByAthleteId(athleteId);
+
+        for(TrainingRealizationEntity realizationEntity : trainingRealizationEntities){
+            trainingRealizations.add(TrainingRealization.fromTrainingRealizationEntity(realizationEntity));
+        }
+        return trainingRealizations;
     }
 
 //    private UserEntity retrieveLoggedUser() {

@@ -1,10 +1,14 @@
 package pl.koneckimarcin.trainingsservice.trainingRealization.repository;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
+import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.mongodb.repository.Query;
 import pl.koneckimarcin.trainingsservice.trainingRealization.TrainingRealizationEntity;
 
-@Repository
-public interface TrainingRealizationRepository extends JpaRepository<TrainingRealizationEntity, Long> {
+import java.util.List;
+
+public interface TrainingRealizationRepository extends MongoRepository<TrainingRealizationEntity, Long> {
+
+    @Query("{'athleteId': ?0}")
+    public List<TrainingRealizationEntity> findByAthleteId(Long athleteId);
 
 }

@@ -16,8 +16,6 @@ public class AthleteEntity {
 
     private String lastName;
 
-    private List<Long> trainingRealizationsIds;
-
     private List<Long> trainingPlansIds;
 
     @Column(name = "has_user")
@@ -49,14 +47,6 @@ public class AthleteEntity {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
-    }
-
-    public List<Long> getTrainingRealizationsIds() {
-        return trainingRealizationsIds;
-    }
-
-    public void setTrainingRealizationsIds(List<Long> trainingRealizationsIds) {
-        this.trainingRealizationsIds = trainingRealizationsIds;
     }
 
     public List<Long> getTrainingPlansIds() {

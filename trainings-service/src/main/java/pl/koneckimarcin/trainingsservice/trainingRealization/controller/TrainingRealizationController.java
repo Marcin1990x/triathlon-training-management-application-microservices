@@ -19,6 +19,12 @@ public class TrainingRealizationController implements TrainingRealizationOperati
 //        return trainingRealizationService.getTrainingRealizationsByAthleteId(id);
 //    }
 
+    @Override
+    public List<TrainingRealization> getAllTrainingRealizations(Long athleteId) {
+
+        return trainingRealizationService.getAllTrainingRealizations(athleteId);
+    }
+
     public void deleteById(Long id) {
 
         trainingRealizationService.deleteById(id);
@@ -32,6 +38,12 @@ public class TrainingRealizationController implements TrainingRealizationOperati
     @Override
     public TrainingRealization updateTrainingRealizationById(Long id, TrainingRealizationRequest request) {
         return trainingRealizationService.updateTrainingRealizationById(id, request);
+    }
+
+    @Override
+    public TrainingRealization addNew(TrainingRealization trainingRealization) {
+
+        return trainingRealizationService.addNew(trainingRealization);
     }
 
 //    @Override

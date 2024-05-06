@@ -2,10 +2,15 @@ package pl.koneckimarcin.functionsservice.athlete.service;
 
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 import pl.koneckimarcin.functionsservice.athlete.AthleteEntity;
 import pl.koneckimarcin.functionsservice.athlete.dto.Athlete;
 import pl.koneckimarcin.functionsservice.athlete.dto.AthleteResponseDto;
+import pl.koneckimarcin.functionsservice.athlete.external.TrainingRealization;
 import pl.koneckimarcin.functionsservice.athlete.repository.AthleteRepository;
 import pl.koneckimarcin.functionsservice.coach.repository.CoachRepository;
 import pl.koneckimarcin.functionsservice.exceptions.ResourceNotFoundException;
@@ -25,6 +30,9 @@ public class AthleteService {
     @Autowired
     private CoachRepository coachRepository;
 
+    @Autowired
+    private RestTemplate restTemplate;
+
     public boolean checkIfIsNotNull(long id) {
         Optional<AthleteEntity> athleteEntity = athleteRepository.findById(id);
         if (athleteEntity.isPresent()) {
@@ -37,11 +45,25 @@ public class AthleteService {
 
         Optional<AthleteEntity> athleteEntity = athleteRepository.findById(id);
 
-        if (athleteEntity.isPresent()) {
-            return AthleteResponseDto.fromAthleteEntity(athleteEntity.get());
-        } else {
+        if (!athleteEntity.isPresent()) {
             throw new ResourceNotFoundException("Athlete", "id", String.valueOf(id));
         }
+
+        List<TrainingRealization> trainingRealizations = getTrainingRealizationForAthleteById(id);
+
+        return AthleteResponseDto.fromAthleteEntity(athleteEntity.get(), trainingRealizations);
+    }
+
+    private List<TrainingRealization> getTrainingRealizationForAthleteById(Long athleteId) {
+
+        ResponseEntity<List<TrainingRealization>> trainingRealizations = restTemplate.exchange(
+                "http://TRAININGS-SERVICE:8084/training-realizations?athleteId=" + athleteId,
+                HttpMethod.GET,
+                null,
+                new ParameterizedTypeReference<List<TrainingRealization>>() {
+                });
+
+        return trainingRealizations.getBody();
     }
 
     public Set<Athlete> getAthletesByCoachId(Long id) {
@@ -79,7 +101,7 @@ public class AthleteService {
 
         if (athleteEntities.size() > 0) {
             for (AthleteEntity athleteEntity : athleteEntities) {
-                athletes.add(AthleteResponseDto.fromAthleteEntity(athleteEntity));
+                athletes.add(AthleteResponseDto.fromAthleteEntity(athleteEntity, null));
             }
         }
         return athletes;
