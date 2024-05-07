@@ -15,22 +15,11 @@ import java.util.Optional;
 @Service
 public class TrainingRealizationService {
 
-//    @Autowired
-//    private AthleteService athleteService;
-//
-//    @Autowired
-//    private AthleteRepository athleteRepository;
-//
-//    @Autowired
-//    private UserRepository userRepository;
-//
-//    @Autowired
-//    private StravaClient stravaClient;
 
     @Autowired
     private TrainingRealizationRepository trainingRealizationRepository;
 
-    public boolean checkIfIsNotNull(Long id) {
+    public boolean checkIfIsNotNull(String id) {
         Optional<TrainingRealizationEntity> trainingRealizationStravaEntity = trainingRealizationRepository.findById(id);
         if (trainingRealizationStravaEntity.isPresent()) {
             return true;
@@ -38,18 +27,7 @@ public class TrainingRealizationService {
         return false;
     }
 
-//    public List<TrainingRealization> getTrainingRealizationsByAthleteId(Long id) {
-//
-//        if (athleteService.checkIfIsNotNull(id)) {
-//            return athleteRepository.findById(id).get().getTrainingRealizations()
-//                    .stream().map(TrainingRealization::fromTrainingRealizationEntity)
-//                    .collect(Collectors.toList());
-//        } else {
-//            throw new ResourceNotFoundException("Athlete", "id", String.valueOf(id));
-//        }
-//    }
-
-    public void deleteById(Long id) {
+    public void deleteById(String id) {
 
         if (checkIfIsNotNull(id)) {
             trainingRealizationRepository.deleteById(id);
@@ -111,7 +89,7 @@ public class TrainingRealizationService {
 //                .stream().map(TrainingRealizationEntity::getStravaId).toList();
 //    }
 
-    public TrainingRealization updateTrainingRealizationById(Long id, TrainingRealizationRequest request) {
+    public TrainingRealization updateTrainingRealizationById(String id, TrainingRealizationRequest request) {
 
         if (!checkIfIsNotNull(id)) {
             throw new ResourceNotFoundException("TrainingRealization", "id", String.valueOf(id));
@@ -119,7 +97,7 @@ public class TrainingRealizationService {
         return updateTrainingRealization(id, request);
     }
 
-    private TrainingRealization updateTrainingRealization(Long id, TrainingRealizationRequest request) {
+    private TrainingRealization updateTrainingRealization(String id, TrainingRealizationRequest request) {
 
         TrainingRealizationEntity trainingRealizationToUpdate = trainingRealizationRepository.findById(id).get();
         trainingRealizationToUpdate.setRealizationDescription(request.getRealizationDescription());
@@ -133,6 +111,8 @@ public class TrainingRealizationService {
 
     public TrainingRealization addNew(TrainingRealization trainingRealization) {
 
+        //check valid athleteId
+
         TrainingRealizationEntity added = trainingRealizationRepository.save(trainingRealization.mapToTrainingRealizationEntity());
         return TrainingRealization.fromTrainingRealizationEntity(added);
     }
@@ -144,31 +124,22 @@ public class TrainingRealizationService {
         List<TrainingRealizationEntity> trainingRealizationEntities
                 = trainingRealizationRepository.findByAthleteId(athleteId);
 
-        for(TrainingRealizationEntity realizationEntity : trainingRealizationEntities){
+        for (TrainingRealizationEntity realizationEntity : trainingRealizationEntities) {
             trainingRealizations.add(TrainingRealization.fromTrainingRealizationEntity(realizationEntity));
         }
         return trainingRealizations;
     }
 
+    public TrainingRealization getById(String id) {
+
+        Optional<TrainingRealizationEntity> id1 = trainingRealizationRepository.findById(id);
+
+        return TrainingRealization
+                .fromTrainingRealizationEntity(trainingRealizationRepository.findById(id).get());
+    }
+
 //    private UserEntity retrieveLoggedUser() {
 //        String username = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
 //        return userRepository.findByUsername(username).get();
-//    }
-
-//    public TrainingRealization addNewTrainingRealizationForAthlete(Long id, TrainingRealization trainingRealization) {
-//
-//        AthleteEntity athlete;
-//
-//        if (!athleteRepository.findById(id).isPresent()) {
-//            throw new ResourceNotFoundException("Athlete", "id", String.valueOf(id));
-//        }
-//        athlete = athleteRepository.findById(id).get();
-//
-//        TrainingRealizationEntity trainingEntity = trainingRealization.mapToTrainingRealizationEntity();
-//
-//        athlete.getTrainingRealizations().add(trainingEntity);
-//        athleteRepository.save(athlete);
-//
-//        return TrainingRealization.fromTrainingRealizationEntity(trainingEntity);
 //    }
 }

@@ -4,7 +4,8 @@ import jakarta.persistence.*;
 import org.springframework.data.mongodb.core.mapping.Document;
 import pl.koneckimarcin.trainingsservice.trainingPlan.constant.TrainingType;
 
-import java.sql.Date;
+import java.util.Date;
+
 
 @Document
 public class TrainingRealizationEntity {

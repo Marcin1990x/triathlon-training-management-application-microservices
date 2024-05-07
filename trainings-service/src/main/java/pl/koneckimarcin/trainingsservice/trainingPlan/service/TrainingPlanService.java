@@ -1,9 +1,14 @@
-package pl.koneckimarcin.trainingsservice.trainingPlan;
+package pl.koneckimarcin.trainingsservice.trainingPlan.service;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.koneckimarcin.trainingsservice.exception.ResourceNotFoundException;
 import pl.koneckimarcin.trainingsservice.exception.WrongDateException;
+import pl.koneckimarcin.trainingsservice.trainingPlan.TrainingPlanEntity;
+import pl.koneckimarcin.trainingsservice.trainingPlan.constant.TrainingPlanStatus;
+import pl.koneckimarcin.trainingsservice.trainingPlan.dto.TrainingPlan;
+import pl.koneckimarcin.trainingsservice.trainingPlan.repository.TrainingPlanRepository;
 import pl.koneckimarcin.trainingsservice.trainingStage.StageEntity;
 import pl.koneckimarcin.trainingsservice.trainingStage.StageRepository;
 import pl.koneckimarcin.trainingsservice.trainingStage.bike.BikeStageEntity;
@@ -72,21 +77,15 @@ public class TrainingPlanService {
         trainingPlanRepository.deleteById(id);
     }
 
-//    public TrainingPlan addNewTrainingPlanToCoach(Long coachId, @Valid TrainingPlan trainingPlan) {
-//
-//        checkCoachIdException(coachId);
-//
-//        Optional<CoachEntity> coachEntity = coachRepository.findById(coachId);
-//
-//        trainingPlan.setTrainingPlanStatus(TrainingPlanStatus.TEMPLATE);
-//
-//        TrainingPlanEntity savedPlan = trainingPlanRepository.save(trainingPlan.mapToTrainingPlanEntity());
-//
-//        coachEntity.get().getTrainingPlans().add(savedPlan);
-//        coachRepository.save(coachEntity.get());
-//
-//        return TrainingPlan.fromTrainingPlanEntity(savedPlan);
-//    }
+    public TrainingPlan addNewTrainingPlan(TrainingPlan trainingPlan) {
+
+        //check coachId
+
+        trainingPlan.setTrainingPlanStatus(TrainingPlanStatus.TEMPLATE);
+        TrainingPlanEntity savedPlan = trainingPlanRepository.save(trainingPlan.mapToTrainingPlanEntity());
+
+        return TrainingPlan.fromTrainingPlanEntity(savedPlan);
+    }
 
 //    public TrainingPlan addTrainingPlanToAthleteWithDate(Long athleteId, Long trainingPlanId, Date date) {
 //
@@ -111,12 +110,6 @@ public class TrainingPlanService {
 //    private void checkAthleteIdException(Long athleteId) {
 //        if (!athleteService.checkIfIsNotNull(athleteId)) {
 //            throw new ResourceNotFoundException("Athlete", "id", String.valueOf(athleteId));
-//        }
-//    }
-//
-//    private void checkCoachIdException(Long coachId) {
-//        if (!coachService.checkIfIsNotNull(coachId)) {
-//            throw new ResourceNotFoundException("Coach", "id", String.valueOf(coachId));
 //        }
 //    }
 

@@ -1,30 +1,36 @@
 package pl.koneckimarcin.trainingsservice.trainingRealization.dto;
 
 
+import jakarta.validation.constraints.NotNull;
 import pl.koneckimarcin.trainingsservice.trainingPlan.constant.TrainingType;
 import pl.koneckimarcin.trainingsservice.trainingRealization.Feelings;
 import pl.koneckimarcin.trainingsservice.trainingRealization.TrainingRealizationEntity;
 
-import java.sql.Date;
+import java.util.Date;
+
 
 public class TrainingRealization {
 
     private String id;
 
+    @NotNull
     private Long athleteId;
 
     private Long stravaId;
 
     private Long stravaAthleteId;
 
+    @NotNull
     private String name;
 
     private Double distanceInMeters;
 
     private Integer timeInSeconds;
 
+    @NotNull
     private TrainingType type;
 
+    @NotNull
     private Date realizationDate;
 
     private Long averageWatts;

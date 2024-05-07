@@ -1,9 +1,10 @@
-package pl.koneckimarcin.trainingsservice.trainingPlan;
+package pl.koneckimarcin.trainingsservice.trainingPlan.dto;
 
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import pl.koneckimarcin.trainingsservice.trainingPlan.TrainingPlanEntity;
 import pl.koneckimarcin.trainingsservice.trainingPlan.constant.TrainingPlanStatus;
 import pl.koneckimarcin.trainingsservice.trainingPlan.constant.TrainingType;
 import pl.koneckimarcin.trainingsservice.trainingStage.StageEntity;
@@ -14,6 +15,10 @@ import java.util.List;
 public class TrainingPlan {
 
     private Long id;
+
+    private Long athleteId;
+    @NotNull
+    private Long coachId;
 
     @NotEmpty(message = "TrainingPlan name should not be empty")
     private String name;
@@ -46,6 +51,8 @@ public class TrainingPlan {
         TrainingPlanEntity trainingPlanEntity = new TrainingPlanEntity();
 
         trainingPlanEntity.setId(this.id);
+        trainingPlanEntity.setAthleteId(this.athleteId);
+        trainingPlanEntity.setCoachId(this.coachId);
         trainingPlanEntity.setName(this.name);
         trainingPlanEntity.setTrainingType(this.trainingType);
         trainingPlanEntity.setTrainingPlanStatus(this.trainingPlanStatus);
@@ -61,6 +68,8 @@ public class TrainingPlan {
         TrainingPlan trainingPlan = new TrainingPlan();
 
         trainingPlan.setId(trainingPlanEntity.getId());
+        trainingPlan.setAthleteId(trainingPlanEntity.getAthleteId());
+        trainingPlan.setCoachId(trainingPlanEntity.getCoachId());
         trainingPlan.setName(trainingPlanEntity.getName());
         trainingPlan.setTrainingType(trainingPlanEntity.getTrainingType());
         trainingPlan.setTrainingPlanStatus(trainingPlanEntity.getTrainingPlanStatus());
@@ -77,6 +86,22 @@ public class TrainingPlan {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Long getAthleteId() {
+        return athleteId;
+    }
+
+    public void setAthleteId(Long athleteId) {
+        this.athleteId = athleteId;
+    }
+
+    public Long getCoachId() {
+        return coachId;
+    }
+
+    public void setCoachId(Long coachId) {
+        this.coachId = coachId;
     }
 
     public String getName() {

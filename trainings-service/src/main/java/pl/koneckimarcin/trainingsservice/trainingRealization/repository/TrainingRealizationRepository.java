@@ -6,7 +6,7 @@ import pl.koneckimarcin.trainingsservice.trainingRealization.TrainingRealization
 
 import java.util.List;
 
-public interface TrainingRealizationRepository extends MongoRepository<TrainingRealizationEntity, Long> {
+public interface TrainingRealizationRepository extends MongoRepository<TrainingRealizationEntity, String> {
 
     @Query("{'athleteId': ?0}")
     public List<TrainingRealizationEntity> findByAthleteId(Long athleteId);

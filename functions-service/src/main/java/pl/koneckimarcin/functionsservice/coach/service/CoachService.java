@@ -2,7 +2,11 @@ package pl.koneckimarcin.functionsservice.coach.service;
 
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 import pl.koneckimarcin.functionsservice.athlete.AthleteEntity;
 import pl.koneckimarcin.functionsservice.athlete.repository.AthleteRepository;
 import pl.koneckimarcin.functionsservice.athlete.service.AthleteService;
@@ -11,7 +15,9 @@ import pl.koneckimarcin.functionsservice.coach.dto.Coach;
 import pl.koneckimarcin.functionsservice.coach.dto.CoachResponseDto;
 import pl.koneckimarcin.functionsservice.coach.repository.CoachRepository;
 import pl.koneckimarcin.functionsservice.exceptions.ResourceNotFoundException;
+import pl.koneckimarcin.functionsservice.external.TrainingPlan;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -27,6 +33,9 @@ public class CoachService {
     @Autowired
     private AthleteService athleteService;
 
+    @Autowired
+    private RestTemplate restTemplate;
+
     public boolean checkIfIsNotNull(Long id) {
         Optional<CoachEntity> coachEntity = coachRepository.findById(id);
         if (coachEntity.isPresent()) {
@@ -35,15 +44,27 @@ public class CoachService {
         return false;
     }
 
-    public CoachResponseDto findById(Long id) {
+    public Coach findById(Long id) {
 
         Optional<CoachEntity> coachEntity = coachRepository.findById(id);
 
-        if (coachEntity.isPresent()) {
-            return CoachResponseDto.fromCoachEntity(coachEntity.get());
-        } else {
+        if (!coachEntity.isPresent()) {
             throw new ResourceNotFoundException("Coach", "id", String.valueOf(id));
         }
+        List<TrainingPlan> trainingPlans = getTrainingPlansForCoachId(id);
+        return CoachResponseDto.fromCoachEntity(coachEntity, trainingPlans);
+    }
+
+    private List<TrainingPlan> getTrainingPlansForCoachId(Long coachId) {
+
+        ResponseEntity<List<TrainingPlan>> trainingRealizations = restTemplate.exchange(
+                "http://TRAININGS-SERVICE:8084/training-realizations?athleteId=" + coachId,
+                HttpMethod.GET,
+                null,
+                new ParameterizedTypeReference<List<TrainingPlan>>() {
+                });
+
+        return trainingRealizations.getBody();
     }
 
     public Coach addNew(@Valid Coach coach) {

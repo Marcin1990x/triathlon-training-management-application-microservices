@@ -6,35 +6,26 @@ import pl.koneckimarcin.trainingsservice.trainingRealization.dto.TrainingRealiza
 
 import java.util.List;
 
-@RequestMapping("/training-realizations")
 public interface TrainingRealizationOperations {
 
-    @GetMapping
-    public List<TrainingRealization> getAllTrainingRealizations(Long athleteId);
+    @GetMapping("/training-realizations")
+    public List<TrainingRealization> getAllTrainingRealizations(@RequestParam Long athleteId);
 
-//    @PreAuthorize("(hasAuthority('ATHLETE') AND @authenticatedUserService.hasValidAthleteId(#id)) " +
-//            "OR (hasAuthority('COACH') AND @authenticatedUserService.hasAssignedAthlete(#id))")
-//    @GetMapping("athletes/{id}/training-realizations")
-//    public List<TrainingRealization> getTrainingRealizationsByAthleteId(@PathVariable Long id);
+    @GetMapping("/training-realizations/{id}")
+    public TrainingRealization getById(@PathVariable String id);
 
     //    @PreAuthorize("hasAuthority('ATHLETE') AND @authenticatedUserService.hasTrainingRealizationInItsResources(#id)")
-    @DeleteMapping("/{id}")
-    public void deleteById(@PathVariable Long id);
+    @DeleteMapping("/training-realizations/{id}")
+    public void deleteById(@PathVariable String id);
 
 //    @PreAuthorize("hasAuthority('ATHLETE')")
 //    @PutMapping("athletes/{id}/training-realizations")
 //    public Integer synchronizeActivitiesForAthlete(@PathVariable Long id);
 
     //    @PreAuthorize("hasAuthority('ATHLETE') AND @authenticatedUserService.hasTrainingRealizationInItsResources(#id)")
-    @PutMapping("/{id}")
-    public TrainingRealization updateTrainingRealizationById(@PathVariable Long id,
+    @PutMapping("/training-realizations/{id}")
+    public TrainingRealization updateTrainingRealizationById(@PathVariable String id,
                                                              @RequestBody TrainingRealizationRequest request);
-
-//    @PreAuthorize("(hasAuthority('ATHLETE') AND @authenticatedUserService.hasValidAthleteId(#id))")
-//    @PostMapping("athletes/{id}/training-realizations")
-//    public TrainingRealization addNewTrainingRealizationForAthlete
-//            (@PathVariable Long id, @RequestBody TrainingRealization trainingRealization);
-
-    @PostMapping // for tests
+    @PostMapping("/training-realizations")
     public TrainingRealization addNew(@RequestBody TrainingRealization trainingRealization);
 }

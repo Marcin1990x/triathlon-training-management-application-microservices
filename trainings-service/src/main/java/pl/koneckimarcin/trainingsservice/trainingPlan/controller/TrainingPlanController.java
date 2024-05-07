@@ -1,7 +1,10 @@
-package pl.koneckimarcin.trainingsservice.trainingPlan;
+package pl.koneckimarcin.trainingsservice.trainingPlan.controller;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
+import pl.koneckimarcin.trainingsservice.trainingPlan.dto.TrainingPlan;
+import pl.koneckimarcin.trainingsservice.trainingPlan.service.TrainingPlanService;
 
 @RestController
 public class TrainingPlanController implements TrainingPlanOperations {
@@ -35,10 +38,10 @@ public class TrainingPlanController implements TrainingPlanOperations {
         trainingPlanService.deleteById(id);
     }
 
-//    public TrainingPlan addNewTrainingPlan(Long id, TrainingPlan trainingPlan) {
-//
-//        return trainingPlanService.addNewTrainingPlanToCoach(id, trainingPlan);
-//    }
+    public TrainingPlan addNewTrainingPlan(@Valid TrainingPlan trainingPlan) {
+
+        return trainingPlanService.addNewTrainingPlan(trainingPlan);
+    }
 //
 //    public TrainingPlan addTrainingPlanToAthleteWithDate(Long athleteId, Long trainingPlanId, Date plannedDate) {
 //

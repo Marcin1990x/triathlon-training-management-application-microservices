@@ -1,16 +1,17 @@
-package pl.koneckimarcin.trainingsservice.trainingPlan;
+package pl.koneckimarcin.trainingsservice.trainingPlan.controller;
 
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.*;
+import pl.koneckimarcin.trainingsservice.trainingPlan.dto.TrainingPlan;
+
+import java.util.List;
 
 
 public interface TrainingPlanOperations {
 
 //    @PreAuthorize("(hasAuthority('ATHLETE') AND @authenticatedUserService.hasValidAthleteId(#id)) " +
 //            "OR (hasAuthority('COACH') AND @authenticatedUserService.hasAssignedAthlete(#id))")
-//    @GetMapping("athletes/{id}/training-plans")
-//    public List<TrainingPlan> getTrainingPlansByAthleteId(@PathVariable Long id);
+    @GetMapping("athletes/{id}/training-plans")
+    public List<TrainingPlan> getTrainingPlansByAthleteId(@PathVariable Long id);
 
 //    @PreAuthorize("hasAuthority('COACH') AND @authenticatedUserService.hasValidCoachId(#id)")
 //    @GetMapping("coaches/{id}/training-plans")
@@ -25,8 +26,8 @@ public interface TrainingPlanOperations {
     public void deleteById(@PathVariable Long id);
 
 //    @PreAuthorize("hasAuthority('COACH') AND @authenticatedUserService.hasValidCoachId(#id)")
-//    @PostMapping("coaches/{id}/training-plans")
-//    public TrainingPlan addNewTrainingPlan(@PathVariable Long id, @RequestBody TrainingPlan trainingPlan);
+    @PostMapping("/training-plans")
+    public TrainingPlan addNewTrainingPlan(@RequestBody TrainingPlan trainingPlan);
 
 //    @PreAuthorize("hasAuthority('COACH') AND @authenticatedUserService.hasAssignedAthlete(#athleteId)" +
 //            "AND @authenticatedUserService.hasTrainingPlanInItsResources(#trainingPlanId)")

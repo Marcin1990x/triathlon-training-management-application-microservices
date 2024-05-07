@@ -1,7 +1,7 @@
 package pl.koneckimarcin.functionsservice.athlete.dto;
 
 import pl.koneckimarcin.functionsservice.athlete.AthleteEntity;
-import pl.koneckimarcin.functionsservice.athlete.external.TrainingRealization;
+import pl.koneckimarcin.functionsservice.external.TrainingRealization;
 
 import java.util.List;
 

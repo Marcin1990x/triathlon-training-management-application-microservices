@@ -1,5 +1,6 @@
 package pl.koneckimarcin.trainingsservice.trainingRealization.controller;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
 import pl.koneckimarcin.trainingsservice.trainingRealization.dto.TrainingRealization;
@@ -14,18 +15,19 @@ public class TrainingRealizationController implements TrainingRealizationOperati
     @Autowired
     private TrainingRealizationService trainingRealizationService;
 
-//    public List<TrainingRealization> getTrainingRealizationsByAthleteId(Long id) {
-//
-//        return trainingRealizationService.getTrainingRealizationsByAthleteId(id);
-//    }
-
     @Override
     public List<TrainingRealization> getAllTrainingRealizations(Long athleteId) {
 
         return trainingRealizationService.getAllTrainingRealizations(athleteId);
     }
 
-    public void deleteById(Long id) {
+    @Override
+    public TrainingRealization getById(String id) {
+
+        return trainingRealizationService.getById(id);
+    }
+
+    public void deleteById(String id) {
 
         trainingRealizationService.deleteById(id);
     }
@@ -36,18 +38,13 @@ public class TrainingRealizationController implements TrainingRealizationOperati
 //    }
 
     @Override
-    public TrainingRealization updateTrainingRealizationById(Long id, TrainingRealizationRequest request) {
+    public TrainingRealization updateTrainingRealizationById(String id, TrainingRealizationRequest request) {
         return trainingRealizationService.updateTrainingRealizationById(id, request);
     }
 
     @Override
-    public TrainingRealization addNew(TrainingRealization trainingRealization) {
+    public TrainingRealization addNew(@Valid TrainingRealization trainingRealization) {
 
         return trainingRealizationService.addNew(trainingRealization);
     }
-
-//    @Override
-//    public TrainingRealization addNewTrainingRealizationForAthlete(Long id, TrainingRealization trainingRealization) {
-//        return trainingRealizationService.addNewTrainingRealizationForAthlete(id, trainingRealization);
-//    }
 }

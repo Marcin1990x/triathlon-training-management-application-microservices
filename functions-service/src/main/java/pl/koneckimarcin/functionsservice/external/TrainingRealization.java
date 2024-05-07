@@ -1,4 +1,4 @@
-package pl.koneckimarcin.functionsservice.athlete.external;
+package pl.koneckimarcin.functionsservice.external;
 
 import java.sql.Date;
 

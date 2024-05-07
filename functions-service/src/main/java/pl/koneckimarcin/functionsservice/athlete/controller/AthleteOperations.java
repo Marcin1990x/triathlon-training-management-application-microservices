@@ -10,25 +10,25 @@ import java.util.Set;
 public interface AthleteOperations {
 
     //@PreAuthorize("hasAuthority('ATHLETE') AND @authenticatedUserService.hasValidAthleteId(#id)")
-    @GetMapping("athletes/{id}")
+    @GetMapping("/athletes/{id}")
     public AthleteResponseDto getById(@PathVariable Long id);
 
     //@PreAuthorize("hasAuthority('COACH')")
-    @GetMapping("athletes")
+    @GetMapping("/athletes")
     public List<AthleteResponseDto> getByLastname(@RequestParam String lastname);
 
     //@PreAuthorize("hasAuthority('COACH') AND @authenticatedUserService.hasValidCoachId(#id)")
-    @GetMapping("coaches/{id}/athletes")
+    @GetMapping("/coaches/{id}/athletes")
     public Set<Athlete> getAthletesByCoachId(@PathVariable Long id);
 
     //@PreAuthorize("hasAnyAuthority('ADMIN', 'NEW')")
-    @PostMapping("athletes")
+    @PostMapping("/athletes")
     public Athlete addNew(@RequestBody Athlete athlete);
 
     //@PreAuthorize("hasAuthority('ADMIN')")
-    @DeleteMapping("athletes/{id}")
+    @DeleteMapping("/athletes/{id}")
     public void deleteById(@PathVariable Long id);
 
-    @PutMapping("athletes/{athleteId}/setAssignedToUser")
+    @PutMapping("/athletes/{athleteId}/setAssignedToUser")
     public void setAssignedToUser(@PathVariable Long athleteId);
 }

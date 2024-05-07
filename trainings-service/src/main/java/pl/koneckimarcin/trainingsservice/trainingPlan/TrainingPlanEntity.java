@@ -1,6 +1,7 @@
 package pl.koneckimarcin.trainingsservice.trainingPlan;
 
 import jakarta.persistence.*;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import pl.koneckimarcin.trainingsservice.trainingPlan.constant.TrainingPlanStatus;
@@ -17,6 +18,9 @@ public class TrainingPlanEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    private Long athleteId;
+    private Long coachId;
 
     @NotEmpty
     private String name;
@@ -43,6 +47,22 @@ public class TrainingPlanEntity {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Long getAthleteId() {
+        return athleteId;
+    }
+
+    public void setAthleteId(Long athleteId) {
+        this.athleteId = athleteId;
+    }
+
+    public Long getCoachId() {
+        return coachId;
+    }
+
+    public void setCoachId(Long coachId) {
+        this.coachId = coachId;
     }
 
     public String getName() {

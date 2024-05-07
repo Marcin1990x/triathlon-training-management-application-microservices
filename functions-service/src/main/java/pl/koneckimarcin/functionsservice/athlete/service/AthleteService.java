@@ -10,7 +10,7 @@ import org.springframework.web.client.RestTemplate;
 import pl.koneckimarcin.functionsservice.athlete.AthleteEntity;
 import pl.koneckimarcin.functionsservice.athlete.dto.Athlete;
 import pl.koneckimarcin.functionsservice.athlete.dto.AthleteResponseDto;
-import pl.koneckimarcin.functionsservice.athlete.external.TrainingRealization;
+import pl.koneckimarcin.functionsservice.external.TrainingRealization;
 import pl.koneckimarcin.functionsservice.athlete.repository.AthleteRepository;
 import pl.koneckimarcin.functionsservice.coach.repository.CoachRepository;
 import pl.koneckimarcin.functionsservice.exceptions.ResourceNotFoundException;
