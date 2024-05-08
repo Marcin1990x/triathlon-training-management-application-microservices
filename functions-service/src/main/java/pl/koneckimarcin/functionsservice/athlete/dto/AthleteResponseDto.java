@@ -1,6 +1,7 @@
 package pl.koneckimarcin.functionsservice.athlete.dto;
 
 import pl.koneckimarcin.functionsservice.athlete.AthleteEntity;
+import pl.koneckimarcin.functionsservice.external.TrainingPlan;
 import pl.koneckimarcin.functionsservice.external.TrainingRealization;
 
 import java.util.List;
@@ -14,8 +15,11 @@ public class AthleteResponseDto {
 
     private List<TrainingRealization> trainingRealizations;
 
+    private List<TrainingPlan> trainingPlans;
+
     public static AthleteResponseDto fromAthleteEntity(AthleteEntity athleteEntity,
-                                                       List<TrainingRealization> trainingRealizations) {
+                                                       List<TrainingRealization> trainingRealizations,
+                                                       List<TrainingPlan> trainingPlans) {
 
         AthleteResponseDto athlete = new AthleteResponseDto();
 
@@ -24,6 +28,7 @@ public class AthleteResponseDto {
         athlete.setLastName(athleteEntity.getLastName());
         athlete.setCoachId(athleteEntity.getCoachId());
         athlete.setTrainingRealizations(trainingRealizations);
+        athlete.setTrainingPlans(trainingPlans);
 
         return athlete;
     }
@@ -66,5 +71,13 @@ public class AthleteResponseDto {
 
     public void setTrainingRealizations(List<TrainingRealization> trainingRealizations) {
         this.trainingRealizations = trainingRealizations;
+    }
+
+    public List<TrainingPlan> getTrainingPlans() {
+        return trainingPlans;
+    }
+
+    public void setTrainingPlans(List<TrainingPlan> trainingPlans) {
+        this.trainingPlans = trainingPlans;
     }
 }

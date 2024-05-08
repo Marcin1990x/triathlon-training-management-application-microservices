@@ -6,26 +6,26 @@ import org.springframework.web.bind.annotation.RestController;
 import pl.koneckimarcin.trainingsservice.trainingPlan.dto.TrainingPlan;
 import pl.koneckimarcin.trainingsservice.trainingPlan.service.TrainingPlanService;
 
+import java.sql.Date;
+import java.util.List;
+
 @RestController
 public class TrainingPlanController implements TrainingPlanOperations {
 
     @Autowired
     private TrainingPlanService trainingPlanService;
 
-//    @Autowired
-//    private CoachRepository coachRepository;
+    @Override
+    public List<TrainingPlan> findAllByCoachId(Long coachId) {
 
-//    @Override
-//    public List<TrainingPlan> getTrainingPlansByAthleteId(Long id) {
-//
-//        return trainingPlanService.getTrainingPlansByAthleteId(id);
-//    }
-//
-//    @Override
-//    public Set<TrainingPlan> getTrainingPlansByCoachId(Long id) {
-//
-//        return trainingPlanService.getTrainingPlansByCoachId(id);
-//    }
+        return trainingPlanService.findAllByCoachId(coachId);
+    }
+
+    @Override
+    public List<TrainingPlan> findAllByAthleteId(Long athleteId) {
+
+        return trainingPlanService.findAllByAthleteId(athleteId);
+    }
 
     @Override
     public TrainingPlan getTrainingPlanById(Long id) {
@@ -42,15 +42,10 @@ public class TrainingPlanController implements TrainingPlanOperations {
 
         return trainingPlanService.addNewTrainingPlan(trainingPlan);
     }
-//
-//    public TrainingPlan addTrainingPlanToAthleteWithDate(Long athleteId, Long trainingPlanId, Date plannedDate) {
-//
-//        return trainingPlanService.addTrainingPlanToAthleteWithDate(athleteId, trainingPlanId, plannedDate);
-//    }
 
-//    @Override
-//    public void removeTrainingPlanFromAthlete(Long athleteId, Long trainingPlanId) {
-//
-//        trainingPlanService.removeTrainingPlanFromAthlete(athleteId, trainingPlanId);
-//    }
+    @Override
+    public TrainingPlan scheduleTrainingPlanForAthlete(Long id, Long athleteId, Date plannedDate) {
+
+        return trainingPlanService.scheduleTrainingPlanForAthlete(id, athleteId, plannedDate);
+    }
 }

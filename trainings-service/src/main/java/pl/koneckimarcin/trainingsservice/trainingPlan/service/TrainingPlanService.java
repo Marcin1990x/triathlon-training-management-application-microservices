@@ -1,6 +1,5 @@
 package pl.koneckimarcin.trainingsservice.trainingPlan.service;
 
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.koneckimarcin.trainingsservice.exception.ResourceNotFoundException;
@@ -28,24 +27,8 @@ public class TrainingPlanService {
     @Autowired
     private TrainingPlanRepository trainingPlanRepository;
 
-//    @Autowired
-//    private CoachRepository coachRepository;
-//
-//    @Autowired
-//    private AthleteRepository athleteRepository;
-//
-//    @Autowired
-//    private CoachService coachService;
-//
-//    @Autowired
-//    private AthleteService athleteService;
-
     @Autowired
     private StageRepository stageRepository;
-
-//    @Autowired
-//    private AuthenticatedUserService authenticatedUserService;
-
 
     public boolean checkIfIsNotNull(Long id) {
 
@@ -55,20 +38,6 @@ public class TrainingPlanService {
         }
         return false;
     }
-
-//    public List<TrainingPlan> getTrainingPlansByAthleteId(Long id) {
-//
-//        checkAthleteIdException(id);
-//        return athleteRepository.findById(id).get().getTrainingPlans()
-//                .stream().map(TrainingPlan::fromTrainingPlanEntity).collect(Collectors.toList());
-//    }
-
-//    public Set<TrainingPlan> getTrainingPlansByCoachId(Long id) {
-//
-//        checkCoachIdException(id);
-//        return coachRepository.findById(id).get().getTrainingPlans()
-//                .stream().map(TrainingPlan::fromTrainingPlanEntity).collect(Collectors.toSet());
-//    }
 
     public void deleteById(Long id) {
 
@@ -80,33 +49,29 @@ public class TrainingPlanService {
     public TrainingPlan addNewTrainingPlan(TrainingPlan trainingPlan) {
 
         //check coachId
-
         trainingPlan.setTrainingPlanStatus(TrainingPlanStatus.TEMPLATE);
         TrainingPlanEntity savedPlan = trainingPlanRepository.save(trainingPlan.mapToTrainingPlanEntity());
 
         return TrainingPlan.fromTrainingPlanEntity(savedPlan);
     }
 
-//    public TrainingPlan addTrainingPlanToAthleteWithDate(Long athleteId, Long trainingPlanId, Date date) {
-//
-//        checkAthleteIdException(athleteId);
-//        checkTrainingPlanIdException(trainingPlanId);
-//        checkIfDateIsCorrectException(date);
-//
-//        TrainingPlanEntity trainingPlan = trainingPlanRepository.findById(trainingPlanId).get();
-//        TrainingPlanEntity copiedPlan = copyTrainingPlanEntity(trainingPlan);
-//        copiedPlan.setPlannedDate(date);
-//        copiedPlan.setTrainingPlanStatus(TrainingPlanStatus.PLANNED);
-//
-//        trainingPlanRepository.save(copiedPlan);
-//
-//        AthleteEntity athlete = athleteRepository.findById(athleteId).get();
-//        athlete.getTrainingPlans().add(copiedPlan);
-//        athleteRepository.save(athlete);
-//
-//        return TrainingPlan.fromTrainingPlanEntity(copiedPlan);
-//    }
+    public TrainingPlan scheduleTrainingPlanForAthlete(Long id, Long athleteId, Date plannedDate) {
 
+        //checkAthleteIdException(athleteId);
+        checkTrainingPlanIdException(id);
+        checkIfDateIsCorrectException(plannedDate);
+
+        TrainingPlanEntity trainingPlan = trainingPlanRepository.findById(id).get();
+        TrainingPlanEntity copiedPlan = copyTrainingPlanEntity(trainingPlan);
+
+        copiedPlan.setAthleteId(athleteId);
+        copiedPlan.setPlannedDate(plannedDate);
+        copiedPlan.setTrainingPlanStatus(TrainingPlanStatus.PLANNED);
+
+        trainingPlanRepository.save(copiedPlan);
+
+        return TrainingPlan.fromTrainingPlanEntity(copiedPlan);
+    }
 //    private void checkAthleteIdException(Long athleteId) {
 //        if (!athleteService.checkIfIsNotNull(athleteId)) {
 //            throw new ResourceNotFoundException("Athlete", "id", String.valueOf(athleteId));
@@ -130,7 +95,6 @@ public class TrainingPlanService {
     private boolean isDateCorrect(Date date) {
 
         Date now = Date.valueOf(LocalDate.now());
-
         return !date.before(now);
     }
 
@@ -186,18 +150,32 @@ public class TrainingPlanService {
             stagesForCopy.add(BikeStageEntity.copyStage((BikeStageEntity) originalStage));
     }
 
-//    public void removeTrainingPlanFromAthlete(Long athleteId, Long trainingPlanId) {
-//
-//        checkAthleteIdException(athleteId);
-//        checkTrainingPlanIdException(trainingPlanId);
-//
-//        trainingPlanRepository.deleteById(trainingPlanId);
-//    }
-
     public TrainingPlan getTrainingPlanById(Long id) {
 
         checkTrainingPlanIdException(id);
 
         return TrainingPlan.fromTrainingPlanEntity(trainingPlanRepository.findById(id).get());
+    }
+
+    public List<TrainingPlan> findAllByCoachId(Long coachId) {
+
+        List<TrainingPlan> trainingPlans = new ArrayList<>();
+        List<TrainingPlanEntity> trainingPlanEntities
+                = trainingPlanRepository.findByCoachId(coachId);
+        for (TrainingPlanEntity planEntity : trainingPlanEntities) {
+            trainingPlans.add(TrainingPlan.fromTrainingPlanEntity(planEntity));
+        }
+        return trainingPlans;
+    }
+
+    public List<TrainingPlan> findAllByAthleteId(Long athleteId) {
+
+        List<TrainingPlan> trainingPlans = new ArrayList<>();
+        List<TrainingPlanEntity> trainingPlanEntities
+                = trainingPlanRepository.findByAthleteId(athleteId);
+        for (TrainingPlanEntity planEntity : trainingPlanEntities) {
+            trainingPlans.add(TrainingPlan.fromTrainingPlanEntity(planEntity));
+        }
+        return trainingPlans;
     }
 }

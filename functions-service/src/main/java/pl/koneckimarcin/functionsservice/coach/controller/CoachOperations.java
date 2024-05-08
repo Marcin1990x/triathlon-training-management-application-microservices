@@ -9,7 +9,7 @@ public interface CoachOperations {
     @GetMapping("coaches/{id}")
 //    @PreAuthorize("(hasAuthority('COACH') AND @authenticatedUserService.hasValidCoachId(#id)) OR" +
 //            "(hasAuthority('ATHLETE') AND @authenticatedUserService.hasAthleteValidCoachId(#id))")
-    public Coach getById(@PathVariable Long id);
+    public CoachResponseDto getById(@PathVariable Long id);
 
     //@PreAuthorize("hasAnyAuthority('ADMIN', 'NEW')")
     @PostMapping("coaches")

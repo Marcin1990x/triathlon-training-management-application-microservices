@@ -10,5 +10,9 @@ import java.util.List;
 @Repository
 public interface TrainingPlanRepository extends JpaRepository<TrainingPlanEntity, Long> {
 
-    List<TrainingPlanEntity> findByTrainingType(TrainingType trainingType);
+    public List<TrainingPlanEntity> findByTrainingType(TrainingType trainingType);
+
+    public List<TrainingPlanEntity> findByCoachId(Long coachId);
+
+    public List<TrainingPlanEntity> findByAthleteId(Long athleteId);
 }

@@ -9,7 +9,7 @@ import pl.koneckimarcin.trainingsservice.trainingPlan.constant.TrainingPlanStatu
 import pl.koneckimarcin.trainingsservice.trainingPlan.constant.TrainingType;
 import pl.koneckimarcin.trainingsservice.trainingStage.StageEntity;
 
-import java.sql.Date;
+import java.util.Date;
 import java.util.List;
 
 public class TrainingPlan {

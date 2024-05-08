@@ -44,7 +44,7 @@ public class CoachService {
         return false;
     }
 
-    public Coach findById(Long id) {
+    public CoachResponseDto findById(Long id) {
 
         Optional<CoachEntity> coachEntity = coachRepository.findById(id);
 
@@ -52,19 +52,22 @@ public class CoachService {
             throw new ResourceNotFoundException("Coach", "id", String.valueOf(id));
         }
         List<TrainingPlan> trainingPlans = getTrainingPlansForCoachId(id);
-        return CoachResponseDto.fromCoachEntity(coachEntity, trainingPlans);
+
+        CoachResponseDto responseDto = CoachResponseDto.fromCoachEntity(coachEntity.get(), trainingPlans);
+
+        return responseDto;
     }
 
     private List<TrainingPlan> getTrainingPlansForCoachId(Long coachId) {
 
-        ResponseEntity<List<TrainingPlan>> trainingRealizations = restTemplate.exchange(
-                "http://TRAININGS-SERVICE:8084/training-realizations?athleteId=" + coachId,
+        ResponseEntity<List<TrainingPlan>> trainingPlans = restTemplate.exchange(
+                "http://TRAININGS-SERVICE:8084/training-plans/coach?coachId=" + coachId,
                 HttpMethod.GET,
                 null,
                 new ParameterizedTypeReference<List<TrainingPlan>>() {
                 });
 
-        return trainingRealizations.getBody();
+        return trainingPlans.getBody();
     }
 
     public Coach addNew(@Valid Coach coach) {

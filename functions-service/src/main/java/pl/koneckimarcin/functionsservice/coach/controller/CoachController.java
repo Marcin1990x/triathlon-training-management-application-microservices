@@ -12,7 +12,7 @@ public class CoachController implements CoachOperations {
     @Autowired
     private CoachService coachService;
 
-    public Coach getById(Long id) {
+    public CoachResponseDto getById(Long id) {
         return coachService.findById(id);
     }
 

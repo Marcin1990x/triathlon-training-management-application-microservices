@@ -1,14 +1,13 @@
 package pl.koneckimarcin.trainingsservice.trainingPlan;
 
 import jakarta.persistence.*;
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import pl.koneckimarcin.trainingsservice.trainingPlan.constant.TrainingPlanStatus;
 import pl.koneckimarcin.trainingsservice.trainingPlan.constant.TrainingType;
 import pl.koneckimarcin.trainingsservice.trainingStage.StageEntity;
 
-import java.sql.Date;
+import java.util.Date;
 import java.util.List;
 
 @Entity
