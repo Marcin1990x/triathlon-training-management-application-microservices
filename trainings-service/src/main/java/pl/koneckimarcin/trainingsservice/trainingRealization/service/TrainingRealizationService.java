@@ -6,6 +6,7 @@ import pl.koneckimarcin.trainingsservice.exception.ResourceNotFoundException;
 import pl.koneckimarcin.trainingsservice.trainingRealization.TrainingRealizationEntity;
 import pl.koneckimarcin.trainingsservice.trainingRealization.dto.TrainingRealization;
 import pl.koneckimarcin.trainingsservice.trainingRealization.dto.TrainingRealizationRequest;
+import pl.koneckimarcin.trainingsservice.trainingRealization.external.StravaActivityDto;
 import pl.koneckimarcin.trainingsservice.trainingRealization.repository.TrainingRealizationRepository;
 
 import java.util.ArrayList;
@@ -35,6 +36,18 @@ public class TrainingRealizationService {
             throw new ResourceNotFoundException("TrainingRealization", "id", String.valueOf(id));
         }
     }
+
+    public void synchronizeActivitiesWithStravaForAthleteById(Long athleteId) {
+
+        StravaActivityDto[] activitiesFromStrava = getAllActivitiesFromStrava(athleteId);
+
+    }
+    private StravaActivityDto[] getAllActivitiesFromStrava(Long athleteId) {
+
+        //call strava-service
+        return null;
+    }
+
 
 //    public Integer synchronizeActivitiesForAthlete(Long athleteId) {
 //

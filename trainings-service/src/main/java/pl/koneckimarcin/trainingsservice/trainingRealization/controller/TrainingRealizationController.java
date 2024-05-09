@@ -32,10 +32,11 @@ public class TrainingRealizationController implements TrainingRealizationOperati
         trainingRealizationService.deleteById(id);
     }
 
-//    @Override
-//    public Integer synchronizeActivitiesForAthlete(Long id) {
-//        return trainingRealizationService.synchronizeActivitiesForAthlete(id);
-//    }
+    @Override
+    public void synchronizeActivitiesWithStravaForAthleteById(Long athleteId) {
+
+        trainingRealizationService.synchronizeActivitiesWithStravaForAthleteById(athleteId);
+    }
 
     @Override
     public TrainingRealization updateTrainingRealizationById(String id, TrainingRealizationRequest request) {
