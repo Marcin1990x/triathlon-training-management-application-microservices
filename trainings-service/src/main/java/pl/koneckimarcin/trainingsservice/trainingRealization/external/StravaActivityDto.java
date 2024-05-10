@@ -1,5 +1,12 @@
 package pl.koneckimarcin.trainingsservice.trainingRealization.external;
 
+import pl.koneckimarcin.trainingsservice.trainingPlan.constant.TrainingType;
+import pl.koneckimarcin.trainingsservice.trainingRealization.TrainingRealizationEntity;
+
+import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+
 public class StravaActivityDto {
 
     private Long id;
@@ -100,5 +107,54 @@ public class StravaActivityDto {
 
     public void setMax_heartrate(Long max_heartrate) {
         this.max_heartrate = max_heartrate;
+    }
+
+    public TrainingRealizationEntity mapToTrainingRealizationEntity() {
+
+        TrainingRealizationEntity trainingRealization = new TrainingRealizationEntity();
+
+        trainingRealization.setStravaId(this.getId());
+        trainingRealization.setStravaAthleteId(this.getAthlete().getId());
+        trainingRealization.setName(this.getName());
+        trainingRealization.setDistanceInMeters(this.getDistance());
+        trainingRealization.setTimeInSeconds(this.getMoving_time());
+        trainingRealization.setType(setTypeFromStrava(this.type));
+        trainingRealization.setRealizationDate(setDateFromStrava(this.start_date));
+        trainingRealization.setAverageWatts(this.getAverage_watts());
+        trainingRealization.setMaxWatts(this.getMax_watts());
+        trainingRealization.setAverageHeartrate(this.getAverage_heartrate());
+        trainingRealization.setMaxHeartrate(this.getMax_heartrate());
+
+        return trainingRealization;
+    }
+    private Date setDateFromStrava(String dateToConvert) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+        Date sqlDate = null;
+        try {
+            java.util.Date date = dateFormat.parse(dateToConvert);
+            sqlDate = new Date(date.getTime());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return sqlDate;
+    }
+
+    private TrainingType setTypeFromStrava(String stravaType) {
+
+        switch (stravaType) {
+            case "Ride" -> {
+                return TrainingType.BIKE;
+            }
+            case "Run" -> {
+                return TrainingType.RUN;
+            }
+            case "WeightTraining" -> {
+                return TrainingType.WEIGHT;
+            }
+            case "Swim" -> {
+                return TrainingType.SWIM;
+            }
+        }
+        return TrainingType.UNKNOWN;
     }
 }

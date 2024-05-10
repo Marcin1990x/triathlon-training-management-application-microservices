@@ -2,9 +2,13 @@ package pl.koneckimarcin.stravaservice.controller;
 
 import org.springframework.web.bind.annotation.*;
 import pl.koneckimarcin.stravaservice.StravaDataEntity;
+import pl.koneckimarcin.stravaservice.dto.ActivityClientDto;
 
 @RequestMapping("/strava")
 public interface StravaOperations {
+
+    @GetMapping("/getActivities")
+    public ActivityClientDto[] getActivities(@RequestParam Long userId);
 
     @PostMapping() // temporary method for tests
     public StravaDataEntity addRefreshTokenForUser(@RequestParam Long userId, @RequestParam String refreshToken);

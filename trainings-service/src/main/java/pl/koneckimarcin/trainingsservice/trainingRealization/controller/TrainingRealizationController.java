@@ -33,9 +33,9 @@ public class TrainingRealizationController implements TrainingRealizationOperati
     }
 
     @Override
-    public void synchronizeActivitiesWithStravaForAthleteById(Long athleteId) {
+    public void synchronizeActivitiesWithStravaForAthleteByUserId(Long userId, Long athleteId) {
 
-        trainingRealizationService.synchronizeActivitiesWithStravaForAthleteById(athleteId);
+        trainingRealizationService.synchronizeActivitiesWithStravaForAthleteByUserId(userId, athleteId);
     }
 
     @Override

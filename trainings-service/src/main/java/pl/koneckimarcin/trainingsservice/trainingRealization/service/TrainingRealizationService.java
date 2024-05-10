@@ -2,6 +2,7 @@ package pl.koneckimarcin.trainingsservice.trainingRealization.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 import pl.koneckimarcin.trainingsservice.exception.ResourceNotFoundException;
 import pl.koneckimarcin.trainingsservice.trainingRealization.TrainingRealizationEntity;
 import pl.koneckimarcin.trainingsservice.trainingRealization.dto.TrainingRealization;
@@ -20,6 +21,9 @@ public class TrainingRealizationService {
     @Autowired
     private TrainingRealizationRepository trainingRealizationRepository;
 
+    @Autowired
+    private RestTemplate restTemplate;
+
     public boolean checkIfIsNotNull(String id) {
         Optional<TrainingRealizationEntity> trainingRealizationStravaEntity = trainingRealizationRepository.findById(id);
         if (trainingRealizationStravaEntity.isPresent()) {
@@ -37,15 +41,55 @@ public class TrainingRealizationService {
         }
     }
 
-    public void synchronizeActivitiesWithStravaForAthleteById(Long athleteId) {
+    public void synchronizeActivitiesWithStravaForAthleteByUserId(Long userId, Long athleteId) {
 
-        StravaActivityDto[] activitiesFromStrava = getAllActivitiesFromStrava(athleteId);
+        StravaActivityDto[] activitiesFromStrava = getAllActivitiesFromStrava(userId);
 
+        List<Long> athleteRealizationsIds = getAthleteRealizationIds(athleteId);
+
+        List<StravaActivityDto> newActivities =
+                getNonDuplicatedActivities(athleteRealizationsIds, activitiesFromStrava);
+
+        mapAndSaveTrainingRealizationsForAthlete(newActivities, athleteId);
     }
-    private StravaActivityDto[] getAllActivitiesFromStrava(Long athleteId) {
 
-        //call strava-service
-        return null;
+    private StravaActivityDto[] getAllActivitiesFromStrava(Long userId) {
+
+        String url = "http://STRAVA-SERVICE:8082/strava/getActivities?userId=" + userId;
+
+        StravaActivityDto[] userActivities = restTemplate.getForObject(url, StravaActivityDto[].class);
+
+        return userActivities;
+    }
+
+    private List<Long> getAthleteRealizationIds(Long athleteId) {
+
+        return trainingRealizationRepository.findByAthleteId(athleteId)
+                .stream().map(TrainingRealizationEntity::getStravaId).toList();
+    }
+
+    private List<StravaActivityDto> getNonDuplicatedActivities(List<Long> existingIds,
+                                                               StravaActivityDto[] activities) {
+        List<StravaActivityDto> nonDuplicatedActivities = new ArrayList<>();
+
+        for (StravaActivityDto activity : activities) {
+            if (!existingIds.contains(activity.getId())) {
+                nonDuplicatedActivities.add(activity);
+            }
+        }
+        return nonDuplicatedActivities;
+    }
+
+    private void mapAndSaveTrainingRealizationsForAthlete(List<StravaActivityDto> activities, Long athleteId) {
+
+        List<TrainingRealizationEntity> toSaveInDb = new ArrayList<>();
+
+        for (StravaActivityDto activity : activities) {
+            TrainingRealizationEntity realization = activity.mapToTrainingRealizationEntity();
+            realization.setAthleteId(athleteId);
+            toSaveInDb.add(realization);
+        }
+        trainingRealizationRepository.saveAll(toSaveInDb);
     }
 
 

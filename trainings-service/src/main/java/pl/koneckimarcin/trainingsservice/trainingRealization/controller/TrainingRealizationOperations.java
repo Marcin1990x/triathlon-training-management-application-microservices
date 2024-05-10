@@ -19,8 +19,9 @@ public interface TrainingRealizationOperations {
     public void deleteById(@PathVariable String id);
 
 //    @PreAuthorize("hasAuthority('ATHLETE')")
-    @PostMapping("/training-realizations")
-    public void synchronizeActivitiesWithStravaForAthleteById(@RequestParam Long athleteId);
+    @PostMapping("/training-realizations/strava")
+    public void synchronizeActivitiesWithStravaForAthleteByUserId(
+            @RequestParam Long userId, @RequestParam Long athleteId);
 
     //    @PreAuthorize("hasAuthority('ATHLETE') AND @authenticatedUserService.hasTrainingRealizationInItsResources(#id)")
     @PutMapping("/training-realizations/{id}")
