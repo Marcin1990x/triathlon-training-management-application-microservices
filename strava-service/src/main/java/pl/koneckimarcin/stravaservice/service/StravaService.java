@@ -11,11 +11,14 @@ import org.springframework.web.client.RestTemplate;
 import pl.koneckimarcin.stravaservice.StravaDataEntity;
 import pl.koneckimarcin.stravaservice.StravaPropertyReader;
 import pl.koneckimarcin.stravaservice.dto.AccessTokenDto;
+import pl.koneckimarcin.stravaservice.dto.ActivityClientDto;
 import pl.koneckimarcin.stravaservice.dto.RefreshTokenResponseDto;
 import pl.koneckimarcin.stravaservice.exception.JsonMapperException;
 import pl.koneckimarcin.stravaservice.exception.RefreshTokenException;
 import pl.koneckimarcin.stravaservice.repository.StravaDataRepository;
 
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.Optional;
 
 @Service
@@ -25,6 +28,8 @@ public class StravaService {
     private StravaDataRepository stravaDataRepository;
 
     private RestTemplate rest = new RestTemplate();
+
+    private final String STRAVA_URL = "https://www.strava.com/api/v3/";
     private final String STRAVA_URL_REFRESH = "https://www.strava.com/oauth/token";
 
     public void refreshAccessToken(Long userId) {
@@ -108,5 +113,22 @@ public class StravaService {
     public StravaDataEntity getStravaUserDataById(Long userId) {
 
         return stravaDataRepository.findByUserId(userId).get();
+    }
+
+    public ActivityClientDto[] getActivities(Long userId) {
+
+        ZonedDateTime after = ZonedDateTime.of(
+                2024, 4, 1, 0, 0, 0, 0,
+                ZoneId.of("Europe/Warsaw")
+        );
+        String userAccessToken = getAccessTokenForUser(userId);
+
+        return rest.getForObject(
+                STRAVA_URL + "athlete/activities?access_token={accessToken}&after={after}&per_page=100",
+                ActivityClientDto[].class, userAccessToken, after.toEpochSecond()
+        );
+    }
+    private String getAccessTokenForUser(Long userId) {
+        return getStravaUserDataById(userId).getAccessToken();
     }
 }
