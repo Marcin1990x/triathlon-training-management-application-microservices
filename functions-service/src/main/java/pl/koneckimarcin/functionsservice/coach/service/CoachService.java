@@ -14,8 +14,11 @@ import pl.koneckimarcin.functionsservice.coach.CoachEntity;
 import pl.koneckimarcin.functionsservice.coach.dto.Coach;
 import pl.koneckimarcin.functionsservice.coach.dto.CoachResponseDto;
 import pl.koneckimarcin.functionsservice.coach.repository.CoachRepository;
+import pl.koneckimarcin.functionsservice.dto.AddAthleteRequestMessage;
 import pl.koneckimarcin.functionsservice.exceptions.ResourceNotFoundException;
 import pl.koneckimarcin.functionsservice.external.TrainingPlan;
+import pl.koneckimarcin.functionsservice.messaging.AddAthleteRequestMessageConsumer;
+import pl.koneckimarcin.functionsservice.messaging.AddAthleteRequestMessageProducer;
 
 import java.util.List;
 import java.util.Optional;
@@ -35,6 +38,12 @@ public class CoachService {
 
     @Autowired
     private RestTemplate restTemplate;
+
+    @Autowired
+    private AddAthleteRequestMessageProducer producer;
+
+    @Autowired
+    private AddAthleteRequestMessageConsumer consumer;
 
     public boolean checkIfIsNotNull(Long id) {
         Optional<CoachEntity> coachEntity = coachRepository.findById(id);
@@ -85,23 +94,37 @@ public class CoachService {
         }
     }
 
-    public Coach addAthleteToCoach(Long coachId, Long athleteId) {
+    public Coach addAthleteToCoachRequest(Long coachId, Long athleteId) {
 
-        if (!checkIfIsNotNull(coachId)) {
-            throw new ResourceNotFoundException("Coach", "id", String.valueOf(coachId));
-        }
-        if (!athleteService.checkIfIsNotNull(athleteId)) {
-            throw new ResourceNotFoundException("Athlete", "id", String.valueOf(athleteId));
-        }
+        //get CoachEntity and create request
+        AddAthleteRequestMessage message =
+                new AddAthleteRequestMessage("Coach", "Coaching");
 
-        AthleteEntity athlete = athleteRepository.findById(athleteId).get();
-        CoachEntity coachToUpdate = coachRepository.findById(coachId).get();
+        producer.sendRequestMessage(message, athleteId);
 
-        setCoachIdForAthlete(athlete, coachId);
+        return null;
 
-        coachToUpdate.getAthletes().add(athlete);
+//        if (!checkIfIsNotNull(coachId)) {
+//            throw new ResourceNotFoundException("Coach", "id", String.valueOf(coachId));
+//        }
+//        if (!athleteService.checkIfIsNotNull(athleteId)) {
+//            throw new ResourceNotFoundException("Athlete", "id", String.valueOf(athleteId));
+//        }
+//
+//        AthleteEntity athlete = athleteRepository.findById(athleteId).get();
+//        CoachEntity coachToUpdate = coachRepository.findById(coachId).get();
+//
+//        setCoachIdForAthlete(athlete, coachId);
+//
+//        coachToUpdate.getAthletes().add(athlete);
+//
+//        return Coach.fromCoachEntity(coachRepository.save(coachToUpdate));
+    }
 
-        return Coach.fromCoachEntity(coachRepository.save(coachToUpdate));
+    public void getCoachingReply(Long id, Long athleteId) {
+
+        //change method name
+        consumer.receiveReplyMessage(athleteId);
     }
 
     public Coach removeAthleteFromCoach(Long coachId, Long athleteId) {
@@ -141,4 +164,5 @@ public class CoachService {
         coach.setAssignedToUser(true);
         coachRepository.save(coach);
     }
+
 }

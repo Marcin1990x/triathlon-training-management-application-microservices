@@ -48,4 +48,15 @@ public class AthleteController implements AthleteOperations {
 
         athleteService.setAssignedToUser(athleteId);
     }
+
+    @Override
+    public void getCoachingRequest(Long id) {
+        athleteService.getCoachingRequest(id);
+    }
+
+    @Override
+    public void sendCoachingReply(Long id, boolean confirmation) {
+
+        athleteService.sendCoachingReply(id, confirmation);
+    }
 }

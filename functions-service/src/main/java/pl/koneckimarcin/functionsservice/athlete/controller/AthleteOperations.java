@@ -31,4 +31,10 @@ public interface AthleteOperations {
 
     @PutMapping("/athletes/{athleteId}/setAssignedToUser")
     public void setAssignedToUser(@PathVariable Long athleteId);
+
+    @GetMapping("/athletes/{id}/getCoachingRequest")
+    public void getCoachingRequest(@PathVariable Long id);
+
+    @GetMapping("/athletes/{id}/sendCoachingReply")
+    public void sendCoachingReply(@PathVariable Long id, @RequestParam boolean confirmation);
 }

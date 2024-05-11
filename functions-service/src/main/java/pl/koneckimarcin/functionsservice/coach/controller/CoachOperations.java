@@ -20,8 +20,14 @@ public interface CoachOperations {
     public void deleteById(@PathVariable Long id);
 
     //@PreAuthorize("hasAuthority('COACH')")
-    @PutMapping("coaches/{coachId}/athletes/{athleteId}/add")
-    public Coach addAthleteToCoach(@PathVariable Long coachId, @PathVariable Long athleteId);
+//    @PutMapping("coaches/{coachId}/athletes/{athleteId}/add")
+//    public Coach addAthleteToCoach(@PathVariable Long coachId, @PathVariable Long athleteId);
+
+    @GetMapping("/coaches/{id}/sendCoachingRequest")
+    public Coach addAthleteToCoachRequest(@PathVariable Long id, @RequestParam Long athleteId);
+
+    @PutMapping("/coaches/{id}/getCoachingReply")
+    public void getCoachingReply(@PathVariable Long id, @RequestParam Long athleteId);
 
     //@PreAuthorize("hasAuthority('COACH') AND @authenticatedUserService.hasValidId(#coachId)")
     @PutMapping("coaches/{coachId}/athletes/{athleteId}/remove")

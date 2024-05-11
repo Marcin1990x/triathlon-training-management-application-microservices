@@ -15,6 +15,8 @@ import pl.koneckimarcin.functionsservice.coach.repository.CoachRepository;
 import pl.koneckimarcin.functionsservice.exceptions.ResourceNotFoundException;
 import pl.koneckimarcin.functionsservice.external.TrainingPlan;
 import pl.koneckimarcin.functionsservice.external.TrainingRealization;
+import pl.koneckimarcin.functionsservice.messaging.AddAthleteRequestMessageConsumer;
+import pl.koneckimarcin.functionsservice.messaging.AddAthleteRequestMessageProducer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +35,12 @@ public class AthleteService {
 
     @Autowired
     private RestTemplate restTemplate;
+
+    @Autowired
+    private AddAthleteRequestMessageConsumer consumer;
+
+    @Autowired
+    private AddAthleteRequestMessageProducer producer;
 
     public boolean checkIfIsNotNull(long id) {
         Optional<AthleteEntity> athleteEntity = athleteRepository.findById(id);
@@ -129,5 +137,15 @@ public class AthleteService {
         AthleteEntity athlete = athleteRepository.findById(athleteId).get();
         athlete.setAssignedToUser(true);
         athleteRepository.save(athlete);
+    }
+
+    public void getCoachingRequest(Long id) {
+
+        consumer.receiveRequestMessage(id);
+    }
+
+    public void sendCoachingReply(Long id, boolean confirmation) {
+
+        producer.sendReplyMessage(confirmation, id);
     }
 }

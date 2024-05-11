@@ -1,6 +1,5 @@
-package pl.koneckimarcin.usersservice.messaging;
+package pl.koneckimarcin.functionsservice.messaging;
 
-import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
@@ -10,15 +9,11 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class RabbitMQConfiguration {
-
-    @Bean
-    public Queue addAthleteToCoachQueue() {
-        return new Queue("addAthleteToCoachQueue");
-    }
     @Bean
     public MessageConverter jsonMessageConverter() {
         return new Jackson2JsonMessageConverter();
     }
+
     @Bean
     public RabbitTemplate rabbitTemplate(final ConnectionFactory connectionFactory) {
         RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory);
