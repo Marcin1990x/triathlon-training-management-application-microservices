@@ -152,12 +152,13 @@ public class AthleteService {
         String acceptResponse = "Request from the coach has been accepted.";
         String declineResponse = "Request from the coach has been declined.";
 
-//        if (!checkIfIsNotNull(id)) {
-//            throw new ResourceNotFoundException("Athlete", "id", String.valueOf(id));
-//        }
+        if (!checkIfIsNotNull(id)) {
+            throw new ResourceNotFoundException("Athlete", "id", String.valueOf(id));
+        }
+
         producer.sendReplyMessage(confirmation, id);
 
-        if(confirmation) {
+        if (confirmation) {
             return acceptResponse;
         } else {
             return declineResponse;
