@@ -3,6 +3,7 @@ package pl.koneckimarcin.functionsservice.athlete.controller;
 import org.springframework.web.bind.annotation.*;
 import pl.koneckimarcin.functionsservice.athlete.dto.Athlete;
 import pl.koneckimarcin.functionsservice.athlete.dto.AthleteResponseDto;
+import pl.koneckimarcin.functionsservice.dto.AddAthleteRequestMessage;
 
 import java.util.List;
 import java.util.Set;
@@ -33,8 +34,8 @@ public interface AthleteOperations {
     public void setAssignedToUser(@PathVariable Long athleteId);
 
     @GetMapping("/athletes/{id}/getCoachingRequest")
-    public void getCoachingRequest(@PathVariable Long id);
+    public AddAthleteRequestMessage getCoachingRequest(@PathVariable Long id);
 
     @GetMapping("/athletes/{id}/sendCoachingReply")
-    public void sendCoachingReply(@PathVariable Long id, @RequestParam boolean confirmation);
+    public String sendCoachingReply(@PathVariable Long id, @RequestParam boolean confirmation);
 }

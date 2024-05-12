@@ -94,37 +94,46 @@ public class CoachService {
         }
     }
 
-    public Coach addAthleteToCoachRequest(Long coachId, Long athleteId) {
+    public String addAthleteToCoachRequest(Long coachId, Long athleteId) {
 
-        //get CoachEntity and create request
-        AddAthleteRequestMessage message =
-                new AddAthleteRequestMessage("Coach", "Coaching");
+        if (!checkIfIsNotNull(coachId)) {
+            throw new ResourceNotFoundException("Coach", "id", String.valueOf(coachId));
+        }
+        //todo: check if athleteId is already assigned to coachId
 
-        producer.sendRequestMessage(message, athleteId);
+        CoachEntity coach = coachRepository.findById(coachId).get();
 
-        return null;
+        String response = "Request to add athlete has been successfully submitted.";
 
-//        if (!checkIfIsNotNull(coachId)) {
-//            throw new ResourceNotFoundException("Coach", "id", String.valueOf(coachId));
-//        }
-//        if (!athleteService.checkIfIsNotNull(athleteId)) {
-//            throw new ResourceNotFoundException("Athlete", "id", String.valueOf(athleteId));
-//        }
-//
-//        AthleteEntity athlete = athleteRepository.findById(athleteId).get();
-//        CoachEntity coachToUpdate = coachRepository.findById(coachId).get();
-//
-//        setCoachIdForAthlete(athlete, coachId);
-//
-//        coachToUpdate.getAthletes().add(athlete);
-//
-//        return Coach.fromCoachEntity(coachRepository.save(coachToUpdate));
+        producer.sendRequestMessage(
+                new AddAthleteRequestMessage(coach.getFirstName(), coach.getLastName()), athleteId);
+
+        return response;
     }
 
-    public void getCoachingReply(Long id, Long athleteId) {
+    public Coach getCoachingReplyAndAssignAthlete(Long id, Long athleteId) {
 
-        //change method name
-        consumer.receiveReplyMessage(athleteId);
+        if (!checkIfIsNotNull(id)) {
+            throw new ResourceNotFoundException("Coach", "id", String.valueOf(id));
+        }
+        boolean confirmation = consumer.receiveReplyMessage(athleteId);
+
+        return assignAthleteToCoach(confirmation, id, athleteId);
+    }
+
+    private Coach assignAthleteToCoach(boolean confirmation, Long coachId, Long athleteId) {
+
+        CoachEntity coach = coachRepository.findById(coachId).get();
+
+        if (confirmation) {
+            AthleteEntity athlete = athleteRepository.findById(athleteId).get();
+
+            setCoachIdForAthlete(athlete, coachId);
+            coach.getAthletes().add(athlete);
+            return Coach.fromCoachEntity(coachRepository.save(coach));
+        } else {
+            return Coach.fromCoachEntity(coach);
+        }
     }
 
     public Coach removeAthleteFromCoach(Long coachId, Long athleteId) {
@@ -164,5 +173,4 @@ public class CoachService {
         coach.setAssignedToUser(true);
         coachRepository.save(coach);
     }
-
 }

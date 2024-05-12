@@ -26,15 +26,15 @@ public class CoachController implements CoachOperations {
         coachService.deleteById(id);
     }
 
-    public Coach addAthleteToCoachRequest(Long id, Long athleteId) {
+    public String addAthleteToCoachRequest(Long id, Long athleteId) {
 
         return coachService.addAthleteToCoachRequest(id, athleteId);
     }
 
     @Override
-    public void getCoachingReply(Long id, Long athleteId) {
+    public Coach getCoachingReplyAndAssignAthlete(Long id, Long athleteId) {
 
-        coachService.getCoachingReply(id, athleteId);
+        return coachService.getCoachingReplyAndAssignAthlete(id, athleteId);
     }
 
     @Override

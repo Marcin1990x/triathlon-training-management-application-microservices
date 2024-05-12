@@ -12,6 +12,7 @@ import pl.koneckimarcin.functionsservice.athlete.dto.Athlete;
 import pl.koneckimarcin.functionsservice.athlete.dto.AthleteResponseDto;
 import pl.koneckimarcin.functionsservice.athlete.repository.AthleteRepository;
 import pl.koneckimarcin.functionsservice.coach.repository.CoachRepository;
+import pl.koneckimarcin.functionsservice.dto.AddAthleteRequestMessage;
 import pl.koneckimarcin.functionsservice.exceptions.ResourceNotFoundException;
 import pl.koneckimarcin.functionsservice.external.TrainingPlan;
 import pl.koneckimarcin.functionsservice.external.TrainingRealization;
@@ -139,13 +140,27 @@ public class AthleteService {
         athleteRepository.save(athlete);
     }
 
-    public void getCoachingRequest(Long id) {
+    public AddAthleteRequestMessage getCoachingRequest(Long id) {
 
-        consumer.receiveRequestMessage(id);
+        AddAthleteRequestMessage request = consumer.receiveRequestMessage(id);
+
+        return request;
     }
 
-    public void sendCoachingReply(Long id, boolean confirmation) {
+    public String sendCoachingReply(Long id, boolean confirmation) {
 
+        String acceptResponse = "Request from the coach has been accepted.";
+        String declineResponse = "Request from the coach has been declined.";
+
+//        if (!checkIfIsNotNull(id)) {
+//            throw new ResourceNotFoundException("Athlete", "id", String.valueOf(id));
+//        }
         producer.sendReplyMessage(confirmation, id);
+
+        if(confirmation) {
+            return acceptResponse;
+        } else {
+            return declineResponse;
+        }
     }
 }

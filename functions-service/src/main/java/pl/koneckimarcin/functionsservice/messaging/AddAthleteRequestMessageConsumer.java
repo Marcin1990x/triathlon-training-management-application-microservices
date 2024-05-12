@@ -3,7 +3,9 @@ package pl.koneckimarcin.functionsservice.messaging;
 import org.springframework.amqp.core.AmqpAdmin;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Component;
+import pl.koneckimarcin.functionsservice.dto.AddAthleteRequestMessage;
 
 @Component
 public class AddAthleteRequestMessageConsumer {
@@ -18,24 +20,25 @@ public class AddAthleteRequestMessageConsumer {
     private final String REPLY_QUEUE_NAME = "addAthleteReply=";
 
 
-    public void receiveRequestMessage(Long athleteId) {
+    public AddAthleteRequestMessage receiveRequestMessage(Long athleteId) {
 
         String routingKey = REQUEST_QUEUE_NAME + athleteId;
 
-        Object message = rabbitTemplate.receiveAndConvert(routingKey);
-        System.out.println(message.toString());
+        AddAthleteRequestMessage message = rabbitTemplate.receiveAndConvert(routingKey,
+                ParameterizedTypeReference.forType(AddAthleteRequestMessage.class));
+
+        return message;
     }
 
-    public void receiveReplyMessage(Long athleteId) {
+    public boolean receiveReplyMessage(Long athleteId) {
 
         String routingKey = REPLY_QUEUE_NAME + athleteId;
 
-        Object message = rabbitTemplate.receiveAndConvert(routingKey);
+        Boolean reply = rabbitTemplate.receiveAndConvert(routingKey, ParameterizedTypeReference.forType(Boolean.class));
 
         amqpAdmin.deleteQueue(REQUEST_QUEUE_NAME + athleteId);
         amqpAdmin.deleteQueue(routingKey);
 
-        // if true
-        System.out.println("Athlete added successfully!" + message);
+        return reply;
     }
 }

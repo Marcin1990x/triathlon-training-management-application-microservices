@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RestController;
 import pl.koneckimarcin.functionsservice.athlete.dto.Athlete;
 import pl.koneckimarcin.functionsservice.athlete.dto.AthleteResponseDto;
 import pl.koneckimarcin.functionsservice.athlete.service.AthleteService;
+import pl.koneckimarcin.functionsservice.dto.AddAthleteRequestMessage;
 
 import java.util.List;
 import java.util.Set;
@@ -50,13 +51,13 @@ public class AthleteController implements AthleteOperations {
     }
 
     @Override
-    public void getCoachingRequest(Long id) {
-        athleteService.getCoachingRequest(id);
+    public AddAthleteRequestMessage getCoachingRequest(Long id) {
+        return athleteService.getCoachingRequest(id);
     }
 
     @Override
-    public void sendCoachingReply(Long id, boolean confirmation) {
+    public String sendCoachingReply(Long id, boolean confirmation) {
 
-        athleteService.sendCoachingReply(id, confirmation);
+        return athleteService.sendCoachingReply(id, confirmation);
     }
 }
