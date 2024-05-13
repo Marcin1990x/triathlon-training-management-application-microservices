@@ -2,14 +2,11 @@ package pl.koneckimarcin.functionsservice.coach.service;
 
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 import pl.koneckimarcin.functionsservice.athlete.AthleteEntity;
 import pl.koneckimarcin.functionsservice.athlete.repository.AthleteRepository;
 import pl.koneckimarcin.functionsservice.athlete.service.AthleteService;
+import pl.koneckimarcin.functionsservice.clients.TrainingsClient;
 import pl.koneckimarcin.functionsservice.coach.CoachEntity;
 import pl.koneckimarcin.functionsservice.coach.dto.Coach;
 import pl.koneckimarcin.functionsservice.coach.dto.CoachResponseDto;
@@ -37,7 +34,7 @@ public class CoachService {
     private AthleteService athleteService;
 
     @Autowired
-    private RestTemplate restTemplate;
+    private TrainingsClient trainingsClient;
 
     @Autowired
     private AddAthleteRequestMessageProducer producer;
@@ -69,14 +66,7 @@ public class CoachService {
 
     private List<TrainingPlan> getTrainingPlansForCoachId(Long coachId) {
 
-        ResponseEntity<List<TrainingPlan>> trainingPlans = restTemplate.exchange(
-                "http://TRAININGS-SERVICE:8084/training-plans/coach?coachId=" + coachId,
-                HttpMethod.GET,
-                null,
-                new ParameterizedTypeReference<List<TrainingPlan>>() {
-                });
-
-        return trainingPlans.getBody();
+        return trainingsClient.getTrainingPlansByCoachId(coachId);
     }
 
     public Coach addNew(@Valid Coach coach) {

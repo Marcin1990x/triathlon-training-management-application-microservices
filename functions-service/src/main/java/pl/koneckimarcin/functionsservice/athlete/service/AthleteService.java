@@ -2,15 +2,12 @@ package pl.koneckimarcin.functionsservice.athlete.service;
 
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 import pl.koneckimarcin.functionsservice.athlete.AthleteEntity;
 import pl.koneckimarcin.functionsservice.athlete.dto.Athlete;
 import pl.koneckimarcin.functionsservice.athlete.dto.AthleteResponseDto;
 import pl.koneckimarcin.functionsservice.athlete.repository.AthleteRepository;
+import pl.koneckimarcin.functionsservice.clients.TrainingsClient;
 import pl.koneckimarcin.functionsservice.coach.repository.CoachRepository;
 import pl.koneckimarcin.functionsservice.dto.AddAthleteRequestMessage;
 import pl.koneckimarcin.functionsservice.exceptions.ResourceNotFoundException;
@@ -35,7 +32,7 @@ public class AthleteService {
     private CoachRepository coachRepository;
 
     @Autowired
-    private RestTemplate restTemplate;
+    private TrainingsClient trainingsClient;
 
     @Autowired
     private AddAthleteRequestMessageConsumer consumer;
@@ -67,26 +64,12 @@ public class AthleteService {
 
     private List<TrainingRealization> getTrainingRealizationsForAthleteById(Long athleteId) {
 
-        ResponseEntity<List<TrainingRealization>> trainingRealizations = restTemplate.exchange(
-                "http://TRAININGS-SERVICE:8084/training-realizations?athleteId=" + athleteId,
-                HttpMethod.GET,
-                null,
-                new ParameterizedTypeReference<List<TrainingRealization>>() {
-                });
-
-        return trainingRealizations.getBody();
+        return trainingsClient.getTrainingRealizations(athleteId);
     }
 
     private List<TrainingPlan> getTrainingPlansForAthleteById(Long athleteId) {
 
-        ResponseEntity<List<TrainingPlan>> trainingPlans = restTemplate.exchange(
-                "http://TRAININGS-SERVICE:8084/training-plans/athlete?athleteId=" + athleteId,
-                HttpMethod.GET,
-                null,
-                new ParameterizedTypeReference<>() {
-                });
-
-        return trainingPlans.getBody();
+        return trainingsClient.getTrainingPlansByAthleteId(athleteId);
     }
 
     public Set<Athlete> getAthletesByCoachId(Long id) {
