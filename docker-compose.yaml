@@ -42,6 +42,13 @@ services:
         - "15672:15672"
       networks:
         - postgres
+    zipkin:
+      container_name: zipkin
+      image: openzipkin/zipkin
+      ports:
+        - "9411:9411"
+      networks:
+        - postgres
 networks:
   postgres:
     driver: bridge

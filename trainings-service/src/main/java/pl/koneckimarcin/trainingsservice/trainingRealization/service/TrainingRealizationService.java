@@ -3,6 +3,7 @@ package pl.koneckimarcin.trainingsservice.trainingRealization.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import pl.koneckimarcin.trainingsservice.clients.StravaClient;
 import pl.koneckimarcin.trainingsservice.exception.ResourceNotFoundException;
 import pl.koneckimarcin.trainingsservice.trainingRealization.TrainingRealizationEntity;
 import pl.koneckimarcin.trainingsservice.trainingRealization.dto.TrainingRealization;
@@ -21,8 +22,11 @@ public class TrainingRealizationService {
     @Autowired
     private TrainingRealizationRepository trainingRealizationRepository;
 
+//    @Autowired
+//    private RestTemplate restTemplate;
+
     @Autowired
-    private RestTemplate restTemplate;
+    private StravaClient stravaClient;
 
     public boolean checkIfIsNotNull(String id) {
         Optional<TrainingRealizationEntity> trainingRealizationStravaEntity = trainingRealizationRepository.findById(id);
@@ -55,11 +59,13 @@ public class TrainingRealizationService {
 
     private StravaActivityDto[] getAllActivitiesFromStrava(Long userId) {
 
-        String url = "http://STRAVA-SERVICE:8082/strava/getActivities?userId=" + userId;
-
-        StravaActivityDto[] userActivities = restTemplate.getForObject(url, StravaActivityDto[].class);
-
-        return userActivities;
+//        String url = "http://STRAVA-SERVICE:8082/strava/getActivities?userId=" + userId;
+//
+//        StravaActivityDto[] userActivities = restTemplate.getForObject(url, StravaActivityDto[].class);
+//
+//        return userActivities;
+//
+        return stravaClient.getActivities(userId);
     }
 
     private List<Long> getAthleteRealizationIds(Long athleteId) {

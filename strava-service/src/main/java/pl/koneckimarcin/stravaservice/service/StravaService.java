@@ -27,7 +27,8 @@ public class StravaService {
     @Autowired
     private StravaDataRepository stravaDataRepository;
 
-    private RestTemplate rest = new RestTemplate();
+    @Autowired
+    private RestTemplate rest;
 
     private final String STRAVA_URL = "https://www.strava.com/api/v3/";
     private final String STRAVA_URL_REFRESH = "https://www.strava.com/oauth/token";

@@ -1,4 +1,4 @@
-package pl.koneckimarcin.functionsservice;
+package pl.koneckimarcin.stravaservice;
 
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
@@ -13,6 +13,7 @@ public class AppConfig {
     public RestTemplate restTemplate() {
 
         RestTemplate restTemplate = new RestTemplate();
+
         return restTemplate;
     }
 }
