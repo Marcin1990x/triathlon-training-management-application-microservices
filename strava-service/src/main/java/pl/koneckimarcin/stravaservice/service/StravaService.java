@@ -27,9 +27,6 @@ public class StravaService {
     @Autowired
     private StravaDataRepository stravaDataRepository;
 
-    @Autowired
-    private RestTemplate rest;
-
     private final String STRAVA_URL = "https://www.strava.com/api/v3/";
     private final String STRAVA_URL_REFRESH = "https://www.strava.com/oauth/token";
 
@@ -49,7 +46,7 @@ public class StravaService {
         HttpEntity<MultiValueMap<String, String>> requestBody =
                 createRequestBody(userStravaData.getRefreshToken());
 
-        ResponseEntity<String> response = rest.exchange(
+        ResponseEntity<String> response = createRest().exchange(
                 STRAVA_URL_REFRESH,
                 HttpMethod.POST,
                 requestBody,
@@ -59,6 +56,10 @@ public class StravaService {
             throw new RefreshTokenException(response.getStatusCode(), "Test");
         }
         return response;
+    }
+
+    private RestTemplate createRest() {
+        return new RestTemplate();
     }
 
     private HttpEntity<MultiValueMap<String, String>> createRequestBody(String refreshToken) {
@@ -124,7 +125,9 @@ public class StravaService {
         );
         String userAccessToken = getAccessTokenForUser(userId);
 
-        return rest.getForObject(
+//        RestTemplate rest = new RestTemplate();
+
+        return createRest().getForObject(
                 STRAVA_URL + "athlete/activities?access_token={accessToken}&after={after}&per_page=100",
                 ActivityClientDto[].class, userAccessToken, after.toEpochSecond()
         );

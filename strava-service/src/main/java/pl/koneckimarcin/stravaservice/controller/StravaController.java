@@ -12,24 +12,20 @@ public class StravaController implements StravaOperations {
     @Autowired
     private StravaService stravaService;
 
-    @Override
     public ActivityClientDto[] getActivities(Long userId) {
         return stravaService.getActivities(userId);
     }
 
-    @Override
     public StravaDataEntity addRefreshTokenForUser(Long userId, String refreshToken) {
 
         return stravaService.addRefreshTokenForUser(userId, refreshToken);
     }
 
-    @Override
     public StravaDataEntity getStravaUserDataById(Long userId) {
 
         return stravaService.getStravaUserDataById(userId);
     }
 
-    @Override
     public void refreshAccessToken(Long userId) {
 
         stravaService.refreshAccessToken(userId);
