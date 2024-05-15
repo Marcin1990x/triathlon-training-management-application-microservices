@@ -9,18 +9,18 @@ import java.util.List;
 
 public interface TrainingPlanOperations {
 
-    @GetMapping("training-plans/coach")
+    @GetMapping("/training-plans/coach")
     public List<TrainingPlan> findAllByCoachId(@RequestParam Long coachId);
 
-    @GetMapping("training-plans/athlete")
+    @GetMapping("/training-plans/athlete")
     public List<TrainingPlan> findAllByAthleteId(@RequestParam Long athleteId);
 
     //    @PreAuthorize("hasAuthority('COACH') AND @authenticatedUserService.hasTrainingPlanInItsResources(#id)")
-    @GetMapping("training-plans/{id}")
+    @GetMapping("/training-plans/{id}")
     public TrainingPlan getTrainingPlanById(@PathVariable Long id);
 
     //    @PreAuthorize("hasAuthority('COACH') AND @authenticatedUserService.hasTrainingPlanInItsResources(#id)")
-    @DeleteMapping("training-plans/{id}")
+    @DeleteMapping("/training-plans/{id}")
     public void deleteById(@PathVariable Long id);
 
     //    @PreAuthorize("hasAuthority('COACH') AND @authenticatedUserService.hasValidCoachId(#id)")

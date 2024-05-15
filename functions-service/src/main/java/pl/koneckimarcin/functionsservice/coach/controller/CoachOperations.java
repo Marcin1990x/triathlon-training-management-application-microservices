@@ -12,11 +12,11 @@ public interface CoachOperations {
     public CoachResponseDto getById(@PathVariable Long id);
 
     //@PreAuthorize("hasAnyAuthority('ADMIN', 'NEW')")
-    @PostMapping("coaches")
+    @PostMapping("/coaches")
     public Coach addNew(@RequestBody Coach coach);
 
     //@PreAuthorize("hasAuthority('ADMIN')")
-    @DeleteMapping("coaches/{id}")
+    @DeleteMapping("/coaches/{id}")
     public void deleteById(@PathVariable Long id);
 
     //@PreAuthorize("hasAuthority('COACH')")
@@ -30,9 +30,9 @@ public interface CoachOperations {
     public Coach getCoachingReplyAndAssignAthlete(@PathVariable Long id, @RequestParam Long athleteId);
 
     //@PreAuthorize("hasAuthority('COACH') AND @authenticatedUserService.hasValidId(#coachId)")
-    @PutMapping("coaches/{coachId}/athletes/{athleteId}/remove")
+    @PutMapping("/coaches/{coachId}/athletes/{athleteId}/remove")
     public Coach removeAthleteFromCoach(@PathVariable Long coachId, @PathVariable Long athleteId);
 
-    @PutMapping("coaches/{coachId}/setAssignedToUser")
+    @PutMapping("/coaches/{coachId}/setAssignedToUser")
     public void setAssignedToUser(@PathVariable Long coachId);
 }
