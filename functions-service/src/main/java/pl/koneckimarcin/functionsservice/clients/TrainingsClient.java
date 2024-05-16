@@ -9,7 +9,8 @@ import pl.koneckimarcin.functionsservice.external.TrainingRealization;
 
 import java.util.List;
 
-@FeignClient(name = "TRAININGS-SERVICE")
+@FeignClient(name = "TRAININGS-SERVICE",
+    url = "${trainings-service.url}")
 public interface TrainingsClient {
 
     @GetMapping("/training-realizations")

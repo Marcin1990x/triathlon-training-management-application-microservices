@@ -7,7 +7,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import pl.koneckimarcin.usersservice.user.external.Athlete;
 import pl.koneckimarcin.usersservice.user.external.Coach;
 
-@FeignClient(name = "FUNCTIONS-SERVICE")
+@FeignClient(name = "FUNCTIONS-SERVICE",
+    url = "${functions-service.url}")
 public interface FunctionsClient {
 
     @GetMapping("/coaches/{id}")
