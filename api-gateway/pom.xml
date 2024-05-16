@@ -11,7 +11,7 @@
 	<groupId>pl.koneckimarcin</groupId>
 	<artifactId>api-gateway</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>gateway</name>
+	<name>api-gateway</name>
 	<description>Api gateway for Triathlon Training Management application</description>
 	<properties>
 		<java.version>17</java.version>
