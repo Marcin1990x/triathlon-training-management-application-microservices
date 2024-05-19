@@ -1,3 +1,4 @@
+version: '3.7'
 services:
     mongodb:
         container_name: mongodb_container
@@ -49,8 +50,102 @@ services:
         - "9411:9411"
       networks:
         - postgres
+    config-server:
+      container_name: config-server
+      image: marcin1990/config-server-container:latest
+      ports:
+        - "8085:8085"
+      depends_on:
+        - service-registry-container
+      networks:
+        - microservices-network
+        - postgres
+      environment:
+        - SPRING_PROFILES_ACTIVE=docker
+    service-registry-container:
+      container_name: service-registry-container
+      image: marcin1990/service-registry-container:latest
+      ports:
+        - "8761:8761"
+      depends_on:
+        - rabbitmq
+        - zipkin
+        - postgres
+        - pgadmin
+        - mongodb
+      networks:
+        - microservices-network
+        - postgres
+    gateway-container:
+      container_name: gateway-container
+      image: marcin1990/gateway-container:latest
+      ports:
+        - "8086:8086"
+      depends_on:
+        - service-registry-container
+      networks:
+        - microservices-network
+        - postgres
+      environment:
+        - SPRING_PROFILES_ACTIVE=docker
+    functions-container:
+      container_name: functions-container
+      image: marcin1990/functions-container:latest
+      ports:
+        - "8081:8081"
+      depends_on:
+        - service-registry-container
+        - config-server
+      networks:
+        - microservices-network
+        - postgres
+      environment:
+        - SPRING_PROFILES_ACTIVE=docker
+    strava-container:
+      container_name: strava-container
+      image: marcin1990/strava-container:latest
+      ports:
+        - "8082:8082"
+      depends_on:
+        - service-registry-container
+        - config-server
+      networks:
+        - microservices-network
+        - postgres
+      environment:
+        - SPRING_PROFILES_ACTIVE=docker
+        - STRAVA_CLIENT_ID=*
+        - STRAVA_CLIENT_SECRET=*
+    trainings-container:
+      container_name: trainings-container
+      image: marcin1990/trainings-container:latest
+      ports:
+        - "8084:8084"
+      depends_on:
+        - service-registry-container
+        - config-server
+      networks:
+        - microservices-network
+        - postgres
+      environment:
+        - SPRING_PROFILES_ACTIVE=docker
+    users-container:
+      container_name: users-container
+      image: marcin1990/users-container:latest
+      ports:
+        - "8080:8080"
+      depends_on:
+        - service-registry-container
+        - config-server
+      networks:
+        - microservices-network
+        - postgres
+      environment:
+        - SPRING_PROFILES_ACTIVE=docker
 networks:
   postgres:
+    driver: bridge
+  microservices-network:
     driver: bridge
 
 volumes:

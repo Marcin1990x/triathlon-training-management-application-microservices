@@ -3,13 +3,13 @@ package pl.koneckimarcin.stravaservice.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import pl.koneckimarcin.stravaservice.StravaDataEntity;
-import pl.koneckimarcin.stravaservice.StravaPropertyReader;
 import pl.koneckimarcin.stravaservice.dto.AccessTokenDto;
 import pl.koneckimarcin.stravaservice.dto.ActivityClientDto;
 import pl.koneckimarcin.stravaservice.dto.RefreshTokenResponseDto;
@@ -26,6 +26,12 @@ public class StravaService {
 
     @Autowired
     private StravaDataRepository stravaDataRepository;
+
+    @Value("${strava_client_id}")
+    private String clientId;
+
+    @Value("${strava_client_secret}")
+    private String clientSecret;
 
     private final String STRAVA_URL = "https://www.strava.com/api/v3/";
     private final String STRAVA_URL_REFRESH = "https://www.strava.com/oauth/token";
@@ -64,8 +70,8 @@ public class StravaService {
 
     private HttpEntity<MultiValueMap<String, String>> createRequestBody(String refreshToken) {
 
-        String clientId = StravaPropertyReader.getValue("strava_client_id");
-        String clientSecret = StravaPropertyReader.getValue("strava_client_secret");
+//        String clientId = StravaPropertyReader.getValue("strava_client_id");
+//        String clientSecret = StravaPropertyReader.getValue("strava_client_secret");
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
@@ -112,6 +118,7 @@ public class StravaService {
             return stravaDataRepository.save(newStravaUserData);
         }
     }
+
     public StravaDataEntity getStravaUserDataById(Long userId) {
 
         return stravaDataRepository.findByUserId(userId).get();
@@ -132,6 +139,7 @@ public class StravaService {
                 ActivityClientDto[].class, userAccessToken, after.toEpochSecond()
         );
     }
+
     private String getAccessTokenForUser(Long userId) {
         return getStravaUserDataById(userId).getAccessToken();
     }
