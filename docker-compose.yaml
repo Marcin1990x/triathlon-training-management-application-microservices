@@ -50,6 +50,7 @@ services:
       ports:
         - "9411:9411"
       networks:
+        - microservices-network
         - postgres
     config-server:
       container_name: config-server
