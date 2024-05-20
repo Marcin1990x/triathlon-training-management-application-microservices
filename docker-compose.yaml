@@ -1,12 +1,13 @@
-version: '3.7'
 services:
     mongodb:
-        container_name: mongodb_container
+        container_name: mongodb-container
         image: mongo
         ports:
-          - "28017:27017"
+          - "27017:27017"
         volumes:
           - mongodb_data:/data/db
+        networks:
+          - mongo-network
     postgres:
         container_name: postgres_container
         image: postgres
@@ -110,6 +111,7 @@ services:
         - service-registry-container
         - config-server
       networks:
+        - mongo-network
         - microservices-network
         - postgres
       environment:
@@ -125,6 +127,7 @@ services:
         - service-registry-container
         - config-server
       networks:
+        - mongo-network
         - microservices-network
         - postgres
       environment:
@@ -144,6 +147,8 @@ services:
         - SPRING_PROFILES_ACTIVE=docker
 networks:
   postgres:
+    driver: bridge
+  mongo-network:
     driver: bridge
   microservices-network:
     driver: bridge
