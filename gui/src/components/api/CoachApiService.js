@@ -1,9 +1,9 @@
-import { apiClient } from "./ApiClient"
+import { apiClient, apiFunctionsClient } from "./ApiClient"
 
-export const addNewCoachApi = (coach) => apiClient.post(`coaches`, coach)
+export const addNewCoachApi = (coach) => apiFunctionsClient.post(`coaches`, coach)
 
-export const addAthleteToCoach = (coachId, athleteId) => apiClient.put(`coaches/${coachId}/athletes/${athleteId}/add`)
+export const addAthleteToCoach = (coachId, athleteId) => apiFunctionsClient.put(`coaches/${coachId}/athletes/${athleteId}/add`)
 
-export const removeAthleteFromCoach = (coachId, athleteId) => apiClient.put(`coaches/${coachId}/athletes/${athleteId}/remove`)
+export const removeAthleteFromCoach = (coachId, athleteId) => apiFunctionsClient.put(`coaches/${coachId}/athletes/${athleteId}/remove`)
 
-export const getCoachById = (id) => apiClient.get(`coaches/${id}`)
+export const getCoachById = (id) => apiFunctionsClient.get(`coaches/${id}`)

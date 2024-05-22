@@ -16,8 +16,6 @@ export default function AthleteComponent() {
     }
 
     useEffect ( () => {
-        dataContextAthlete.getTrainingPlans()
-        dataContextAthlete.getTrainingRealizations()
         dataContextAthlete.getAthlete()
         }, [render])
 

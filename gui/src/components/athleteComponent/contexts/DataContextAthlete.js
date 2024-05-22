@@ -18,7 +18,7 @@ const DataContextAthleteProvider = ({children}) => {
 
     const authContext = useAuth()
     
-    const getTrainingPlans = () => {
+    const getTrainingPlans = () => { // no useful ? data from athlete
         getTrainingPlansByAthleteIdApi(authContext.athleteId)
             .then(response => {
                 console.log(response)
@@ -26,7 +26,7 @@ const DataContextAthleteProvider = ({children}) => {
             })
             .catch(error => console.log(error))
     }
-    const getTrainingRealizations = () => {
+    const getTrainingRealizations = () => { // no useful ? data from athlete
         getTrainingRealizationsByAthleteIdApi(authContext.athleteId)
             .then(response => {
                 console.log(response)
@@ -39,6 +39,10 @@ const DataContextAthleteProvider = ({children}) => {
             .then(response => {
                 console.log(response)
                 setAthlete(response.data)
+                //
+                setTrainingRealizations(response.data.trainingRealizations)
+                setTrainingPlans(response.data.trainingPlans)
+                //
                 getCoach(response.data.coachId)
             })
             .catch(error => console.log(error))
