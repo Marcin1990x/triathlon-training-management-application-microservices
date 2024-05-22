@@ -21,7 +21,7 @@ public class WebSecurity {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(
                         request -> request
-                                .requestMatchers("/register", "/users/**").permitAll())
+                                .requestMatchers("/register", "/authenticate", "/users/**").permitAll())
                 .httpBasic(Customizer.withDefaults());
 
         return security.build();
