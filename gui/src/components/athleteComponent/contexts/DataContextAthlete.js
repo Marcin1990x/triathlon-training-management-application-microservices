@@ -3,7 +3,7 @@ import { useAuth } from "../../security/AuthContext";
 import { getTrainingPlansByAthleteIdApi } from "../../api/TrainingPlanApiService";
 import { getTrainingRealizationsByAthleteIdApi } from "../../api/TrainingRealizationApiService";
 import { getAthleteById } from "../../api/AthletesApiService";
-import { getCoachById } from "../../api/CoachApiService";
+import { getCoachByIdApi } from "../../api/CoachApiService";
 
 const DataContextAthlete = createContext()
 export const useDataContextAthlete = () => useContext(DataContextAthlete)
@@ -48,7 +48,7 @@ const DataContextAthleteProvider = ({children}) => {
             .catch(error => console.log(error))
     }
     const getCoach = (id) => {
-        getCoachById(id)
+        getCoachByIdApi(id)
             .then(response => {
                 console.log(response)
                 setCoach(response.data)

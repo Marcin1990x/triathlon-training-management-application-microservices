@@ -12,6 +12,7 @@ import NewUserComponent from "./newUserComponent/NewUserComponent";
 import DataContextAthleteProvider from "./athleteComponent/contexts/DataContextAthlete";
 import AddAthleteComponent from "./coachComponent/AddAthleteComponent";
 import StravaComponent from "./athleteComponent/strava/StravaComponent";
+import DataContextCoachProvider from "./coachComponent/contexts/DataContextCoach";
 
 export default function TriathlonTrainingManagement() {
     return(
@@ -33,13 +34,15 @@ export default function TriathlonTrainingManagement() {
                                 <Route path = '/new' element = { <NewUserComponent /> } />
                                 <Route path = '/coach' element = 
                                     { 
-                                    <DataContextAthletesProvider>
-                                        <DataContextTrainingsProvider>
-                                            <WeekdayListVisibilityProvider>
-                                                <CoachComponent />
-                                            </WeekdayListVisibilityProvider> 
-                                        </DataContextTrainingsProvider>
-                                    </DataContextAthletesProvider>
+                                    <DataContextCoachProvider>
+                                        <DataContextAthletesProvider>
+                                            <DataContextTrainingsProvider>
+                                                <WeekdayListVisibilityProvider>
+                                                    <CoachComponent />
+                                                </WeekdayListVisibilityProvider> 
+                                            </DataContextTrainingsProvider>
+                                        </DataContextAthletesProvider>
+                                    </DataContextCoachProvider>
                                     } />
                                 <Route path = '/coach/addAthlete' element = { <AddAthleteComponent /> } /> 
                             </Routes>

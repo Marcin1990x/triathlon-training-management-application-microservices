@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { addNewTrainingRealizationForAthlete } from "../api/TrainingRealizationApiService"
+import { addNewTrainingRealization } from "../api/TrainingRealizationApiService"
 import { useAuth } from "../security/AuthContext"
 import { toast } from "react-hot-toast"
 import { useDataContextAthlete } from "./contexts/DataContextAthlete"
@@ -7,7 +7,7 @@ import { useDataContextAthlete } from "./contexts/DataContextAthlete"
 const NewTrainingRealization = ({toggleView}) => {
 
     const {athleteId} = useAuth()
-    const {getTrainingRealizations} = useDataContextAthlete()
+    const {getAthlete} = useDataContextAthlete()
     const successToast = (message) => toast.success(message)
     const errorToast = (message) => toast.error(message)
 
@@ -40,6 +40,7 @@ const NewTrainingRealization = ({toggleView}) => {
         if(isDateCorrect(formFields.date)) {
 
             const newTraining = {
+                athleteId: athleteId,
                 name: formFields.name,
                 distanceInMeters: countDistance(formFields.distanceKm, formFields.distanceHundreds),
                 timeInSeconds: countTime(formFields.timeH, formFields.timeM, formFields.timeS),
@@ -54,11 +55,11 @@ const NewTrainingRealization = ({toggleView}) => {
                 rpeLevel: formFields.rpeLevel
             }
 
-            addNewTrainingRealizationForAthlete(athleteId, newTraining)
+            addNewTrainingRealization(newTraining)
                 .then(response => {
                     console.log(response)
                     successToast('New training realization added successfully.')
-                    getTrainingRealizations()
+                    getAthlete()
                     toggleView()
                 })
                 .catch(error => console.log(error))

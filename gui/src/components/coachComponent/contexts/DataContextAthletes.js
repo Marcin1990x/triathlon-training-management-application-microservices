@@ -20,6 +20,10 @@ const DataContextAthletesProvider = ({children}) => {
     const authContext = useAuth()
 
     const getAthletes = () => {
+
+        console.log('test')
+
+
         getAthletesByCoachIdApi(authContext.coachId)
             .then(response => {
                 console.log(response)

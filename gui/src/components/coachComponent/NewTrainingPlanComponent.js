@@ -53,11 +53,12 @@ const NewTrainingPlanComponent = () => {
     const handleStageNoBtn = () => {
 
         const newTraining = {
+            coachId: authContext.coachId,
             name : name,
             trainingType : sport,
             description : description
         }
-        addNewTrainingPlanToCoachApi(authContext.coachId, newTraining)
+        addNewTrainingPlanToCoachApi(newTraining)
             .then(response => {
                 console.log(response)
                 dataContextTrainings.switchView()
@@ -70,11 +71,12 @@ const NewTrainingPlanComponent = () => {
     const handleStageYesButton = () => {
 
         const newTraining = {
+            coachId: authContext.coachId,
             name : name,
             trainingType : sport,
             description : description
         }
-        addNewTrainingPlanToCoachApi(authContext.coachId, newTraining)
+        addNewTrainingPlanToCoachApi(newTraining)
             .then(response => {
                 console.log(response)
                 setAddedPlanId(response.data.id)

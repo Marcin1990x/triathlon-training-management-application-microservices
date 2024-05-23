@@ -1,7 +1,12 @@
-import { apiClient, apiFunctionsClient } from "./ApiClient"
+import { apiFunctionsClient } from "./ApiClient"
 
-export const getAthletesByCoachIdApi = (id) => apiClient.get(`coaches/${id}/athletes`)
-
+export const getAthletesByCoachIdApi = (coachId) => apiFunctionsClient.get(`athletes/coach`,
+    {
+        params: {
+            coachId
+        }
+    }
+)
 export const addNewAthleteApi = (athlete) => apiFunctionsClient.post(`athletes`, athlete)
 
 export const getAthleteById = (id) => apiFunctionsClient.get(`athletes/${id}`)

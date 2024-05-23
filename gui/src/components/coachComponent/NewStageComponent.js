@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { addNewSwimStageToTrainingPlanApi } from "../api/StageApiService"
+import { addNewStageToTrainingPlanApi } from "../api/StageApiService"
 import { getTrainingPlanByIdApi } from "../api/TrainingPlanApiService"
 import { useDataContextTrainings } from "./contexts/DataContextTrainings"
 import { toast } from "react-hot-toast"
@@ -52,7 +52,7 @@ const NewStageComponent = ({planId, stageType}) => {
             paceInSeconds : formFields.swimPace,
             repeat: formFields.repeat
         }
-        addNewSwimStageToTrainingPlanApi(planId, stage, stageType.toLowerCase())
+        addNewStageToTrainingPlanApi(planId, stage, stageType.toLowerCase())
             .then(response => {
                 console.log(response)
                 refreshPlan()

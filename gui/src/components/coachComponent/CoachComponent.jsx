@@ -3,19 +3,22 @@ import CoachAthletesComponent from "./CoachAthletesComponent"
 import CoachTrainingPlansComponent from "./CoachTrainingPlansComponent"
 import { useDataContextAthletes } from "./contexts/DataContextAthletes"
 import { useDataContextTrainings } from "./contexts/DataContextTrainings"
+import { useDataContextCoach } from "./contexts/DataContextCoach"
 
 export default function CoachComponent() {
 
     const dataContextAthletes = useDataContextAthletes()
     const dataContextTrainings = useDataContextTrainings()
+    const dataContextCoach = useDataContextCoach()
 
     const buttonText = () => {
         return dataContextAthletes.athleteView ? 'See trainings page' : 'See athletes page';
     }
 
     useEffect( () => {
-        dataContextAthletes.getAthletes()
+        dataContextCoach.getCoach()
         dataContextTrainings.getCoachTrainingPlans()
+        dataContextAthletes.getAthletes()
     }, [])
 
     const handleSwitchViewBtn = () => {
