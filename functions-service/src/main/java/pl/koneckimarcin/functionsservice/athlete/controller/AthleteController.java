@@ -29,9 +29,9 @@ public class AthleteController implements AthleteOperations {
     }
 
     @Override
-    public Set<Athlete> getAthletesByCoachId(Long id) {
+    public Set<Athlete> getByCoachId(Long coachId) {
 
-        return athleteService.getAthletesByCoachId(id);
+        return athleteService.getByCoachId(coachId);
     }
 
     public Athlete addNew(@Valid Athlete athlete) {

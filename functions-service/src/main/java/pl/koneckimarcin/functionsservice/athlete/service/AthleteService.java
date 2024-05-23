@@ -72,7 +72,7 @@ public class AthleteService {
         return trainingsClient.getTrainingPlansByAthleteId(athleteId);
     }
 
-    public Set<Athlete> getAthletesByCoachId(Long id) {
+    public Set<Athlete> getByCoachId(Long id) {
 
         if (coachRepository.findById(id).isPresent()) {
             return coachRepository.findById(id).get().getAthletes().stream().map(Athlete::fromAthleteEntity).collect(Collectors.toSet());

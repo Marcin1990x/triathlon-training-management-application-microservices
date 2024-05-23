@@ -19,8 +19,8 @@ public interface AthleteOperations {
     public List<AthleteResponseDto> getByLastname(@RequestParam String lastname);
 
     //@PreAuthorize("hasAuthority('COACH') AND @authenticatedUserService.hasValidCoachId(#id)")
-    @GetMapping("/coaches/{id}/athletes")
-    public Set<Athlete> getAthletesByCoachId(@PathVariable Long id);
+    @GetMapping("/athletes/coach")
+    public Set<Athlete> getByCoachId(@RequestParam Long coachId);
 
     //@PreAuthorize("hasAnyAuthority('ADMIN', 'NEW')")
     @PostMapping("/athletes")
