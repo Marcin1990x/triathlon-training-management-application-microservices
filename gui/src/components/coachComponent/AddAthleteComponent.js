@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { getByLastnameApi } from "../api/AthletesApiService"
 import { toast } from "react-hot-toast"
-import { addAthleteToCoach } from "../api/CoachApiService"
+import { addAthleteToCoach, addAthleteToCoachRequestApi } from "../api/CoachApiService"
 import { useAuth } from "../security/AuthContext"
 import { useNavigate } from "react-router-dom"
 
@@ -42,12 +42,12 @@ const AddAthleteComponent = () => {
             errorToast('Please enter at least two characters for search.')
         }
     }
-    const handleAddBtn = (id, lastname) => {
 
-        addAthleteToCoach(authContext.coachId, id)
+    const handleSendRequestBtn = (coachId, athleteId, athleteLastname) => {
+        addAthleteToCoachRequestApi(coachId, athleteId)
             .then(response => {
                 console.log(response)
-                successToast('Athlete ' + lastname + ' successfully added!')
+                successToast('Your request to add the athlete ' + athleteLastname + ' has been submitted successfully.')
                 navigate(`/coach`)
             })
             .catch(error => console.log(error))
@@ -91,7 +91,9 @@ const AddAthleteComponent = () => {
                                                 <td>{athlete.firstName}</td>
                                                 <td>{athlete.lastName}</td>
                                                 <td><button className="btn btn-outline-primary" 
-                                                    onClick={() => handleAddBtn(athlete.id, athlete.lastName)}>Add</button></td>
+                                                    onClick={() => 
+                                                        handleSendRequestBtn(authContext.coachId, athlete.id, athlete.lastName)}>
+                                                        Send request</button></td>
                                             </tr>
                                        )) 
                                     }
