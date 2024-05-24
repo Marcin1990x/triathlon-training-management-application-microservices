@@ -2,8 +2,6 @@ package pl.koneckimarcin.functionsservice.athlete;
 
 import jakarta.persistence.*;
 
-import java.util.List;
-
 @Entity
 @Table(name = "athlete")
 public class AthleteEntity {
@@ -15,8 +13,6 @@ public class AthleteEntity {
     private String firstName;
 
     private String lastName;
-
-    private List<Long> trainingPlansIds;
 
     @Column(name = "has_user")
     private boolean isAssignedToUser = false;
@@ -47,14 +43,6 @@ public class AthleteEntity {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
-    }
-
-    public List<Long> getTrainingPlansIds() {
-        return trainingPlansIds;
-    }
-
-    public void setTrainingPlansIds(List<Long> trainingPlansIds) {
-        this.trainingPlansIds = trainingPlansIds;
     }
 
     public boolean isAssignedToUser() {

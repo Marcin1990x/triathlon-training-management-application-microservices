@@ -19,10 +19,6 @@ public interface CoachOperations {
     @DeleteMapping("/coaches/{id}")
     public void deleteById(@PathVariable Long id);
 
-    //@PreAuthorize("hasAuthority('COACH')")
-//    @PutMapping("coaches/{coachId}/athletes/{athleteId}/add")
-//    public Coach addAthleteToCoach(@PathVariable Long coachId, @PathVariable Long athleteId);
-
     @GetMapping("/coaches/{id}/sendCoachingRequest")
     public String addAthleteToCoachRequest(@PathVariable Long id, @RequestParam Long athleteId);
 

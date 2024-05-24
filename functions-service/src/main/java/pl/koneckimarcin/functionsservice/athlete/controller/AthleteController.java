@@ -29,7 +29,7 @@ public class AthleteController implements AthleteOperations {
     }
 
     @Override
-    public Set<Athlete> getByCoachId(Long coachId) {
+    public Set<AthleteResponseDto> getByCoachId(Long coachId) {
 
         return athleteService.getByCoachId(coachId);
     }

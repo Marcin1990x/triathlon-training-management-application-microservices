@@ -16,10 +16,7 @@ import pl.koneckimarcin.functionsservice.external.TrainingRealization;
 import pl.koneckimarcin.functionsservice.messaging.AddAthleteRequestMessageConsumer;
 import pl.koneckimarcin.functionsservice.messaging.AddAthleteRequestMessageProducer;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -72,13 +69,27 @@ public class AthleteService {
         return trainingsClient.getTrainingPlansByAthleteId(athleteId);
     }
 
-    public Set<Athlete> getByCoachId(Long id) {
+    public Set<AthleteResponseDto> getByCoachId(Long id) {
 
-        if (coachRepository.findById(id).isPresent()) {
-            return coachRepository.findById(id).get().getAthletes().stream().map(Athlete::fromAthleteEntity).collect(Collectors.toSet());
-        } else {
+        if (!coachRepository.findById(id).isPresent()) {
             throw new ResourceNotFoundException("Coach", "id", String.valueOf(id));
         }
+
+        Set<AthleteEntity> athleteEntities =
+                coachRepository.findById(id).get().getAthletes()
+                        .stream().collect(Collectors.toSet());
+
+        Set<AthleteResponseDto> athletes = new HashSet<>();
+
+        for (AthleteEntity athleteEntity : athleteEntities) {
+
+            List<TrainingPlan> trainingPlans = getTrainingPlansForAthleteById(athleteEntity.getId());
+            List<TrainingRealization> trainingRealizations = getTrainingRealizationsForAthleteById(athleteEntity.getId());
+
+            athletes.add(AthleteResponseDto
+                    .fromAthleteEntity(athleteEntity, trainingRealizations, trainingPlans));
+        }
+        return athletes;
     }
 
     public Athlete addNew(@Valid Athlete athlete) {

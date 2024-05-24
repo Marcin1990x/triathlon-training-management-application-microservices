@@ -58,9 +58,7 @@ public class Athlete {
         athlete.setId(athleteEntity.getId());
         athlete.setFirstName(athleteEntity.getFirstName());
         athlete.setLastName(athleteEntity.getLastName());
-        if (athleteEntity.getTrainingPlansIds() != null) {
-            athlete.setTrainingPlansIds(athleteEntity.getTrainingPlansIds());
-        }
+
         return athlete;
     }
 

@@ -20,7 +20,7 @@ public interface AthleteOperations {
 
     //@PreAuthorize("hasAuthority('COACH') AND @authenticatedUserService.hasValidCoachId(#id)")
     @GetMapping("/athletes/coach")
-    public Set<Athlete> getByCoachId(@RequestParam Long coachId);
+    public Set<AthleteResponseDto> getByCoachId(@RequestParam Long coachId);
 
     //@PreAuthorize("hasAnyAuthority('ADMIN', 'NEW')")
     @PostMapping("/athletes")
