@@ -37,10 +37,13 @@ const AthletesTable = () => {
               <td>{athlete.lastName}</td>
               <td>
                 <button className="btn btn-outline-primary" onClick={() => 
-                  {dataContextAthletes.setPlansAndRealizationsForAthlete(athlete.id);
-                    listVisibility.setVisibility(true)
-                    activateRealization(null)
-                    handleRowClick(index)}}>+</button>
+                      { 
+                        dataContextAthletes.setPlansAndRealizationsForAthlete(athlete.id);
+                        listVisibility.setVisibility(true)
+                        activateRealization(null)
+                        handleRowClick(index)
+                      }
+                    }>+</button>
               </td>
             </tr>
           ))}

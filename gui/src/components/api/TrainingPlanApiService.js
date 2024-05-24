@@ -8,13 +8,11 @@ export const getTrainingPlansByCoachIdApi = (coachId) => apiTrainingsClient.get(
     }
 })
 
-export const removeTrainingPlanFromAthleteApi = (athleteId, trainingPlanId) => 
-    apiClient.put(`athletes/${athleteId}/training-plans/${trainingPlanId}`)
-
 export const addTrainingPlanToAthleteWithDateApi = (athleteId, planId, plannedDate) => 
-    apiClient.post(`athletes/${athleteId}/training-plans/${planId}`, {},
+    apiTrainingsClient.post(`training-plans/${planId}`, {},
     {
         params: {
+            athleteId,
             plannedDate
         }
     })

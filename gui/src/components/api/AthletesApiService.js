@@ -9,7 +9,7 @@ export const getAthletesByCoachIdApi = (coachId) => apiFunctionsClient.get(`athl
 )
 export const addNewAthleteApi = (athlete) => apiFunctionsClient.post(`athletes`, athlete)
 
-export const getAthleteById = (id) => apiFunctionsClient.get(`athletes/${id}`)
+export const getAthleteByIdApi = (id) => apiFunctionsClient.get(`athletes/${id}`)
 
 export const getByLastnameApi = (lastname) => apiFunctionsClient.get(`athletes`, {
     params: {

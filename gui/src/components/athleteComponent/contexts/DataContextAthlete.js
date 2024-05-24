@@ -2,7 +2,7 @@ import { createContext, useContext, useState } from "react";
 import { useAuth } from "../../security/AuthContext";
 import { getTrainingPlansByAthleteIdApi } from "../../api/TrainingPlanApiService";
 import { getTrainingRealizationsByAthleteIdApi } from "../../api/TrainingRealizationApiService";
-import { getAthleteById } from "../../api/AthletesApiService";
+import { getAthleteByIdApi } from "../../api/AthletesApiService";
 import { getCoachByIdApi } from "../../api/CoachApiService";
 
 const DataContextAthlete = createContext()
@@ -35,7 +35,7 @@ const DataContextAthleteProvider = ({children}) => {
             .catch(error => console.log(error))
     }
     const getAthlete = () => {
-        getAthleteById(authContext.athleteId)
+        getAthleteByIdApi(authContext.athleteId)
             .then(response => {
                 console.log(response)
                 setAthlete(response.data)

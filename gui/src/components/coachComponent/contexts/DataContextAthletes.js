@@ -1,7 +1,6 @@
 import { createContext, useContext, useState } from "react";
-import { getTrainingPlansByAthleteIdApi, removeTrainingPlanFromAthleteApi, addTrainingPlanToAthleteWithDateApi } from "../../api/TrainingPlanApiService";
-import { getTrainingRealizationsByAthleteIdApi } from "../../api/TrainingRealizationApiService";
-import { getAthletesByCoachIdApi } from "../../api/AthletesApiService";
+import { removeTrainingPlanApi, addTrainingPlanToAthleteWithDateApi } from "../../api/TrainingPlanApiService";
+import { getAthleteByIdApi, getAthletesByCoachIdApi } from "../../api/AthletesApiService";
 import { toast } from "react-hot-toast";
 import { useAuth } from "../../security/AuthContext";
 
@@ -19,10 +18,18 @@ const DataContextAthletesProvider = ({children}) => {
 
     const authContext = useAuth()
 
+    const getAthlete = () => {
+
+        getAthleteByIdApi(athleteId)
+            .then(response => {
+                console.log(response)
+                setAthletePlans(response.data.trainingPlans)
+                setAthleteRealizations(response.data.trainingRealizations)
+            })
+            .catch(error => console.log(error))
+    }
+
     const getAthletes = () => {
-
-        console.log('test')
-
 
         getAthletesByCoachIdApi(authContext.coachId)
             .then(response => {
@@ -31,33 +38,21 @@ const DataContextAthletesProvider = ({children}) => {
             })
             .catch(error => console.log(error))
     }
-    const getTrainingPlans= (id) => {
-        getTrainingPlansByAthleteIdApi(id)
-            .then(response => {
-                console.log(response)
-                setAthleteId(id)
-                setAthletePlans(response.data)
-            })
-            .catch(error => console.log(error))
-    }
-    const getTrainingRealizations = (id) => {
-        getTrainingRealizationsByAthleteIdApi(id)
-            .then(response => {
-                console.log(response)
-                setAthleteRealizations(response.data)
-            })
-            .catch(error => console.log(error))
-    }
-    const setPlansAndRealizationsForAthlete = (id) => {
-        getTrainingPlans(id)
-        getTrainingRealizations(id)
+    const setPlansAndRealizationsForAthlete = (athleteId) => {
 
+        setAthleteId(athleteId)
+
+        const athlete = athletes.find(a => a.id === athleteId)
+        if(athlete) {
+            setAthletePlans(athlete.trainingPlans)
+            setAthleteRealizations(athlete.trainingRealizations)
+        }
     }
     const removeTrainingPlan = (id) => {
-        removeTrainingPlanFromAthleteApi(athleteId, id)
-            .then(reponse => {
-                console.log(reponse)
-                setPlansAndRealizationsForAthlete(athleteId)
+        removeTrainingPlanApi(id)
+            .then(response => {
+                console.log(response)
+                getAthlete()
                 successToast('Training plan deleted successfully.')
             })
             .catch(error => console.log(error))
@@ -73,7 +68,7 @@ const DataContextAthletesProvider = ({children}) => {
         addTrainingPlanToAthleteWithDateApi(athleteId, id, extractedDate)
             .then(response => {
                 console.log(response)
-                setPlansAndRealizationsForAthlete(athleteId)
+                getAthlete()
                 successToast('Training plan added successfully.')
                 handleAddPlanMode(false, null)
             })
@@ -94,8 +89,6 @@ const DataContextAthletesProvider = ({children}) => {
     const toggleView = () => {
         setAthleteView(!athleteView)
     }
-
-
     return (
         <DataContextAthletes.Provider value = {{getAthletes, athletes, athletePlans, athleteRealizations, athleteId, 
             setPlansAndRealizationsForAthlete, removeTrainingPlan, addPlanMode, setAddPlanMode, setNewPlanDate,
