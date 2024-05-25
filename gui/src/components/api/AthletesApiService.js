@@ -16,3 +16,4 @@ export const getByLastnameApi = (lastname) => apiFunctionsClient.get(`athletes`,
         lastname: lastname
     }
 })
+export const checkPendingCoachingRequestsApi = (athleteId) => apiFunctionsClient.get(`athletes/${athleteId}/checkRequests`)

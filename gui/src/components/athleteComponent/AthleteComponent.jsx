@@ -10,6 +10,7 @@ export default function AthleteComponent() {
     const dataContextAthlete = useDataContextAthlete()
     const [addRealizationView, setAddRealizationView] = useState(false)
     const [render, setRender] = useState(0)
+    
 
     const reRender = () => {
         setRender(render + 1)
@@ -17,6 +18,7 @@ export default function AthleteComponent() {
 
     useEffect ( () => {
         dataContextAthlete.getAthlete()
+        dataContextAthlete.checkPendingCoachingRequests()
         }, [render])
 
     const handleToggleViewBtn = () => {

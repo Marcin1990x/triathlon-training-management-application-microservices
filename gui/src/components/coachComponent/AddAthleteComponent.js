@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { getByLastnameApi } from "../api/AthletesApiService"
 import { toast } from "react-hot-toast"
-import { addAthleteToCoach, addAthleteToCoachRequestApi } from "../api/CoachApiService"
+import { addAthleteToCoachRequestApi } from "../api/CoachApiService"
 import { useAuth } from "../security/AuthContext"
 import { useNavigate } from "react-router-dom"
 

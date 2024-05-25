@@ -2,7 +2,7 @@ import { createContext, useContext, useState } from "react";
 import { useAuth } from "../../security/AuthContext";
 import { getTrainingPlansByAthleteIdApi } from "../../api/TrainingPlanApiService";
 import { getTrainingRealizationsByAthleteIdApi } from "../../api/TrainingRealizationApiService";
-import { getAthleteByIdApi } from "../../api/AthletesApiService";
+import { getAthleteByIdApi, checkPendingCoachingRequestsApi } from "../../api/AthletesApiService";
 import { getCoachByIdApi } from "../../api/CoachApiService";
 
 const DataContextAthlete = createContext()
@@ -15,6 +15,7 @@ const DataContextAthleteProvider = ({children}) => {
     const [activeTraining, setActiveTraining] = useState(null)
     const [athlete, setAthlete] = useState(null)
     const [coach, setCoach] = useState(null)
+    const [requestCount, setRequestCount] = useState(0)
 
     const authContext = useAuth()
     
@@ -60,9 +61,20 @@ const DataContextAthleteProvider = ({children}) => {
         setActiveTraining(training)
     }
 
+    const checkPendingCoachingRequests = () => {
+
+        checkPendingCoachingRequestsApi(authContext.athleteId)
+            .then(response => {
+                console.log(response)
+                setRequestCount(response.data)
+            })
+            .catch(error => console.log(error))
+    }
+
     return (
         <DataContextAthlete.Provider value = {{getTrainingPlans, getTrainingRealizations, trainingPlans, trainingRealizations,
-            setActiveTrainingFunction, activeTraining, getAthlete, athlete, coach}}>
+            setActiveTrainingFunction, activeTraining, getAthlete, athlete, coach, checkPendingCoachingRequests, requestCount
+            }}>
             {children}
         </DataContextAthlete.Provider>
     )
