@@ -15,6 +15,7 @@ import pl.koneckimarcin.functionsservice.external.TrainingPlan;
 import pl.koneckimarcin.functionsservice.external.TrainingRealization;
 import pl.koneckimarcin.functionsservice.messaging.AddAthleteRequestMessageConsumer;
 import pl.koneckimarcin.functionsservice.messaging.AddAthleteRequestMessageProducer;
+import pl.koneckimarcin.functionsservice.messaging.QueueService;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -36,6 +37,9 @@ public class AthleteService {
 
     @Autowired
     private AddAthleteRequestMessageProducer producer;
+
+    @Autowired
+    private QueueService queueService;
 
     public boolean checkIfIsNotNull(long id) {
         Optional<AthleteEntity> athleteEntity = athleteRepository.findById(id);
@@ -157,5 +161,14 @@ public class AthleteService {
         } else {
             return declineResponse;
         }
+    }
+
+    public int checkPendingCoachingRequests(Long id) {
+
+        if(!checkIfIsNotNull(id))
+        {
+            throw new ResourceNotFoundException("Athlete", "id", String.valueOf(id));
+        }
+        return queueService.getRequestCount(id);
     }
 }

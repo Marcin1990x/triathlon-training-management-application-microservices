@@ -38,4 +38,7 @@ public interface AthleteOperations {
 
     @GetMapping("/athletes/{id}/sendCoachingReply")
     public String sendCoachingReply(@PathVariable Long id, @RequestParam boolean confirmation);
+
+    @GetMapping("/athletes/{id}/checkRequests")
+    public int checkPendingCoachingRequests(@PathVariable Long id);
 }

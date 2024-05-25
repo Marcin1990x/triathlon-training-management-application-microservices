@@ -60,4 +60,10 @@ public class AthleteController implements AthleteOperations {
 
         return athleteService.sendCoachingReply(id, confirmation);
     }
+
+    @Override
+    public int checkPendingCoachingRequests(Long id) {
+
+        return athleteService.checkPendingCoachingRequests(id);
+    }
 }
