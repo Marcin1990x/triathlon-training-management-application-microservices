@@ -7,24 +7,27 @@ const CoachInfoComponent = () => {
     const dataContextAthlete = useDataContextAthlete()
     const [checkView, setCheckView] = useState(false)
 
-    const {coach, requestCount} = useDataContextAthlete()
+    const {coach, requestCount, getCoachingRequest, coachingRequest, sendCoachingReply} = useDataContextAthlete()
 
     const successToast = (message) => toast.success(message)
 
     const handleCheckViewBtn = () => {
         setCheckView(true)
-
+        getCoachingRequest()
     }
+
     const handleAcceptBtn = () => {
         setCheckView(false)
+        sendCoachingReply(true)
         dataContextAthlete.checkPendingCoachingRequests()
-        successToast('Accepted.')
+        successToast('Request accepted. ' + coachingRequest.coachFirstName + " " +  coachingRequest.coachLastName + " is now your coach.")
 
     }
     const handleDeclineBtn = () => {
         setCheckView(false)
+        sendCoachingReply(false)
         dataContextAthlete.checkPendingCoachingRequests()
-        successToast('Declined.')
+        successToast('Request declined.')
     }
 
     return (
@@ -36,9 +39,11 @@ const CoachInfoComponent = () => {
                     <button className="btn btn-outline-primary btn-sm m-2" onClick = {() => handleCheckViewBtn()}>Check</button>
                 </div>
             }
-            {checkView &&
+            {checkView && coachingRequest &&
                 <div>
-                    Your message
+                    <p>
+                        <b>{coachingRequest.coachFirstName} {coachingRequest.coachLastName}</b> wants to be your coach.
+                    </p>
                     <button className="btn btn-outline-success btn-sm m-2" onClick = {() => handleAcceptBtn()}>Accept</button>
                     <button className="btn btn-outline-danger btn-sm m-2" onClick = {() => handleDeclineBtn()}>Decline</button>
                 </div>

@@ -2,7 +2,7 @@ import { createContext, useContext, useState } from "react";
 import { useAuth } from "../../security/AuthContext";
 import { getTrainingPlansByAthleteIdApi } from "../../api/TrainingPlanApiService";
 import { getTrainingRealizationsByAthleteIdApi } from "../../api/TrainingRealizationApiService";
-import { getAthleteByIdApi, checkPendingCoachingRequestsApi } from "../../api/AthletesApiService";
+import { getAthleteByIdApi, checkPendingCoachingRequestsApi, getCoachingRequestApi, sendCoachingReplyApi } from "../../api/AthletesApiService";
 import { getCoachByIdApi } from "../../api/CoachApiService";
 
 const DataContextAthlete = createContext()
@@ -16,6 +16,7 @@ const DataContextAthleteProvider = ({children}) => {
     const [athlete, setAthlete] = useState(null)
     const [coach, setCoach] = useState(null)
     const [requestCount, setRequestCount] = useState(0)
+    const [coachingRequest, setCoachingRequest] = useState()
 
     const authContext = useAuth()
     
@@ -70,10 +71,25 @@ const DataContextAthleteProvider = ({children}) => {
             })
             .catch(error => console.log(error))
     }
+    const getCoachingRequest = () => {
+
+        getCoachingRequestApi(authContext.athleteId)
+            .then(response => {
+                console.log(response)
+                setCoachingRequest(response.data)
+            })
+            .catch(error => console.log(error))
+    }
+    const sendCoachingReply = (confirmation) => {
+        sendCoachingReplyApi(authContext.athleteId, confirmation)
+            .then(response => console.log(response))
+            .catch(error => console.log(error))
+    }
 
     return (
         <DataContextAthlete.Provider value = {{getTrainingPlans, getTrainingRealizations, trainingPlans, trainingRealizations,
-            setActiveTrainingFunction, activeTraining, getAthlete, athlete, coach, checkPendingCoachingRequests, requestCount
+                setActiveTrainingFunction, activeTraining, getAthlete, athlete, coach, checkPendingCoachingRequests, requestCount,
+                getCoachingRequest, coachingRequest, sendCoachingReply
             }}>
             {children}
         </DataContextAthlete.Provider>

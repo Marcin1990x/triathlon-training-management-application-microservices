@@ -17,3 +17,11 @@ export const getByLastnameApi = (lastname) => apiFunctionsClient.get(`athletes`,
     }
 })
 export const checkPendingCoachingRequestsApi = (athleteId) => apiFunctionsClient.get(`athletes/${athleteId}/checkRequests`)
+
+export const getCoachingRequestApi = (athleteId) => apiFunctionsClient.get(`/athletes/${athleteId}/getCoachingRequest`)
+
+export const sendCoachingReplyApi = (athleteId, confirmation) => apiFunctionsClient.get(`/athletes/${athleteId}/sendCoachingReply`, {
+    params: {
+        confirmation
+    }
+})

@@ -41,7 +41,11 @@ export default function AthleteComponent() {
             <div className="row">
                 <div className="col"></div>
                 <div className="col"></div>
-                <div className="col"><CoachInfoComponent/></div>
+                <div className="col">
+                    <div className="border border-dark">
+                    <CoachInfoComponent/>
+                    </div>
+                </div>
             </div>
             {!addRealizationView &&
                 <div className = "weekdaysView">
