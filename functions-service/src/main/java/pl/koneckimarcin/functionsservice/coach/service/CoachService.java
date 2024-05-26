@@ -12,6 +12,7 @@ import pl.koneckimarcin.functionsservice.coach.dto.Coach;
 import pl.koneckimarcin.functionsservice.coach.dto.CoachResponseDto;
 import pl.koneckimarcin.functionsservice.coach.repository.CoachRepository;
 import pl.koneckimarcin.functionsservice.dto.AddAthleteRequestMessage;
+import pl.koneckimarcin.functionsservice.dto.AddAthleteResponseMessage;
 import pl.koneckimarcin.functionsservice.exceptions.ResourceNotFoundException;
 import pl.koneckimarcin.functionsservice.external.TrainingPlan;
 import pl.koneckimarcin.functionsservice.messaging.AddAthleteRequestMessageConsumer;
@@ -96,34 +97,34 @@ public class CoachService {
         String response = "Request to add athlete has been successfully submitted.";
 
         producer.sendRequestMessage(
-                new AddAthleteRequestMessage(coach.getFirstName(), coach.getLastName()), athleteId);
+                new AddAthleteRequestMessage(coach.getId(), coach.getFirstName(),
+                        coach.getLastName()), athleteId);
 
         return response;
     }
 
-    public Coach getCoachingReplyAndAssignAthlete(Long id, Long athleteId) {
+    public AddAthleteResponseMessage getCoachingReplyAndAssignAthlete(Long id, Long athleteId) {
 
         if (!checkIfIsNotNull(id)) {
             throw new ResourceNotFoundException("Coach", "id", String.valueOf(id));
         }
-        boolean confirmation = consumer.receiveReplyMessage(athleteId);
+        AddAthleteResponseMessage response = consumer.receiveReplyMessage(athleteId);
 
-        return assignAthleteToCoach(confirmation, id, athleteId);
+        if (response.isConfirmation()) {
+            assignAthleteToCoach(id, athleteId);
+        }
+        return response;
     }
 
-    private Coach assignAthleteToCoach(boolean confirmation, Long coachId, Long athleteId) {
+    private void assignAthleteToCoach(Long coachId, Long athleteId) {
 
         CoachEntity coach = coachRepository.findById(coachId).get();
 
-        if (confirmation) {
-            AthleteEntity athlete = athleteRepository.findById(athleteId).get();
+        AthleteEntity athlete = athleteRepository.findById(athleteId).get();
 
-            setCoachIdForAthlete(athlete, coachId);
-            coach.getAthletes().add(athlete);
-            return Coach.fromCoachEntity(coachRepository.save(coach));
-        } else {
-            return Coach.fromCoachEntity(coach);
-        }
+        setCoachIdForAthlete(athlete, coachId);
+        coach.getAthletes().add(athlete);
+        coachRepository.save(coach);
     }
 
     public Coach removeAthleteFromCoach(Long coachId, Long athleteId) {

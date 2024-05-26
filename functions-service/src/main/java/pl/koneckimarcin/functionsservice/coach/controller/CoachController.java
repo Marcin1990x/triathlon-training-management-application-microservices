@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.RestController;
 import pl.koneckimarcin.functionsservice.coach.dto.Coach;
 import pl.koneckimarcin.functionsservice.coach.dto.CoachResponseDto;
 import pl.koneckimarcin.functionsservice.coach.service.CoachService;
+import pl.koneckimarcin.functionsservice.dto.AddAthleteResponseMessage;
 
 @RestController
 public class CoachController implements CoachOperations {
@@ -32,7 +33,7 @@ public class CoachController implements CoachOperations {
     }
 
     @Override
-    public Coach getCoachingReplyAndAssignAthlete(Long id, Long athleteId) {
+    public AddAthleteResponseMessage getCoachingReplyAndAssignAthlete(Long id, Long athleteId) {
 
         return coachService.getCoachingReplyAndAssignAthlete(id, athleteId);
     }

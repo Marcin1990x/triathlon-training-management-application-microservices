@@ -2,15 +2,26 @@ package pl.koneckimarcin.functionsservice.dto;
 
 public class AddAthleteRequestMessage {
 
+
+    private Long coachId;
     private String coachFirstName;
     private String coachLastName;
 
     public AddAthleteRequestMessage() {
     }
 
-    public AddAthleteRequestMessage(String coachFirstName, String coachLastName) {
+    public AddAthleteRequestMessage(Long coachId,String coachFirstName, String coachLastName) {
+        this.coachId = coachId;
         this.coachFirstName = coachFirstName;
         this.coachLastName = coachLastName;
+    }
+
+    public Long getCoachId() {
+        return coachId;
+    }
+
+    public void setCoachId(Long coachId) {
+        this.coachId = coachId;
     }
 
     public String getCoachFirstName() {
@@ -32,7 +43,8 @@ public class AddAthleteRequestMessage {
     @Override
     public String toString() {
         return "AddAthleteRequestMessage{" +
-                "coachFirstName='" + coachFirstName + '\'' +
+                "coachId=" + coachId +
+                ", coachFirstName='" + coachFirstName + '\'' +
                 ", coachLastName='" + coachLastName + '\'' +
                 '}';
     }

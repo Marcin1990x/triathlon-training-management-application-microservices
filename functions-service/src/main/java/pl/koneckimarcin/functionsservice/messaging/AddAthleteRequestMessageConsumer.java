@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Component;
 import pl.koneckimarcin.functionsservice.dto.AddAthleteRequestMessage;
+import pl.koneckimarcin.functionsservice.dto.AddAthleteResponseMessage;
 
 @Component
 public class AddAthleteRequestMessageConsumer {
@@ -30,11 +31,12 @@ public class AddAthleteRequestMessageConsumer {
         return message;
     }
 
-    public boolean receiveReplyMessage(Long athleteId) {
+    public AddAthleteResponseMessage receiveReplyMessage(Long athleteId) {
 
         String routingKey = REPLY_QUEUE_NAME + athleteId;
 
-        Boolean reply = rabbitTemplate.receiveAndConvert(routingKey, ParameterizedTypeReference.forType(Boolean.class));
+        AddAthleteResponseMessage reply = rabbitTemplate.receiveAndConvert(routingKey,
+                ParameterizedTypeReference.forType(AddAthleteResponseMessage.class));
 
         amqpAdmin.deleteQueue(REQUEST_QUEUE_NAME + athleteId);
         amqpAdmin.deleteQueue(routingKey);

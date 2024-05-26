@@ -3,6 +3,7 @@ package pl.koneckimarcin.functionsservice.coach.controller;
 import org.springframework.web.bind.annotation.*;
 import pl.koneckimarcin.functionsservice.coach.dto.Coach;
 import pl.koneckimarcin.functionsservice.coach.dto.CoachResponseDto;
+import pl.koneckimarcin.functionsservice.dto.AddAthleteResponseMessage;
 
 public interface CoachOperations {
 
@@ -23,7 +24,8 @@ public interface CoachOperations {
     public String addAthleteToCoachRequest(@PathVariable Long id, @RequestParam Long athleteId);
 
     @PutMapping("/coaches/{id}/getCoachingReply")
-    public Coach getCoachingReplyAndAssignAthlete(@PathVariable Long id, @RequestParam Long athleteId);
+    public AddAthleteResponseMessage getCoachingReplyAndAssignAthlete
+            (@PathVariable Long id, @RequestParam Long athleteId);
 
     //@PreAuthorize("hasAuthority('COACH') AND @authenticatedUserService.hasValidId(#coachId)")
     @PutMapping("/coaches/{coachId}/athletes/{athleteId}/remove")

@@ -10,6 +10,7 @@ import pl.koneckimarcin.functionsservice.athlete.repository.AthleteRepository;
 import pl.koneckimarcin.functionsservice.clients.TrainingsClient;
 import pl.koneckimarcin.functionsservice.coach.repository.CoachRepository;
 import pl.koneckimarcin.functionsservice.dto.AddAthleteRequestMessage;
+import pl.koneckimarcin.functionsservice.dto.AddAthleteResponseMessage;
 import pl.koneckimarcin.functionsservice.exceptions.ResourceNotFoundException;
 import pl.koneckimarcin.functionsservice.external.TrainingPlan;
 import pl.koneckimarcin.functionsservice.external.TrainingRealization;
@@ -154,7 +155,12 @@ public class AthleteService {
             throw new ResourceNotFoundException("Athlete", "id", String.valueOf(id));
         }
 
-        producer.sendReplyMessage(confirmation, id);
+        AthleteEntity athlete = athleteRepository.findById(id).get();
+
+        producer.sendReplyMessage(new AddAthleteResponseMessage(
+                athlete.getId(), athlete.getFirstName(), athlete.getLastName(), confirmation
+                )
+        );
 
         if (confirmation) {
             return acceptResponse;

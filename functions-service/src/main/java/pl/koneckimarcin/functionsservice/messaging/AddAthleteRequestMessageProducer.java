@@ -6,6 +6,7 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import pl.koneckimarcin.functionsservice.dto.AddAthleteRequestMessage;
+import pl.koneckimarcin.functionsservice.dto.AddAthleteResponseMessage;
 
 @Component
 public class AddAthleteRequestMessageProducer {
@@ -25,14 +26,14 @@ public class AddAthleteRequestMessageProducer {
 
         rabbitTemplate.convertAndSend(routingKey, message);
     }
-    public void sendReplyMessage(boolean confirmation, Long athleteId) {
+    public void sendReplyMessage(AddAthleteResponseMessage responseMessage) {
 
-        String routingKey = "addAthleteReply=" + athleteId;
+        String routingKey = "addAthleteReply=" + responseMessage.getAthleteId();
 
         Queue queue = createQueue(routingKey);
         amqpAdmin.declareQueue(queue);
 
-        rabbitTemplate.convertAndSend(routingKey, confirmation);
+        rabbitTemplate.convertAndSend(routingKey, responseMessage);
     }
 
     private Queue createQueue(String queueName) {
