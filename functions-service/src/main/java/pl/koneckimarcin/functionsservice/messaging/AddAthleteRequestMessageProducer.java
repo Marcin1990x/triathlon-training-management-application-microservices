@@ -26,9 +26,9 @@ public class AddAthleteRequestMessageProducer {
 
         rabbitTemplate.convertAndSend(routingKey, message);
     }
-    public void sendReplyMessage(AddAthleteResponseMessage responseMessage) {
+    public void sendReplyMessage(AddAthleteResponseMessage responseMessage, Long coachId) {
 
-        String routingKey = "addAthleteReply=" + responseMessage.getAthleteId();
+        String routingKey = "addAthleteReply=" + coachId;
 
         Queue queue = createQueue(routingKey);
         amqpAdmin.declareQueue(queue);

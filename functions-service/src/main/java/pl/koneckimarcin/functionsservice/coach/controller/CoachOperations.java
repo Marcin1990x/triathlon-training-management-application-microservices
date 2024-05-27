@@ -23,9 +23,8 @@ public interface CoachOperations {
     @GetMapping("/coaches/{id}/sendCoachingRequest")
     public String addAthleteToCoachRequest(@PathVariable Long id, @RequestParam Long athleteId);
 
-    @PutMapping("/coaches/{id}/getCoachingReply")
-    public AddAthleteResponseMessage getCoachingReplyAndAssignAthlete
-            (@PathVariable Long id, @RequestParam Long athleteId);
+    @GetMapping("/coaches/{coachId}/getCoachingReply")
+    public AddAthleteResponseMessage getCoachingReply(@PathVariable Long coachId);
 
     //@PreAuthorize("hasAuthority('COACH') AND @authenticatedUserService.hasValidId(#coachId)")
     @PutMapping("/coaches/{coachId}/athletes/{athleteId}/remove")

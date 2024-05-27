@@ -20,8 +20,8 @@ export const checkPendingCoachingRequestsApi = (athleteId) => apiFunctionsClient
 
 export const getCoachingRequestApi = (athleteId) => apiFunctionsClient.get(`/athletes/${athleteId}/getCoachingRequest`)
 
-export const sendCoachingReplyApi = (athleteId, confirmation) => apiFunctionsClient.get(`/athletes/${athleteId}/sendCoachingReply`, {
+export const sendCoachingReplyApi = (athleteId, coachId, confirmation) => apiFunctionsClient.put(`/athletes/${athleteId}/sendCoachingReply`, {}, {
     params: {
-        confirmation
+        confirmation, coachId
     }
 })

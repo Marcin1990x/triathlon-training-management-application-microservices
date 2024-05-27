@@ -4,12 +4,19 @@ import CoachTrainingPlansComponent from "./CoachTrainingPlansComponent"
 import { useDataContextAthletes } from "./contexts/DataContextAthletes"
 import { useDataContextTrainings } from "./contexts/DataContextTrainings"
 import { useDataContextCoach } from "./contexts/DataContextCoach"
+import { getCoachingReplyApi } from "../api/CoachApiService"
+import { toast } from "react-hot-toast"
+import { useAuth } from "../security/AuthContext"
 
 export default function CoachComponent() {
 
     const dataContextAthletes = useDataContextAthletes()
     const dataContextTrainings = useDataContextTrainings()
     const dataContextCoach = useDataContextCoach()
+    const authContext = useAuth()
+
+    const successToast = (message) => toast.success(message)
+    const errorToast = (message) => toast.error(message)
 
     const buttonText = () => {
         return dataContextAthletes.athleteView ? 'See trainings page' : 'See athletes page';
@@ -19,7 +26,24 @@ export default function CoachComponent() {
         dataContextCoach.getCoach()
         dataContextTrainings.getCoachTrainingPlans()
         dataContextAthletes.getAthletes()
+        getCoachingReply()
     }, [])
+
+    const getCoachingReply = () => {
+        getCoachingReplyApi(authContext.coachId)
+            .then(response => {
+                console.log(response)
+                if(response.data.confirmation) {
+                    successToast('Athlete ' + response.data.athleteFirstName + ' ' + 
+                        response.data.athleteLastName + ' accepted your coaching request')
+                } else {
+                    errorToast('Athlete ' + response.data.athleteFirstName + ' ' + 
+                        response.data.athleteLastName + ' declined your coaching request')
+                }
+            })
+            .catch(error => console.log(error))
+    }
+    
 
     const handleSwitchViewBtn = () => {
         dataContextAthletes.toggleView()

@@ -16,3 +16,4 @@ export const addAthleteToCoachRequestApi = (coachId, athleteId) =>
             }
         }
     )
+export const getCoachingReplyApi = (coachId) => apiFunctionsClient.get(`coaches/${coachId}/getCoachingReply`)

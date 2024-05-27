@@ -56,9 +56,9 @@ public class AthleteController implements AthleteOperations {
     }
 
     @Override
-    public String sendCoachingReply(Long id, boolean confirmation) {
+    public String sendCoachingReplyAndAssignToCoach(Long athleteId, Long coachId, boolean confirmation) {
 
-        return athleteService.sendCoachingReply(id, confirmation);
+        return athleteService.sendCoachingReplyAndAssignToCoach(athleteId, coachId, confirmation);
     }
 
     @Override

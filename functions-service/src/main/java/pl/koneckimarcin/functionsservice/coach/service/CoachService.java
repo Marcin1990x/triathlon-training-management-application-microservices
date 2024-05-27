@@ -103,28 +103,14 @@ public class CoachService {
         return response;
     }
 
-    public AddAthleteResponseMessage getCoachingReplyAndAssignAthlete(Long id, Long athleteId) {
+    public AddAthleteResponseMessage getCoachingReply(Long coachId) {
 
-        if (!checkIfIsNotNull(id)) {
-            throw new ResourceNotFoundException("Coach", "id", String.valueOf(id));
+        if (!checkIfIsNotNull(coachId)) {
+            throw new ResourceNotFoundException("Coach", "id", String.valueOf(coachId));
         }
-        AddAthleteResponseMessage response = consumer.receiveReplyMessage(athleteId);
+        AddAthleteResponseMessage response = consumer.receiveReplyMessage(coachId);
 
-        if (response.isConfirmation()) {
-            assignAthleteToCoach(id, athleteId);
-        }
         return response;
-    }
-
-    private void assignAthleteToCoach(Long coachId, Long athleteId) {
-
-        CoachEntity coach = coachRepository.findById(coachId).get();
-
-        AthleteEntity athlete = athleteRepository.findById(athleteId).get();
-
-        setCoachIdForAthlete(athlete, coachId);
-        coach.getAthletes().add(athlete);
-        coachRepository.save(coach);
     }
 
     public Coach removeAthleteFromCoach(Long coachId, Long athleteId) {

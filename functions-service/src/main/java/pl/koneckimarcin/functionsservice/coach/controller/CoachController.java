@@ -33,9 +33,9 @@ public class CoachController implements CoachOperations {
     }
 
     @Override
-    public AddAthleteResponseMessage getCoachingReplyAndAssignAthlete(Long id, Long athleteId) {
+    public AddAthleteResponseMessage getCoachingReply(Long coachId) {
 
-        return coachService.getCoachingReplyAndAssignAthlete(id, athleteId);
+        return coachService.getCoachingReply(coachId);
     }
 
     @Override

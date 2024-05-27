@@ -8,6 +8,7 @@ import pl.koneckimarcin.functionsservice.athlete.dto.Athlete;
 import pl.koneckimarcin.functionsservice.athlete.dto.AthleteResponseDto;
 import pl.koneckimarcin.functionsservice.athlete.repository.AthleteRepository;
 import pl.koneckimarcin.functionsservice.clients.TrainingsClient;
+import pl.koneckimarcin.functionsservice.coach.CoachEntity;
 import pl.koneckimarcin.functionsservice.coach.repository.CoachRepository;
 import pl.koneckimarcin.functionsservice.dto.AddAthleteRequestMessage;
 import pl.koneckimarcin.functionsservice.dto.AddAthleteResponseMessage;
@@ -146,27 +147,44 @@ public class AthleteService {
         return request;
     }
 
-    public String sendCoachingReply(Long id, boolean confirmation) {
+    public String sendCoachingReplyAndAssignToCoach(Long athleteId, Long coachId, boolean confirmation) {
 
         String acceptResponse = "Request from the coach has been accepted.";
         String declineResponse = "Request from the coach has been declined.";
 
-        if (!checkIfIsNotNull(id)) {
-            throw new ResourceNotFoundException("Athlete", "id", String.valueOf(id));
+        if (!checkIfIsNotNull(athleteId)) {
+            throw new ResourceNotFoundException("Athlete", "id", String.valueOf(athleteId));
         }
 
-        AthleteEntity athlete = athleteRepository.findById(id).get();
+        AthleteEntity athlete = athleteRepository.findById(athleteId).get();
 
         producer.sendReplyMessage(new AddAthleteResponseMessage(
-                athlete.getId(), athlete.getFirstName(), athlete.getLastName(), confirmation
-                )
+                athlete.getId(), athlete.getFirstName(), athlete.getLastName(), confirmation), coachId
         );
 
         if (confirmation) {
+            assignAthleteToCoach(coachId, athleteId);
             return acceptResponse;
         } else {
             return declineResponse;
         }
+    }
+
+    private void assignAthleteToCoach(Long coachId, Long athleteId) {
+
+        CoachEntity coach = coachRepository.findById(coachId).get();
+
+        AthleteEntity athlete = athleteRepository.findById(athleteId).get();
+
+        setCoachIdForAthlete(athlete, coachId);
+        coach.getAthletes().add(athlete);
+        coachRepository.save(coach);
+    }
+
+    private void setCoachIdForAthlete(AthleteEntity athlete, Long coachId) {
+
+        athlete.setCoachId(coachId);
+        athleteRepository.save(athlete);
     }
 
     public int checkPendingCoachingRequests(Long id) {

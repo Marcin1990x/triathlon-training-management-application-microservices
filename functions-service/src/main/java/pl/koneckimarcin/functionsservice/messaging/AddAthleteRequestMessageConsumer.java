@@ -31,14 +31,14 @@ public class AddAthleteRequestMessageConsumer {
         return message;
     }
 
-    public AddAthleteResponseMessage receiveReplyMessage(Long athleteId) {
+    public AddAthleteResponseMessage receiveReplyMessage(Long coachId) {
 
-        String routingKey = REPLY_QUEUE_NAME + athleteId;
+        String routingKey = REPLY_QUEUE_NAME + coachId;
 
         AddAthleteResponseMessage reply = rabbitTemplate.receiveAndConvert(routingKey,
                 ParameterizedTypeReference.forType(AddAthleteResponseMessage.class));
 
-        amqpAdmin.deleteQueue(REQUEST_QUEUE_NAME + athleteId);
+        amqpAdmin.deleteQueue(REQUEST_QUEUE_NAME + reply.getAthleteId());
         amqpAdmin.deleteQueue(routingKey);
 
         return reply;

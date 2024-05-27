@@ -1,7 +1,4 @@
 import { createContext, useContext, useState } from "react";
-import { getTrainingPlansByAthleteIdApi, removeTrainingPlanFromAthleteApi, addTrainingPlanToAthleteWithDateApi } from "../../api/TrainingPlanApiService";
-import { getTrainingRealizationsByAthleteIdApi } from "../../api/TrainingRealizationApiService";
-import { getAthletesByCoachIdApi } from "../../api/AthletesApiService";
 import { getCoachByIdApi } from "../../api/CoachApiService";
 import { toast } from "react-hot-toast";
 import { useAuth } from "../../security/AuthContext";
@@ -15,9 +12,6 @@ const DataContextCoachProvider = ({children}) => {
     const [coach, setCoach] = useState([])
     const [athletes, setAthletes] = useState([])
     const [trainingPlans, setTrainingPlans] = useState([])
-    // const [athletePlans, setAthletePlans] = useState([])
-    // const [athleteRealizations, setAthleteRealizations] = useState([])
-    // const [athleteId, setAthleteId] = useState(null)
 
     const successToast = (message) => toast.success(message)
 
@@ -34,7 +28,7 @@ const DataContextCoachProvider = ({children}) => {
     }
 
     return (
-        <DataContextCoach.Provider value = {{getCoach}}>
+        <DataContextCoach.Provider value = {{getCoach, coach}}>
             {children}
         </DataContextCoach.Provider>
     )
