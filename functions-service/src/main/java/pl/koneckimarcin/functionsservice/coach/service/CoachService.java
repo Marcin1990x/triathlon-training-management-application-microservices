@@ -90,17 +90,18 @@ public class CoachService {
         if (!checkIfIsNotNull(coachId)) {
             throw new ResourceNotFoundException("Coach", "id", String.valueOf(coachId));
         }
-        //todo: check if athleteId is already assigned to coachId
 
-        CoachEntity coach = coachRepository.findById(coachId).get();
+        if(athleteRepository.findById(athleteId).get().getCoachId() == null) {
 
-        String response = "Request to add athlete has been successfully submitted.";
+            CoachEntity coach = coachRepository.findById(coachId).get();
 
-        producer.sendRequestMessage(
-                new AddAthleteRequestMessage(coach.getId(), coach.getFirstName(),
-                        coach.getLastName()), athleteId);
+            producer.sendRequestMessage(
+                    new AddAthleteRequestMessage(coach.getId(), coach.getFirstName(),
+                            coach.getLastName()), athleteId);
 
-        return response;
+            return "Request to add athlete has been successfully submitted.";
+        }
+        return "The selected athlete already has an assigned coach.";
     }
 
     public AddAthleteResponseMessage getCoachingReply(Long coachId) {

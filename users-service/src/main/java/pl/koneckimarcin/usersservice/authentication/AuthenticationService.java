@@ -40,6 +40,7 @@ public class AuthenticationService {
         } else {
             authenticationResponseDto.setCoach(false);
         }
+
 //        if(authenticatedUser.getStravaRefreshToken() != null) {
 //            authenticationResponseDto.setHasRefreshToken(true);
 //            authenticationResponseDto.setStravaAccessExpiresAt(authenticatedUser.getStravaAccessTokenExpirationTime());
