@@ -1,4 +1,4 @@
-import { apiClient } from "./ApiClient";
+import { apiClient, apiStravaClient } from "./ApiClient";
 
 
 export const refreshAccessTokenForUserApi = (id) => apiClient.post(`users/${id}/refreshAccessToken`)
@@ -8,3 +8,5 @@ export const addCoachToUserApi = (userId, coachId) => apiClient.put(`users/${use
 export const addAthleteToUserApi = (userId, athleteId) => apiClient.put(`users/${userId}/athletes/${athleteId}/add`)
 
 export const getUserByIdApi = (userId) => apiClient.get(`users/${userId}`)
+
+export const getUserStravaDataApi = (userId) => apiStravaClient.get(`strava/${userId}`)

@@ -36,8 +36,8 @@ export default function AuthProvider({children}) {
                 setIsAthlete(response.data.athlete)
                 setCoachId(response.data.coachId)
                 setIsCoach(response.data.coach)
-                setHasRefreshToken(response.data.hasRefreshToken)
-                setStravaAccessExpiresAt(response.data.stravaAccessExpiresAt)
+                setHasRefreshToken(response.data.hasRefreshToken) // do i need this?
+                setStravaAccessExpiresAt(response.data.stravaAccessExpiresAt) // // do i need this?
 
                 const newInterceptor = apiClient.interceptors.request.use (
                         (config) => {

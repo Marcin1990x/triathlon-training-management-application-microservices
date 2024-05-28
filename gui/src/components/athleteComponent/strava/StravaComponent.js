@@ -1,15 +1,21 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useAuth } from "../../security/AuthContext"
 import { toast } from "react-hot-toast"
 import moment from "moment"
 import { synchronizeActivitiesForAthleteApi } from "../../api/TrainingRealizationApiService"
+import { useDataContextAthlete } from "../contexts/DataContextAthlete"
 
 const StravaComponent = () => {
 
     const successToast = (message) => toast.success(message)
 
-    const {hasRefreshToken, refreshAccessToken, athleteId, stravaAccessExpiresAt} = useAuth()
+    const {getUserStravaData, stravaUserData} = useDataContextAthlete()
+    const {refreshAccessToken, athleteId, stravaAccessExpiresAt} = useAuth()
     const [syncBtnVisible, setSyncBtnVisible] = useState(false)
+
+    useEffect ( () => {
+        getUserStravaData()
+        }, [])
 
     const handleConnectStravaBtn = () => {
         if(isAccessTokenExpired()){
@@ -52,12 +58,12 @@ const StravaComponent = () => {
                 <div className="row">
                     <div className="col"></div>
                     <div className="col">
-                        {!hasRefreshToken && 
+                        {!stravaUserData.refreshToken && 
                             <div className="notConnected">
                                 <p>You need to authenticate with your strava credentials...</p>
                             </div>
                         }
-                        {hasRefreshToken && 
+                        {stravaUserData.refreshToken && 
                             <div className="connected">
                                 {!syncBtnVisible &&
                                 <button className = "btn btn-outline-primary m-3" 

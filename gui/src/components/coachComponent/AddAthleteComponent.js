@@ -23,9 +23,7 @@ const AddAthleteComponent = () => {
 
     const handleSetSearchBtn = () => {
         
-
         if(lastname.length >= 2) {
-
 
         getByLastnameApi(lastname)
             .then(response => {

@@ -29,7 +29,11 @@ export default function TriathlonTrainingManagement() {
                                         <AthleteComponent /> 
                                     </DataContextAthleteProvider>
                                     } />
-                                <Route path = '/athlete/strava' element = { <StravaComponent /> } />
+                                <Route path = '/athlete/strava' element = {
+                                    <DataContextAthleteProvider>
+                                        <StravaComponent />
+                                    </DataContextAthleteProvider>
+                                    } />
                                 <Route path = '/register' element = { <RegisterComponent /> } />
                                 <Route path = '/new' element = { <NewUserComponent /> } />
                                 <Route path = '/coach' element = 
