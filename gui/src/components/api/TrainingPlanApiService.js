@@ -1,6 +1,4 @@
-import { apiClient, apiTrainingsClient } from "./ApiClient"
-
-export const getTrainingPlansByAthleteIdApi = (id) => apiClient.get(`athletes/${id}/training-plans`)
+import { apiTrainingsClient } from "./ApiClient"
 
 export const getTrainingPlansByCoachIdApi = (coachId) => apiTrainingsClient.get(`training-plans/coach`, {
     params: {

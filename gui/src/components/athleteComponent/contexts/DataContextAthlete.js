@@ -1,7 +1,5 @@
 import { createContext, useContext, useState } from "react";
 import { useAuth } from "../../security/AuthContext";
-import { getTrainingPlansByAthleteIdApi } from "../../api/TrainingPlanApiService";
-import { getTrainingRealizationsByAthleteIdApi } from "../../api/TrainingRealizationApiService";
 import { getAthleteByIdApi, checkPendingCoachingRequestsApi, getCoachingRequestApi, sendCoachingReplyApi } from "../../api/AthletesApiService";
 import { getCoachByIdApi } from "../../api/CoachApiService";
 import { getUserStravaDataApi } from "../../api/StravaApiService";
@@ -22,22 +20,6 @@ const DataContextAthleteProvider = ({children}) => {
 
     const authContext = useAuth()
     
-    const getTrainingPlans = () => { // no useful ? data from athlete
-        getTrainingPlansByAthleteIdApi(authContext.athleteId)
-            .then(response => {
-                console.log(response)
-                setTrainingPlans(response.data)
-            })
-            .catch(error => console.log(error))
-    }
-    const getTrainingRealizations = () => { // no useful ? data from athlete
-        getTrainingRealizationsByAthleteIdApi(authContext.athleteId)
-            .then(response => {
-                console.log(response)
-                setTrainingRealizations(response.data)
-            })
-            .catch(error => console.log(error))
-    }
     const getAthlete = () => {
         getAthleteByIdApi(authContext.athleteId)
             .then(response => {
@@ -97,7 +79,7 @@ const DataContextAthleteProvider = ({children}) => {
     }
 
     return (
-        <DataContextAthlete.Provider value = {{getTrainingPlans, getTrainingRealizations, trainingPlans, trainingRealizations,
+        <DataContextAthlete.Provider value = {{trainingPlans, trainingRealizations,
                 setActiveTrainingFunction, activeTraining, getAthlete, athlete, coach, checkPendingCoachingRequests, requestCount,
                 getCoachingRequest, coachingRequest, sendCoachingReply, getUserStravaData, stravaUserData
             }}>

@@ -18,7 +18,6 @@ public interface TrainingRealizationOperations {
     @DeleteMapping("/training-realizations/{id}")
     public void deleteById(@PathVariable String id);
 
-
     //    @PreAuthorize("hasAuthority('ATHLETE') AND @authenticatedUserService.hasTrainingRealizationInItsResources(#id)")
     @PutMapping("/training-realizations/{id}")
     public TrainingRealization updateTrainingRealizationById(@PathVariable String id,

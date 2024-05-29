@@ -2,10 +2,11 @@ import { useState } from "react"
 import FeelingBox from "./FeelingBox"
 import { useDataContextAthlete } from "./contexts/DataContextAthlete"
 import StagesTable from "../coachComponent/StagesTable"
+import { deleteByIdApi } from "../api/TrainingRealizationApiService"
 
 const TrainingView = (props) => {
 
-    const {activeTraining} = useDataContextAthlete()
+    const {activeTraining, setActiveTrainingFunction, getAthlete} = useDataContextAthlete()
 
     const training = activeTraining
 
@@ -14,6 +15,15 @@ const TrainingView = (props) => {
         if(feelingsBoxVisible){
             setFeelingsBoxVisible(false)
         } else setFeelingsBoxVisible(true)
+    }
+    const handleRemoveActivity = (id) => {
+        deleteByIdApi(id)
+            .then(response => {
+                console.log(response)
+                setActiveTrainingFunction(null)
+                getAthlete()
+            })
+            .catch(error => console.log(error))
     }
     if(training && training.trainingPlanStatus) {
         return (
@@ -50,9 +60,16 @@ const TrainingView = (props) => {
                     </ul>      
                 </div>
                 <div>
-                    <button className = "btn btn-outline-primary m-1" 
-                        onClick = {() => handleAddFeelings(training.id)}>Add feelings
-                    </button>
+                    <div>
+                        <button className = "btn btn-outline-primary m-1" 
+                            onClick = {() => handleAddFeelings(training.id)}>Add feelings
+                        </button>
+                    </div>
+                    <div>
+                        <button className = "btn btn-outline-danger m-1" 
+                            onClick = {() => handleRemoveActivity(training.id)}>Remove activity
+                        </button>
+                    </div>
                     {
                         feelingsBoxVisible && <FeelingBox trainingId = {training.id} 
                             refreshTrainings = {props.refreshTrainings}/>

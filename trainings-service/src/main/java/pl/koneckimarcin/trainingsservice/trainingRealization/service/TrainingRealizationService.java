@@ -33,11 +33,10 @@ public class TrainingRealizationService {
 
     public void deleteById(String id) {
 
-        if (checkIfIsNotNull(id)) {
-            trainingRealizationRepository.deleteById(id);
-        } else {
+        if (!checkIfIsNotNull(id)) {
             throw new ResourceNotFoundException("TrainingRealization", "id", String.valueOf(id));
         }
+        trainingRealizationRepository.deleteById(id);
     }
 
     public TrainingRealization updateTrainingRealizationById(String id, TrainingRealizationRequest request) {

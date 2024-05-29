@@ -75,6 +75,7 @@ const DataContextAthletesProvider = ({children}) => {
             .catch(error => console.log(error))
     }
     function extractDate(dateWithTime) {
+
         const date = new Date(dateWithTime)
         return date.toISOString().split('T')[0]
     }

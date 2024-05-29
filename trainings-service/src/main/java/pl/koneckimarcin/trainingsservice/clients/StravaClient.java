@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import pl.koneckimarcin.trainingsservice.trainingRealization.external.StravaActivityDto;
 
 @FeignClient(name = "STRAVA-SERVICE",
-url = "${strava-service.url}")
+        url = "${strava-service.url}")
 public interface StravaClient {
     @GetMapping("/strava/getActivities")
     StravaActivityDto[] getActivities(@RequestParam Long userId);
