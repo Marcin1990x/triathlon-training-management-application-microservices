@@ -20,10 +20,6 @@ public class TrainingRealizationService {
 
     @Autowired
     private TrainingRealizationRepository trainingRealizationRepository;
-
-//    @Autowired
-//    private RestTemplate restTemplate;
-
     @Autowired
     private StravaClient stravaClient;
 
@@ -42,53 +38,6 @@ public class TrainingRealizationService {
         } else {
             throw new ResourceNotFoundException("TrainingRealization", "id", String.valueOf(id));
         }
-    }
-
-    public void synchronizeActivitiesWithStravaForAthleteByUserId(Long userId, Long athleteId) {
-
-        StravaActivityDto[] activitiesFromStrava = getAllActivitiesFromStrava(userId);
-
-        List<Long> athleteRealizationsIds = getAthleteRealizationIds(athleteId);
-
-        List<StravaActivityDto> newActivities =
-                getNonDuplicatedActivities(athleteRealizationsIds, activitiesFromStrava);
-
-        mapAndSaveTrainingRealizationsForAthlete(newActivities, athleteId);
-        System.out.println(newActivities);
-    }
-
-    private StravaActivityDto[] getAllActivitiesFromStrava(Long userId) {
-        return stravaClient.getActivities(userId);
-    }
-
-    private List<Long> getAthleteRealizationIds(Long athleteId) {
-
-        return trainingRealizationRepository.findByAthleteId(athleteId)
-                .stream().map(TrainingRealizationEntity::getStravaId).toList();
-    }
-
-    private List<StravaActivityDto> getNonDuplicatedActivities(List<Long> existingIds,
-                                                               StravaActivityDto[] activities) {
-        List<StravaActivityDto> nonDuplicatedActivities = new ArrayList<>();
-
-        for (StravaActivityDto activity : activities) {
-            if (!existingIds.contains(activity.getId())) {
-                nonDuplicatedActivities.add(activity);
-            }
-        }
-        return nonDuplicatedActivities;
-    }
-
-    private void mapAndSaveTrainingRealizationsForAthlete(List<StravaActivityDto> activities, Long athleteId) {
-
-        List<TrainingRealizationEntity> toSaveInDb = new ArrayList<>();
-
-        for (StravaActivityDto activity : activities) {
-            TrainingRealizationEntity realization = activity.mapToTrainingRealizationEntity();
-            realization.setAthleteId(athleteId);
-            toSaveInDb.add(realization);
-        }
-        trainingRealizationRepository.saveAll(toSaveInDb);
     }
 
     public TrainingRealization updateTrainingRealizationById(String id, TrainingRealizationRequest request) {
@@ -138,5 +87,53 @@ public class TrainingRealizationService {
 
         return TrainingRealization
                 .fromTrainingRealizationEntity(trainingRealizationRepository.findById(id).get());
+    }
+
+    public Integer synchronizeStravaActivitiesForAthleteByUserId(Long athleteId, Long userId) {
+
+        StravaActivityDto[] activitiesFromStrava = getAllActivitiesFromStrava(userId);
+
+        List<Long> athleteRealizationsIds = getAthleteRealizationIds(athleteId);
+
+        List<StravaActivityDto> newActivities =
+                getNonDuplicatedActivities(athleteRealizationsIds, activitiesFromStrava);
+
+        mapAndSaveTrainingRealizationsForAthlete(newActivities, athleteId);
+
+        return newActivities.size();
+    }
+
+    private StravaActivityDto[] getAllActivitiesFromStrava(Long userId) {
+        return stravaClient.getActivities(userId);
+    }
+
+    private List<Long> getAthleteRealizationIds(Long athleteId) {
+
+        return trainingRealizationRepository.findByAthleteId(athleteId)
+                .stream().map(TrainingRealizationEntity::getStravaId).toList();
+    }
+
+    private List<StravaActivityDto> getNonDuplicatedActivities(List<Long> existingIds,
+                                                               StravaActivityDto[] activities) {
+        List<StravaActivityDto> nonDuplicatedActivities = new ArrayList<>();
+
+        for (StravaActivityDto activity : activities) {
+            if (!existingIds.contains(activity.getId())) {
+                nonDuplicatedActivities.add(activity);
+            }
+        }
+        return nonDuplicatedActivities;
+    }
+
+    private void mapAndSaveTrainingRealizationsForAthlete(List<StravaActivityDto> activities, Long athleteId) {
+
+        List<TrainingRealizationEntity> toSaveInDb = new ArrayList<>();
+
+        for (StravaActivityDto activity : activities) {
+            TrainingRealizationEntity realization = activity.mapToTrainingRealizationEntity();
+            realization.setAthleteId(athleteId);
+            toSaveInDb.add(realization);
+        }
+        trainingRealizationRepository.saveAll(toSaveInDb);
     }
 }

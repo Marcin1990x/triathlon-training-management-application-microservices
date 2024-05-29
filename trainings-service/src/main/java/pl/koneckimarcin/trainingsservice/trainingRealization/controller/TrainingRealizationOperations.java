@@ -18,15 +18,16 @@ public interface TrainingRealizationOperations {
     @DeleteMapping("/training-realizations/{id}")
     public void deleteById(@PathVariable String id);
 
-//    @PreAuthorize("hasAuthority('ATHLETE')")
-    @PostMapping("/training-realizations/strava")
-    public void synchronizeActivitiesWithStravaForAthleteByUserId(
-            @RequestParam Long userId, @RequestParam Long athleteId);
 
     //    @PreAuthorize("hasAuthority('ATHLETE') AND @authenticatedUserService.hasTrainingRealizationInItsResources(#id)")
     @PutMapping("/training-realizations/{id}")
     public TrainingRealization updateTrainingRealizationById(@PathVariable String id,
                                                              @RequestBody TrainingRealizationRequest request);
+
     @PostMapping("/training-realizations")
     public TrainingRealization addNew(@RequestBody TrainingRealization trainingRealization);
+
+    @PostMapping("/training-realizations/synchronizeStrava")
+    public Integer synchronizeStravaActivitiesForAthleteByUserId(@RequestParam Long athleteId,
+                                                                 @RequestParam Long userId);
 }

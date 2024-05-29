@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import pl.koneckimarcin.usersservice.user.external.StravaUserData;
 
 @FeignClient(name = "STRAVA-SERVICE",
-    url = "${strava-service.url")
+    url = "${strava-service.url}")
 public interface StravaClient {
 
     @PutMapping("/strava/{userId}/refreshAccessToken")

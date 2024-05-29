@@ -132,8 +132,6 @@ public class StravaService {
         );
         String userAccessToken = getAccessTokenForUser(userId);
 
-//        RestTemplate rest = new RestTemplate();
-
         return createRest().getForObject(
                 STRAVA_URL + "athlete/activities?access_token={accessToken}&after={after}&per_page=100",
                 ActivityClientDto[].class, userAccessToken, after.toEpochSecond()

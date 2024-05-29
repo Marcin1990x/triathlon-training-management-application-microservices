@@ -33,12 +33,6 @@ public class TrainingRealizationController implements TrainingRealizationOperati
     }
 
     @Override
-    public void synchronizeActivitiesWithStravaForAthleteByUserId(Long userId, Long athleteId) {
-
-        trainingRealizationService.synchronizeActivitiesWithStravaForAthleteByUserId(userId, athleteId);
-    }
-
-    @Override
     public TrainingRealization updateTrainingRealizationById(String id, TrainingRealizationRequest request) {
         return trainingRealizationService.updateTrainingRealizationById(id, request);
     }
@@ -47,5 +41,11 @@ public class TrainingRealizationController implements TrainingRealizationOperati
     public TrainingRealization addNew(@Valid TrainingRealization trainingRealization) {
 
         return trainingRealizationService.addNew(trainingRealization);
+    }
+
+    @Override
+    public Integer synchronizeStravaActivitiesForAthleteByUserId(Long athleteId, Long userId) {
+
+        return trainingRealizationService.synchronizeStravaActivitiesForAthleteByUserId(athleteId, userId);
     }
 }
