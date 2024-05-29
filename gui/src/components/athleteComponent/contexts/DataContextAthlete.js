@@ -4,7 +4,7 @@ import { getTrainingPlansByAthleteIdApi } from "../../api/TrainingPlanApiService
 import { getTrainingRealizationsByAthleteIdApi } from "../../api/TrainingRealizationApiService";
 import { getAthleteByIdApi, checkPendingCoachingRequestsApi, getCoachingRequestApi, sendCoachingReplyApi } from "../../api/AthletesApiService";
 import { getCoachByIdApi } from "../../api/CoachApiService";
-import { getUserStravaDataApi } from "../../api/UserApiService";
+import { getUserStravaDataApi } from "../../api/StravaApiService";
 
 const DataContextAthlete = createContext()
 export const useDataContextAthlete = () => useContext(DataContextAthlete)

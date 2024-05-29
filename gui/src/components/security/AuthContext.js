@@ -16,7 +16,6 @@ export default function AuthProvider({children}) {
     const [coachId, setCoachId] = useState(null)
     const [isCoach, setIsCoach] = useState(false)
     const [hasRefreshToken, setHasRefreshToken] = useState(false)
-    const [stravaAccessExpiresAt, setStravaAccessExpiresAt] = useState(null)
 
     const [interceptor, setInterceptor] = useState(null)
 
@@ -37,7 +36,6 @@ export default function AuthProvider({children}) {
                 setCoachId(response.data.coachId)
                 setIsCoach(response.data.coach)
                 setHasRefreshToken(response.data.hasRefreshToken) // do i need this?
-                setStravaAccessExpiresAt(response.data.stravaAccessExpiresAt) // // do i need this?
 
                 const newInterceptor = apiClient.interceptors.request.use (
                         (config) => {
@@ -74,14 +72,12 @@ export default function AuthProvider({children}) {
         setCoachId(null)
         setIsCoach(false)
         setHasRefreshToken(false)
-        setStravaAccessExpiresAt(null)
     }
 
     const refreshAccessToken= () => {
          refreshAccessTokenForUserApi(userId)
             .then(response => {
                 console.log(response)
-                setStravaAccessExpiresAt(response.data)
                 return true 
             })
             .catch(error => {
@@ -92,7 +88,7 @@ export default function AuthProvider({children}) {
 
     return (
         <AuthContext.Provider value = {{login, logout, token, isAuthenticated, userId, athleteId, isAthlete, coachId, isCoach,
-                                hasRefreshToken, stravaAccessExpiresAt, refreshAccessToken}}>
+                                hasRefreshToken, refreshAccessToken}}>
             {children}
         </AuthContext.Provider>
     )
