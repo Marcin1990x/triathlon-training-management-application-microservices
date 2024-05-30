@@ -71,7 +71,7 @@ const StravaComponent = () => {
                                 }
                                 {syncBtnVisible &&
                                 <button className = "btn btn-outline-primary m-3" 
-                                    onClick = {() => handleSynchronizeBtn()}>Synchronize activities</button>
+                                    onClick = {() => handleSynchronizeBtn()}>Synchronize activities (last 14 days)</button>
                                 }
                             </div>
                         }

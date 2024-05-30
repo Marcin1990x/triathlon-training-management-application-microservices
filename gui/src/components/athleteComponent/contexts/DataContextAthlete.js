@@ -74,7 +74,10 @@ const DataContextAthleteProvider = ({children}) => {
     }
     const sendCoachingReply = (confirmation) => {
         sendCoachingReplyApi(authContext.athleteId, coachingRequest.coachId, confirmation)
-            .then(response => console.log(response))
+            .then(response => {
+                console.log(response)
+                getAthlete()
+            })
             .catch(error => console.log(error))
     }
 

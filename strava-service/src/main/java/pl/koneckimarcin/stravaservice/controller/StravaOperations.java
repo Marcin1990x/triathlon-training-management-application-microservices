@@ -10,7 +10,7 @@ public interface StravaOperations {
     @GetMapping("/getActivities")
     public ActivityClientDto[] getActivities(@RequestParam Long userId);
 
-    @PostMapping() // temporary method for tests
+    @PostMapping() // temp method for tests
     public StravaDataEntity addRefreshTokenForUser(@RequestParam Long userId, @RequestParam String refreshToken);
 
     @GetMapping("/{userId}")

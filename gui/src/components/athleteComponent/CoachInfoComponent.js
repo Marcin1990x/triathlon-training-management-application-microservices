@@ -4,10 +4,10 @@ import { toast } from "react-hot-toast"
 
 const CoachInfoComponent = () => {
 
-    const dataContextAthlete = useDataContextAthlete()
     const [checkView, setCheckView] = useState(false)
 
-    const {coach, requestCount, getCoachingRequest, coachingRequest, sendCoachingReply} = useDataContextAthlete()
+    const {coach, requestCount, getCoachingRequest, 
+        coachingRequest, sendCoachingReply, checkPendingCoachingRequests} = useDataContextAthlete()
 
     const successToast = (message) => toast.success(message)
 
@@ -19,14 +19,14 @@ const CoachInfoComponent = () => {
     const handleAcceptBtn = () => {
         setCheckView(false)
         sendCoachingReply(true)
-        dataContextAthlete.checkPendingCoachingRequests()
+        checkPendingCoachingRequests()
         successToast('Request accepted. ' + coachingRequest.coachFirstName + " " +  coachingRequest.coachLastName + " is now your coach.")
 
     }
     const handleDeclineBtn = () => {
         setCheckView(false)
         sendCoachingReply(false)
-        dataContextAthlete.checkPendingCoachingRequests()
+        checkPendingCoachingRequests()
         successToast('Request declined.')
     }
 
@@ -49,7 +49,7 @@ const CoachInfoComponent = () => {
                 </div>
             }
             {coach && 
-                <p>{dataContextAthlete.coach.firstName} {dataContextAthlete.coach.lastName}</p>
+                <p>{coach.firstName} {coach.lastName}</p>
             }
         </div>
     )

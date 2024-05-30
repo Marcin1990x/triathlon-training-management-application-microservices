@@ -126,10 +126,12 @@ public class StravaService {
 
     public ActivityClientDto[] getActivities(Long userId) {
 
-        ZonedDateTime after = ZonedDateTime.of(
-                2024, 4, 1, 0, 0, 0, 0,
-                ZoneId.of("Europe/Warsaw")
-        );
+        ZonedDateTime after = ZonedDateTime.now(ZoneId.of("Europe/Warsaw")).minusDays(14);
+
+//        ZonedDateTime after = ZonedDateTime.of(
+//                2024, 4, 1, 0, 0, 0, 0,
+//                ZoneId.of("Europe/Warsaw")
+//        );
         String userAccessToken = getAccessTokenForUser(userId);
 
         return createRest().getForObject(

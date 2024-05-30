@@ -37,7 +37,6 @@ const HeaderComponent = () => {
                             <ul className="navbar-nav">
                                 <li className="nav-item fs-5">
                                     <div>
-                                        <button className="btn btn-dark btn-sm m-1">Button</button>
                                         {isAuthenticated && 
                                         <button className="btn btn-danger btn-sm m-1" onClick={() => handleLogoutBtn()}>Logout</button> }
                                     </div>
