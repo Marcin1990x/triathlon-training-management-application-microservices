@@ -90,6 +90,13 @@ services:
         - postgres
       environment:
         - SPRING_PROFILES_ACTIVE=docker
+    ui-container:
+      container_name: ui-container
+      image: marcin1990/ui-container:latest
+      ports:
+        - "3000:3000"
+      depends_on:
+        - service-registry-container
     functions-container:
       container_name: functions-container
       image: marcin1990/functions-container:latest
@@ -117,8 +124,8 @@ services:
         - postgres
       environment:
         - SPRING_PROFILES_ACTIVE=docker
-        - STRAVA_CLIENT_ID=*
-        - STRAVA_CLIENT_SECRET=*
+        - STRAVA_CLIENT_ID=1
+        - STRAVA_CLIENT_SECRET=1
     trainings-container:
       container_name: trainings-container
       image: marcin1990/trainings-container:latest
