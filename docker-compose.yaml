@@ -124,8 +124,8 @@ services:
         - postgres
       environment:
         - SPRING_PROFILES_ACTIVE=docker
-        - STRAVA_CLIENT_ID=1
-        - STRAVA_CLIENT_SECRET=1
+        - STRAVA_CLIENT_ID=*
+        - STRAVA_CLIENT_SECRET=*
     trainings-container:
       container_name: trainings-container
       image: marcin1990/trainings-container:latest
