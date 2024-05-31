@@ -1,6 +1,6 @@
-import { apiClient, apiTrainingsClient } from "./ApiClient"
+import { apiClient } from "./ApiClient"
 
-export const synchronizeActivitiesForAthleteApi = (athleteId, userId) => apiTrainingsClient.post(`/training-realizations/synchronizeStrava`, {}, 
+export const synchronizeActivitiesForAthleteApi = (athleteId, userId) => apiClient.post(`/training-realizations/synchronizeStrava`, {}, 
     {
         params: {
             athleteId,
@@ -8,8 +8,8 @@ export const synchronizeActivitiesForAthleteApi = (athleteId, userId) => apiTrai
         }
     }
 )
-export const updateTrainingRealizationByIdApi = (id, updateRequest) => apiTrainingsClient.put(`training-realizations/${id}`, updateRequest)
+export const updateTrainingRealizationByIdApi = (id, updateRequest) => apiClient.put(`training-realizations/${id}`, updateRequest)
 
-export const addNewTrainingRealization = (training) => apiTrainingsClient.post(`training-realizations`, training)
+export const addNewTrainingRealization = (training) => apiClient.post(`training-realizations`, training)
 
-export const deleteByIdApi = (id) => apiTrainingsClient.delete(`training-realizations/${id}`)
+export const deleteByIdApi = (id) => apiClient.delete(`training-realizations/${id}`)

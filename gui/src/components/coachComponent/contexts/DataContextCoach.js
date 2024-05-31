@@ -10,10 +10,7 @@ export const useDataContextCoach = () => useContext(DataContextCoach)
 const DataContextCoachProvider = ({children}) => {
     
     const [coach, setCoach] = useState([])
-    const [athletes, setAthletes] = useState([])
     const [trainingPlans, setTrainingPlans] = useState([])
-
-    const successToast = (message) => toast.success(message)
 
     const authContext = useAuth()
 

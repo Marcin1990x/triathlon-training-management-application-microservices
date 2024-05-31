@@ -1,13 +1,13 @@
-import { apiTrainingsClient } from "./ApiClient"
+import { apiClient } from "./ApiClient"
 
-export const getTrainingPlansByCoachIdApi = (coachId) => apiTrainingsClient.get(`training-plans/coach`, {
+export const getTrainingPlansByCoachIdApi = (coachId) => apiClient.get(`training-plans/coach`, {
     params: {
         coachId
     }
 })
 
 export const addTrainingPlanToAthleteWithDateApi = (athleteId, planId, plannedDate) => 
-    apiTrainingsClient.post(`training-plans/${planId}`, {},
+    apiClient.post(`training-plans/${planId}`, {},
     {
         params: {
             athleteId,
@@ -15,8 +15,8 @@ export const addTrainingPlanToAthleteWithDateApi = (athleteId, planId, plannedDa
         }
     })
 
-export const addNewTrainingPlanToCoachApi = (trainingPlan) => apiTrainingsClient.post(`training-plans`, trainingPlan)
+export const addNewTrainingPlanToCoachApi = (trainingPlan) => apiClient.post(`training-plans`, trainingPlan)
 
-export const removeTrainingPlanApi = (id) => apiTrainingsClient.delete(`training-plans/${id}`)
+export const removeTrainingPlanApi = (id) => apiClient.delete(`training-plans/${id}`)
 
-export const getTrainingPlanByIdApi = (id) => apiTrainingsClient.get(`training-plans/${id}`)
+export const getTrainingPlanByIdApi = (id) => apiClient.get(`training-plans/${id}`)
