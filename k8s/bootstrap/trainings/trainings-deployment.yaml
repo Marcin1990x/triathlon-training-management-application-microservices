@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: trainings
+  labels:
+    app: trainings
+spec:
+  replicas: 1
+  template:
+    metadata:
+      name: trainings
+      labels:
+        app: trainings
+    spec:
+      containers:
+        - name: trainings
+          image: marcin1990/trainings-container:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8084
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: k8s
+      restartPolicy: Always
+  selector:
+    matchLabels:
+      app: trainings
+            

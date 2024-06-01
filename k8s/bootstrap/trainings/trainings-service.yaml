@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: trainings
+spec:
+  selector:
+    app: trainings
+  ports:
+    - port: 80
+      targetPort: 8084
+  type: LoadBalancer

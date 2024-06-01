@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: strava
+  labels:
+    app: strava
+spec:
+  replicas: 1
+  template:
+    metadata:
+      name: strava
+      labels:
+        app: strava
+    spec:
+      containers:
+        - name: strava
+          image: marcin1990/strava-container:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8082
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: k8s
+            - name: STRAVA_CLIENT_ID
+              value: test
+            - name: STRAVA_CLIENT_SECRET
+              value: test
+      restartPolicy: Always
+  selector:
+    matchLabels:
+      app: strava
+            
