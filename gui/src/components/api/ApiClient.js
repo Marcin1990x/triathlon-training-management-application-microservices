@@ -11,9 +11,3 @@ export const apiClient = axios.create(
         baseURL: baseURL
     }
 )
-
-// export const apiClient = axios.create(
-//     {
-//         baseURL: process.env.REACT_APP_API_GATEWAY_URL || 'http://localhost:8086'
-//     }
-// )
