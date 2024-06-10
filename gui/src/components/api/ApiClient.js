@@ -1,10 +1,7 @@
 import axios from "axios"
 
 let baseURL = 'http://localhost:8086'
-
-if(process.env.NODE_ENV == 'production') {
-    baseURL = process.env.REACT_APP_API_GATEWAY_URL
-}
+// let baseURL = `http://gateway:8086`
 
 export const apiClient = axios.create(
     {
