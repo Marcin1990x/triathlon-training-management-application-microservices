@@ -5,7 +5,12 @@ metadata:
   labels:
     app: users
 spec:
-  replicas: 1
+  replicas: 2
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
   template:
     metadata:
       name: users
@@ -21,6 +26,12 @@ spec:
           env:
             - name: SPRING_PROFILES_ACTIVE
               value: k8s
+          livenessProbe:
+            httpGet:
+              path: /users/health
+              port: 8080
+            initialDelaySeconds: 60
+            periodSeconds: 30
       restartPolicy: Always
   selector:
     matchLabels:
