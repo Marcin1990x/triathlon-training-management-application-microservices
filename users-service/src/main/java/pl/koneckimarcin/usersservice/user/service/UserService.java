@@ -169,6 +169,11 @@ public class UserService {
 
         return user;
     }
+
+    public String checkHealth() {
+
+        return "Healthy";
+    }
 }
 
 

@@ -15,6 +15,11 @@ public class UserController implements UserOperations {
     private UserService userService;
 
     @Override
+    public String checkHealth() {
+        return userService.checkHealth();
+    }
+
+    @Override
     public List<User> getAllUsers() {
         return userService.getAllUsers();
     }

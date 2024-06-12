@@ -11,6 +11,9 @@ import java.util.List;
 
 public interface UserOperations {
 
+    @GetMapping("/users/health")
+    public String checkHealth();
+
     //@PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/users")
     public List<User> getAllUsers();
