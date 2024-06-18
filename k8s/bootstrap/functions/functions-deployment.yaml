@@ -5,7 +5,12 @@ metadata:
   labels:
     app: functions
 spec:
-  replicas: 1
+  replicas: 2
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
   template:
     metadata:
       name: functions
@@ -17,7 +22,7 @@ spec:
           image: marcin1990/functions-container:latest
           imagePullPolicy: Always
           ports:
-            - containerPort: 8081
+            - containerPort: 8082
           env:
             - name: SPRING_PROFILES_ACTIVE
               value: k8s
