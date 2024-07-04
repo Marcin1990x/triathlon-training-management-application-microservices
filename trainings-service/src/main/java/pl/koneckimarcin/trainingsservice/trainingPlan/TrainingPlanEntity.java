@@ -116,12 +116,14 @@ public class TrainingPlanEntity {
     public String toString() {
         return "TrainingPlanEntity{" +
                 "id=" + id +
+                ", athleteId=" + athleteId +
+                ", coachId=" + coachId +
                 ", name='" + name + '\'' +
                 ", trainingType=" + trainingType +
                 ", trainingPlanStatus=" + trainingPlanStatus +
                 ", description='" + description + '\'' +
                 ", plannedDate=" + plannedDate +
-                ", stage=" + stages +
+                ", stages=" + stages +
                 '}';
     }
 }

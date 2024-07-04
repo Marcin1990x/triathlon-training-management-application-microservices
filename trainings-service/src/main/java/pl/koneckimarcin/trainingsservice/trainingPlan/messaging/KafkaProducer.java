@@ -33,11 +33,11 @@ public class KafkaProducer {
         );
     }
     @Bean
-    public ProducerFactory<String, Message> producerFactory() {
+    public ProducerFactory<String, TrainingPlanMessage> producerFactory() {
         return new DefaultKafkaProducerFactory<>(producerConfiguration());
     }
     @Bean
-    public KafkaTemplate<String, Message> kafkaTemplate() {
+    public KafkaTemplate<String, TrainingPlanMessage> kafkaTemplate() {
         return new KafkaTemplate<>(producerFactory());
     }
 }
