@@ -46,4 +46,10 @@ public class UserController implements UserOperations {
 
         return userService.refreshAccessTokenForUser(id);
     }
+
+    @Override
+    public String getEmailAddress(Long athleteId) {
+
+        return userService.getEmailAddress(athleteId);
+    }
 }

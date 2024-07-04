@@ -174,6 +174,12 @@ public class UserService {
 
         return "Healthy";
     }
+
+    public String getEmailAddress(Long athleteId) {
+
+        UserEntity user = userRepository.findByAthleteEntityId(athleteId).get();
+        return user.getEmailAddress();
+    }
 }
 
 

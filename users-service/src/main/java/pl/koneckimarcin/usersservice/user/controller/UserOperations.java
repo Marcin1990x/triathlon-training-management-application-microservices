@@ -4,6 +4,7 @@ package pl.koneckimarcin.usersservice.user.controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import pl.koneckimarcin.usersservice.user.dto.User;
 import pl.koneckimarcin.usersservice.user.external.StravaUserData;
 
@@ -35,5 +36,8 @@ public interface UserOperations {
 //    //@PreAuthorize("hasAuthority('ATHLETE') AND @authenticatedUserService.hasValidId(#id)")
     @PutMapping("/users/{id}/refreshAccessToken")
     public StravaUserData refreshAccessTokenForUser(@PathVariable Long id);
+
+    @GetMapping("/users/getEmailAddressByAthleteId")
+    String getEmailAddress(@RequestParam Long athleteId);
 }
 
