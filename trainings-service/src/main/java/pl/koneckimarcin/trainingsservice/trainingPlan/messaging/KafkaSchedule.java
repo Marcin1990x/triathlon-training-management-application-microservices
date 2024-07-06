@@ -35,7 +35,7 @@ public class KafkaSchedule {
     @Autowired
     private TrainingPlanRepository trainingPlanRepository;
 
-    @Scheduled(fixedRate = 10000) // set to once per day
+    @Scheduled(fixedRate = 60000) // set to once per day
     public void sendTrainingsMessage() {
 
         List<TrainingPlanMessage> messages = createMessages();

@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.springframework.kafka.core.ConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
+import org.springframework.kafka.listener.ContainerProperties;
 import org.springframework.kafka.support.serializer.JsonDeserializer;
 
 import java.util.Map;
@@ -41,6 +42,7 @@ public class KafkaConfig {
     public ConcurrentKafkaListenerContainerFactory<String, TrainingPlanMessage> messageListenerFactory() {
         ConcurrentKafkaListenerContainerFactory<String, TrainingPlanMessage> factory =
                 new ConcurrentKafkaListenerContainerFactory<>();
+        factory.getContainerProperties().setAckMode(ContainerProperties.AckMode.RECORD);
         factory.setConsumerFactory(consumerFactory());
         return factory;
     }
