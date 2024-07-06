@@ -1,6 +1,7 @@
 package pl.koneckimarcin.trainingsservice.trainingPlan.messaging;
 
 
+import jakarta.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import pl.koneckimarcin.trainingsservice.trainingPlan.TrainingPlanEntity;
 import pl.koneckimarcin.trainingsservice.trainingPlan.repository.TrainingPlanRepository;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -22,6 +24,10 @@ import java.util.List;
 public class KafkaSchedule {
 
     static final Logger logger = LoggerFactory.getLogger(KafkaConfig.class);
+
+    private static final String TIME_ZONE = "Europe/Warsaw";
+    private LocalDateTime lastRunTime;
+
 
     @Value("${topics.training-plan.name}")
     private String topicName;
@@ -35,23 +41,31 @@ public class KafkaSchedule {
     @Autowired
     private TrainingPlanRepository trainingPlanRepository;
 
-    @Scheduled(fixedRate = 60000) // set to once per day
+    @PostConstruct
+    public void init() {
+        checkMissedSendTrainingMessageTask();
+    }
+
+    @Scheduled(cron = "0 35 19 * * *", zone = TIME_ZONE)
     public void sendTrainingsMessage() {
 
+        logger.info("Executed method sendTrainingsMessage");
+
         List<TrainingPlanMessage> messages = createMessages();
-        if(messages != null) {
-            for(TrainingPlanMessage message : messages) {
+        if (messages != null) {
+            for (TrainingPlanMessage message : messages) {
                 kafkaTemplate.send(topicName, message.getMessageId(), message);
                 logger.info("Published message: " + message);
                 kafkaTemplate.flush();
             }
         }
+        lastRunTime = LocalDateTime.now(ZoneId.of(TIME_ZONE));
     }
 
     private List<TrainingPlanMessage> createMessages() {
 
         List<TrainingPlanEntity> todaysPlans = findTrainingPlansForToday();
-        if(!todaysPlans.isEmpty()) {
+        if (!todaysPlans.isEmpty()) {
             List<TrainingPlanMessage> messages = createMessage(todaysPlans);
 
             return messages;
@@ -72,11 +86,12 @@ public class KafkaSchedule {
 
         return trainingPlanRepository.findByPlannedDate(today);
     }
-    private List<TrainingPlanMessage> createMessage(List<TrainingPlanEntity> todaysPlans){
+
+    private List<TrainingPlanMessage> createMessage(List<TrainingPlanEntity> todaysPlans) {
 
         List<TrainingPlanMessage> messages = new ArrayList<>();
 
-        for(TrainingPlanEntity plan : todaysPlans) {
+        for (TrainingPlanEntity plan : todaysPlans) {
             LocalDateTime now = LocalDateTime.now();
             TrainingPlanMessage message = new TrainingPlanMessage();
             message.setMessageId(now.toString());
@@ -88,8 +103,20 @@ public class KafkaSchedule {
         }
         return messages;
     }
+
     private String getUserEmailAddress(Long athleteId) {
 
         return usersClient.getEmailAddress(athleteId);
+    }
+
+    private void checkMissedSendTrainingMessageTask() {
+        LocalDateTime now = LocalDateTime.now(ZoneId.of(TIME_ZONE));
+        LocalDateTime scheduledRunTime = now.withHour(0).withMinute(0).withSecond(0).withNano(0);
+
+        if (lastRunTime == null || lastRunTime.isBefore(scheduledRunTime)) {
+            if (now.isAfter(scheduledRunTime)) {
+                sendTrainingsMessage();
+            }
+        }
     }
 }
