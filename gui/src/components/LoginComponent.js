@@ -2,6 +2,7 @@ import { useState } from "react"
 import { useAuth } from "./security/AuthContext"
 import { useNavigate, Link } from "react-router-dom"
 import { toast } from "react-hot-toast"
+import { apiClient } from "./api/ApiClient"
 
 const LoginComponent = () => {
 
@@ -21,6 +22,7 @@ const LoginComponent = () => {
         setPassword(event.target.value)
     }
     async function handleSubmit() {
+
         const response = await authContext.login(username, password)
 
         if(response != 'login failed'){

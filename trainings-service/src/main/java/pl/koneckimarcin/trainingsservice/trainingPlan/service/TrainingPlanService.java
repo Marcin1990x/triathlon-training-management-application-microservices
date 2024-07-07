@@ -1,5 +1,7 @@
 package pl.koneckimarcin.trainingsservice.trainingPlan.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.koneckimarcin.trainingsservice.exception.ResourceNotFoundException;
@@ -23,6 +25,8 @@ import java.util.Optional;
 
 @Service
 public class TrainingPlanService {
+
+    private static final Logger logger = LoggerFactory.getLogger(TrainingPlanService.class);
 
     @Autowired
     private TrainingPlanRepository trainingPlanRepository;
@@ -48,7 +52,6 @@ public class TrainingPlanService {
 
     public TrainingPlan addNewTrainingPlan(TrainingPlan trainingPlan) {
 
-        //check coachId
         trainingPlan.setTrainingPlanStatus(TrainingPlanStatus.TEMPLATE);
         TrainingPlanEntity savedPlan = trainingPlanRepository.save(trainingPlan.mapToTrainingPlanEntity());
 
@@ -57,7 +60,6 @@ public class TrainingPlanService {
 
     public TrainingPlan scheduleTrainingPlanForAthlete(Long id, Long athleteId, Date plannedDate) {
 
-        //checkAthleteIdException(athleteId);
         checkTrainingPlanIdException(id);
         checkIfDateIsCorrectException(plannedDate);
 
@@ -70,13 +72,16 @@ public class TrainingPlanService {
 
         trainingPlanRepository.save(copiedPlan);
 
+        logger.info(
+                "Training plan scheduled. " +
+                        " AthleteId: " + copiedPlan.getAthleteId() +
+                        " Date: " + copiedPlan.getPlannedDate() +
+                        " Name: " + copiedPlan.getName() +
+                        " Description: " + copiedPlan.getDescription() +
+                        " Status: " + copiedPlan.getTrainingPlanStatus()
+                );
         return TrainingPlan.fromTrainingPlanEntity(copiedPlan);
     }
-//    private void checkAthleteIdException(Long athleteId) {
-//        if (!athleteService.checkIfIsNotNull(athleteId)) {
-//            throw new ResourceNotFoundException("Athlete", "id", String.valueOf(athleteId));
-//        }
-//    }
 
     private void checkTrainingPlanIdException(Long trainingPlanId) {
 

@@ -76,8 +76,15 @@ const DataContextAthletesProvider = ({children}) => {
     }
     function extractDate(dateWithTime) {
 
-        const date = new Date(dateWithTime)
+        const formattedDate = formatLocalDate(dateWithTime);
+        const date = new Date(formattedDate)
         return date.toISOString().split('T')[0]
+    }
+    function formatLocalDate(date) {
+        let year = date.getFullYear();
+        let month = ('0' + (date.getMonth() + 1)).slice(-2);
+        let day = ('0' + date.getDate()).slice(-2);
+        return `${year}-${month}-${day}`;
     }
     function handleAddPlanMode(status, day) {
         setAddPlanMode(status)
