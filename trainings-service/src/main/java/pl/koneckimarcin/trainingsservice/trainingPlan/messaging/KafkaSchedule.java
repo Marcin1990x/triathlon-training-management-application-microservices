@@ -46,7 +46,8 @@ public class KafkaSchedule {
         checkMissedSendTrainingMessageTask();
     }
 
-    @Scheduled(cron = "0 35 19 * * *", zone = TIME_ZONE)
+    //@Scheduled(cron = "0 35 19 * * *", zone = TIME_ZONE) // prod =)
+    @Scheduled(fixedRate = 10000) // test
     public void sendTrainingsMessage() {
 
         logger.info("Executed method sendTrainingsMessage");
