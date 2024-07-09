@@ -7,7 +7,7 @@ services:
         volumes:
           - mongodb_data:/data/db
         networks:
-          - mongo-network
+          - microservices-network
     postgres:
         container_name: postgres_container
         image: postgres
@@ -20,7 +20,7 @@ services:
         ports:
           - "5432:5432"
         networks:
-          - postgres
+          - microservices-network
         restart: unless-stopped
     pgadmin:
       container_name: pgadmin_container
@@ -34,7 +34,7 @@ services:
       ports:
         - "5050:80"
       networks:
-        - postgres
+        - microservices-network
       restart: unless-stopped
     rabbitmq:
       container_name: rabbitmq
@@ -43,7 +43,7 @@ services:
         - "5672:5672"
         - "15672:15672"
       networks:
-        - postgres
+        - microservices-network
     zipkin:
       container_name: zipkin
       image: openzipkin/zipkin
@@ -51,7 +51,6 @@ services:
         - "9411:9411"
       networks:
         - microservices-network
-        - postgres
     zookeeper:
       image: confluentinc/cp-zookeeper:6.1.1
       container_name: zookeeper
@@ -95,7 +94,6 @@ services:
         - service-registry-container
       networks:
         - microservices-network
-        - postgres
       environment:
         - SPRING_PROFILES_ACTIVE=docker
     service-registry-container:
@@ -103,15 +101,8 @@ services:
       image: marcin1990/service-registry-container:latest
       ports:
         - "8761:8761"
-      depends_on:
-        - rabbitmq
-        - zipkin
-        - postgres
-        - pgadmin
-        - mongodb
       networks:
         - microservices-network
-        - postgres
     gateway-container:
       container_name: gateway-container
       image: marcin1990/gateway-container:latest
@@ -121,7 +112,6 @@ services:
         - service-registry-container
       networks:
         - microservices-network
-        - postgres
       environment:
         - SPRING_PROFILES_ACTIVE=docker
     ui-container:
@@ -139,9 +129,10 @@ services:
       depends_on:
         - service-registry-container
         - config-server
+        - rabbitmq
+        - postgres
       networks:
         - microservices-network
-        - postgres
       environment:
         - SPRING_PROFILES_ACTIVE=docker
     strava-container:
@@ -151,11 +142,9 @@ services:
         - "8082:8082"
       depends_on:
         - service-registry-container
-        - config-server
+        - mongodb
       networks:
-        - mongo-network
         - microservices-network
-        - postgres
       environment:
         - SPRING_PROFILES_ACTIVE=docker
         - STRAVA_CLIENT_ID=*
@@ -167,12 +156,11 @@ services:
         - "8084:8084"
       depends_on:
         - service-registry-container
-        - config-server
+        - mongodb
+        - postgres
         - broker0
       networks:
-        - mongo-network
         - microservices-network
-        - postgres
       environment:
         - SPRING_PROFILES_ACTIVE=docker
         - SPRING_KAFKA_BOOTSTRAP_SERVERS=broker0:29092
@@ -183,10 +171,9 @@ services:
         - "8080:8080"
       depends_on:
         - service-registry-container
-        - config-server
+        - postgres
       networks:
         - microservices-network
-        - postgres
       environment:
         - SPRING_PROFILES_ACTIVE=docker
     email-container:
@@ -199,17 +186,12 @@ services:
         - service-registry-container
       networks:
         - microservices-network
-        - postgres
       environment:
         - SPRING_PROFILES_ACTIVE=docker
         - SPRING_KAFKA_BOOTSTRAP_SERVERS=broker0:29092
         - SPRING_MAIL_USERNAME=*
         - SPRING_MAIL_PASSWORD=*
 networks:
-  postgres:
-    driver: bridge
-  mongo-network:
-    driver: bridge
   microservices-network:
     driver: bridge
 
