@@ -85,6 +85,8 @@ services:
       container_name: cli-tools
       entrypoint: "sleep infinity"
       restart: always
+      networks:
+        - microservices-network
     config-server:
       container_name: config-server
       image: marcin1990/config-server-container:latest

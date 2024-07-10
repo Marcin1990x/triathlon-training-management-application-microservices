@@ -55,7 +55,7 @@ public class KafkaSchedule {
         List<TrainingPlanMessage> messages = createMessages();
         if (messages != null) {
             for (TrainingPlanMessage message : messages) {
-                kafkaTemplate.send(topicName, message.getMessageId(), message);
+                kafkaTemplate.send(topicName, "t_plan", message);
                 logger.info("Published message: " + message);
                 kafkaTemplate.flush();
             }
