@@ -122,7 +122,9 @@ public class AthleteService {
 
         List<AthleteResponseDto> athletes = new ArrayList<>();
 
-        if (athleteEntities.size() > 0) {
+        if (athleteEntities.size() == 0) {
+            throw new ResourceNotFoundException("Athlete", "lastname", lastName);
+        } else {
             for (AthleteEntity athleteEntity : athleteEntities) {
                 athletes.add(AthleteResponseDto.fromAthleteEntity(athleteEntity, null, null));
             }
@@ -189,8 +191,7 @@ public class AthleteService {
 
     public int checkPendingCoachingRequests(Long id) {
 
-        if(!checkIfIsNotNull(id))
-        {
+        if (!checkIfIsNotNull(id)) {
             throw new ResourceNotFoundException("Athlete", "id", String.valueOf(id));
         }
         return queueService.getRequestCount(id);
