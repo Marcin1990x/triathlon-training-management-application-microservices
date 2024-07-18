@@ -4,11 +4,11 @@ import jakarta.mail.MessagingException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.annotation.KafkaListener;
-import org.springframework.stereotype.Component;
 import pl.koneckimarcin.email_service.EmailSender;
 
-@Component
+@Configuration
 public class KafkaConsumer {
 
     static final Logger logger = LoggerFactory.getLogger(KafkaConsumer.class);

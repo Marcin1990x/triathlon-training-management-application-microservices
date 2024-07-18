@@ -50,7 +50,6 @@ public class KafkaSchedule {
     @Scheduled(fixedRate = 10000) // test
     public void sendTrainingsMessage() {
 
-        logger.info("Executed method sendTrainingsMessage");
 
         List<TrainingPlanMessage> messages = createMessages();
         if (messages != null) {
