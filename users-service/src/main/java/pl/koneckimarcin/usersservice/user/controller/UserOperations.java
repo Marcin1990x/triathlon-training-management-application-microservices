@@ -1,10 +1,7 @@
 package pl.koneckimarcin.usersservice.user.controller;
 
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import pl.koneckimarcin.usersservice.user.dto.User;
 import pl.koneckimarcin.usersservice.user.external.StravaUserData;
 
@@ -39,5 +36,8 @@ public interface UserOperations {
 
     @GetMapping("/users/getEmailAddressByAthleteId")
     String getEmailAddress(@RequestParam Long athleteId);
+
+    @PostMapping("/users/sendMessage")
+    public void sendMessage(@RequestParam Long athleteId, @RequestParam Long coachId, @RequestBody String message);
 }
 

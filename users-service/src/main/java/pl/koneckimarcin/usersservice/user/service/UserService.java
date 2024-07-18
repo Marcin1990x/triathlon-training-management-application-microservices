@@ -1,9 +1,11 @@
 package pl.koneckimarcin.usersservice.user.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpMethod;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 import pl.koneckimarcin.usersservice.exception.IsAlreadyAssignedException;
 import pl.koneckimarcin.usersservice.exception.ResourceNotFoundException;
 import pl.koneckimarcin.usersservice.user.UserEntity;
@@ -24,6 +26,14 @@ import java.util.stream.Collectors;
 
 @Service
 public class UserService {
+
+    static final Logger logger = LoggerFactory.getLogger(UserService.class);
+
+    @Value("${topics.chat.name}")
+    private String topicName;
+
+    @Autowired
+    private KafkaTemplate<String, String> kafkaTemplate;
 
     @Autowired
     private UserRepository userRepository;
@@ -155,6 +165,7 @@ public class UserService {
 
         stravaClient.refreshAccessToken(userId);
     }
+
     private StravaUserData getStravaUserDataById(Long userId) {
 
         return stravaClient.getStravaUserDataById(userId);
@@ -179,6 +190,15 @@ public class UserService {
 
         UserEntity user = userRepository.findByAthleteEntityId(athleteId).get();
         return user.getEmailAddress();
+    }
+
+    public void sendMessage(Long athleteId, Long coachId, String message) {
+
+        String key = "A_id_" + athleteId + "-" + "C_id_" + coachId;
+
+        kafkaTemplate.send(topicName, key, message);
+        logger.info("Published message key: " + key + " value: " + message);
+        kafkaTemplate.flush();
     }
 }
 

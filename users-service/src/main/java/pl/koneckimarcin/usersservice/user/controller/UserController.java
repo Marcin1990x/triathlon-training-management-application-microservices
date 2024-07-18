@@ -52,4 +52,10 @@ public class UserController implements UserOperations {
 
         return userService.getEmailAddress(athleteId);
     }
+
+    @Override
+    public void sendMessage(Long athleteId, Long coachId, String message) {
+
+        userService.sendMessage(athleteId, coachId, message);
+    }
 }
