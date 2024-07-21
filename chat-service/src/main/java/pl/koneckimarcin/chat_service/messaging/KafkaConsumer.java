@@ -6,7 +6,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.annotation.KafkaListener;
-import pl.koneckimarcin.chat_service.subscription.SubscriptionService;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 
 @Configuration
 public class KafkaConsumer {
@@ -14,24 +14,20 @@ public class KafkaConsumer {
     static final Logger logger = LoggerFactory.getLogger(KafkaConsumer.class);
 
     @Autowired
-    private SubscriptionService subscriptionService;
+    private SimpMessagingTemplate simpTemplate;
 
     @KafkaListener(
             topics = "${topics.chat.name}",
             groupId = "${topics.chat.group-name}",
             containerFactory = "messageListenerFactory"
     )
-    public void chatListener(ConsumerRecord<String, String> messageRecord) {
+    public void chatListener(ConsumerRecord<String, KafkaMessage> messageRecord) {
 
         String key = messageRecord.key();
-        String message = messageRecord.value();
+        KafkaMessage kafkaMessage = messageRecord.value();
 
-        logger.info("keys"  + subscriptionService.getSubscribedKeys().toString());
+        logger.info("Consumed message: " + kafkaMessage);
 
-        logger.info("all " + key + message);
-
-        if(subscriptionService.isSubscribed(key)){
-            logger.info("subscribed: " + key + message);
-        }
+        simpTemplate.convertAndSend("/chatroom", kafkaMessage);
     }
 }

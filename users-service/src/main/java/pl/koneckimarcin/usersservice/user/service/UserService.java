@@ -15,11 +15,13 @@ import pl.koneckimarcin.usersservice.user.dto.User;
 import pl.koneckimarcin.usersservice.user.external.Athlete;
 import pl.koneckimarcin.usersservice.user.external.Coach;
 import pl.koneckimarcin.usersservice.user.external.StravaUserData;
+import pl.koneckimarcin.usersservice.user.messaging.KafkaMessage;
 import pl.koneckimarcin.usersservice.user.repository.UserRepository;
 import pl.koneckimarcin.usersservice.user.role.Role;
 import pl.koneckimarcin.usersservice.user.role.RoleEntity;
 import pl.koneckimarcin.usersservice.user.role.RoleRepository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -33,7 +35,7 @@ public class UserService {
     private String topicName;
 
     @Autowired
-    private KafkaTemplate<String, String> kafkaTemplate;
+    private KafkaTemplate<String, KafkaMessage> kafkaTemplate;
 
     @Autowired
     private UserRepository userRepository;
@@ -194,10 +196,15 @@ public class UserService {
 
     public void sendMessage(Long athleteId, Long coachId, String message) {
 
-        String key = "A_id_" + athleteId + "-" + "C_id_" + coachId;
+        KafkaMessage kafkaMessage = new KafkaMessage(
+                String.valueOf(athleteId),
+                String.valueOf(coachId),
+                message
+        );
+        kafkaMessage.setTimestamp(LocalDateTime.now().toString());
 
-        kafkaTemplate.send(topicName, key, message);
-        logger.info("Published message key: " + key + " value: " + message);
+        kafkaTemplate.send(topicName, kafkaMessage);
+        logger.info("Published message content: " + kafkaMessage);
         kafkaTemplate.flush();
     }
 }
