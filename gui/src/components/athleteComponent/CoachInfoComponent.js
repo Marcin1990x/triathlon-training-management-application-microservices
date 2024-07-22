@@ -1,6 +1,7 @@
 import { useState } from "react"
 import { useDataContextAthlete } from "./contexts/DataContextAthlete"
 import { toast } from "react-hot-toast"
+import ChatBoxComponent from "./ChatBoxComponent"
 
 const CoachInfoComponent = () => {
 
@@ -51,6 +52,7 @@ const CoachInfoComponent = () => {
             {coach && 
                 <p>{coach.firstName} {coach.lastName}</p>
             }
+            <ChatBoxComponent/>
         </div>
     )
 }
