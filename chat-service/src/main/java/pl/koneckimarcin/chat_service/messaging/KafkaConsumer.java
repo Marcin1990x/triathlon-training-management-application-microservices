@@ -29,5 +29,10 @@ public class KafkaConsumer {
         logger.info("Consumed message: " + kafkaMessage);
 
         simpTemplate.convertAndSend("/chatroom", kafkaMessage);
+
+        String destination = kafkaMessage.getAthleteId() + "_" +  kafkaMessage.getCoachId();
+        System.out.println(destination);
+        simpTemplate.convertAndSendToUser(destination, "/private", kafkaMessage);
+        // dest: user/athleteId_coachId/private
     }
 }
