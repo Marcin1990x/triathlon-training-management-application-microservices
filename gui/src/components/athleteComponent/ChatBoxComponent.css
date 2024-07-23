@@ -1,0 +1,19 @@
+.chat-content {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+.message-list {
+    list-style-type: none;
+    padding: 0;
+    max-height: 300px;
+    overflow-y: auto;
+  }
+.message-item {
+    margin: 10px 0;
+    padding: 2px;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+  }

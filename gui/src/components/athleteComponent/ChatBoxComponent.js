@@ -2,6 +2,8 @@ import { useState } from "react"
 import { over } from "stompjs"
 import SockJS from "sockjs-client"
 import { useDataContextAthlete } from "./contexts/DataContextAthlete"
+import { getChatMessagesApi } from "../api/ChatApiService"
+import './ChatBoxComponent.css'
 
 var stompClient = null
 
@@ -26,6 +28,9 @@ const ChatBoxComponent = () => {
     })
 
     const connectToChat = () => {
+
+        getChatHistory()
+
         let Sock = new SockJS('http://localhost:8088/ws')
         stompClient = over(Sock)
         stompClient.connect({}, onConnected, onError)
@@ -33,16 +38,24 @@ const ChatBoxComponent = () => {
     const disconnectFromChat = () => {
         stompClient.disconnect()
     }
+
+    const getChatHistory = () => {
+        getChatMessagesApi(athlete.id, coach.id)
+            .then(response => {
+                console.log(response)
+                setChat(prevChat => [...prevChat, ...response.data])
+            })
+            .catch(error => console.log(error))
+    }
+
     const onConnected = () => {
-        //add need to have coach
         setConnection({"connected":true})
         let source = athlete.id + '_' + coach.id
         stompClient.subscribe("/user/" + source + "/private", onPublicMessageReceived)
     }
     const onPublicMessageReceived = (payload) => {
         let payloadData = JSON.parse(payload.body)
-        chat.push(payloadData)
-        setChat([...chat])
+        setChat(prevChat => [...prevChat, payloadData])
     }
 
     const onError = (error) => {
@@ -52,8 +65,8 @@ const ChatBoxComponent = () => {
     return(
         <div className="chatbox">
             <div className="connect">
-                {!connection.connected &&
-                    <button className="btn btn-outline-info m-2" onClick={connectToChat}>Chat with coach</button>
+                {!connection.connected && coach &&
+                    <button className="btn btn-outline-info m-2" onClick={connectToChat}>Open chat</button>
                 }
                 {connection.connected &&
                     <button className="btn btn-outline-info m-2" onClick={disconnectFromChat}>Disconnect - test</button>
@@ -62,12 +75,14 @@ const ChatBoxComponent = () => {
             {connection.connected &&
             <div>
                 <div className="chat-content">
-                    {chat.map((mess, index) =>(
-                        <li className="message" key = {index}>
-                            {mess.content}{mess.athleteId}_{mess.coachId} - {mess.timestamp}
-                        </li>
-                    ))
-                    }
+                    <ul className="message-list">
+                        {chat.map((message, index) =>(
+                            <li className="message-item" key = {index}>
+                                {message.content}{message.athleteId}_{message.coachId} - {message.timestamp}
+                            </li>
+                        ))
+                        }
+                    </ul>
                 </div>
                 <div className="send-message">
                     <input type = "text" value={message} onChange={handleMessageChange}/>

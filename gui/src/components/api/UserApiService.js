@@ -9,11 +9,12 @@ export const addAthleteToUserApi = (userId, athleteId) => apiClient.put(`users/$
 
 export const getUserByIdApi = (userId) => apiClient.get(`users/${userId}`)
 
-export const sendMessageApi = (athleteId, coachId, message) => apiClient.post(`users/sendMessage`, {message},
+export const sendMessageApi = (athleteId, coachId, message) => apiClient.post(`users/sendMessage`, {},
     {
         params: {
             athleteId,
-            coachId
+            coachId,
+            message
         }
     }
 )
