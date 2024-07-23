@@ -38,6 +38,6 @@ public interface UserOperations {
     String getEmailAddress(@RequestParam Long athleteId);
 
     @PostMapping("/users/sendMessage")
-    public void sendMessage(@RequestParam Long athleteId, @RequestParam Long coachId, @RequestBody String message);
+    public void sendMessage(@RequestParam Long athleteId, @RequestParam Long coachId, @RequestParam String message);
 }
 
