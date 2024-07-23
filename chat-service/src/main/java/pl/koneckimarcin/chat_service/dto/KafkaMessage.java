@@ -1,4 +1,6 @@
-package pl.koneckimarcin.chat_service.messaging;
+package pl.koneckimarcin.chat_service.dto;
+
+import pl.koneckimarcin.chat_service.messaging.KafkaMessageEntity;
 
 public class KafkaMessage {
     private String athleteId;
@@ -15,6 +17,28 @@ public class KafkaMessage {
         this.athleteId = athleteId;
         this.coachId = coachId;
         this.content = content;
+    }
+
+    public KafkaMessageEntity mapToKafkaMessageEntity() {
+
+        KafkaMessageEntity message = new KafkaMessageEntity();
+        message.setAthleteId(this.athleteId);
+        message.setCoachId(this.coachId);
+        message.setContent(this.content);
+        message.setTimestamp(this.timestamp);
+
+        return message;
+    }
+    public static KafkaMessage fromKafkaMessageEntity(KafkaMessageEntity kafkaMessageEntity) {
+
+        KafkaMessage kafkaMessage = new KafkaMessage();
+
+        kafkaMessage.setAthleteId(kafkaMessageEntity.getAthleteId());
+        kafkaMessage.setCoachId(kafkaMessageEntity.getCoachId());
+        kafkaMessage.setContent(kafkaMessageEntity.getContent());
+        kafkaMessage.setTimestamp(kafkaMessageEntity.getTimestamp());
+
+        return kafkaMessage;
     }
 
     public String getAthleteId() {
