@@ -7,6 +7,7 @@ import { useDataContextCoach } from "./contexts/DataContextCoach"
 import { getCoachingReplyApi } from "../api/CoachApiService"
 import { toast } from "react-hot-toast"
 import { useAuth } from "../security/AuthContext"
+import ChatBoxComponent from "../chatComponent/ChatBoxComponent"
 
 export default function CoachComponent() {
 
@@ -73,7 +74,12 @@ export default function CoachComponent() {
                     </div>
                 </div>
                 <div>
-                    {dataContextAthletes.athleteView && <CoachAthletesComponent/>}
+                    {dataContextAthletes.athleteView && 
+                        <div>
+                            <CoachAthletesComponent/> 
+                            <ChatBoxComponent/>
+                        </div>
+                    }
                     {!dataContextAthletes.athleteView && <CoachTrainingPlansComponent/>}
                 </div>
             </div>

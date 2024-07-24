@@ -3,7 +3,6 @@ import { useAuth } from "../../security/AuthContext";
 import { getAthleteByIdApi, checkPendingCoachingRequestsApi, getCoachingRequestApi, sendCoachingReplyApi } from "../../api/AthletesApiService";
 import { getCoachByIdApi } from "../../api/CoachApiService";
 import { getUserStravaDataApi } from "../../api/StravaApiService";
-import { sendMessageApi } from "../../api/UserApiService";
 
 const DataContextAthlete = createContext()
 export const useDataContextAthlete = () => useContext(DataContextAthlete)
@@ -81,16 +80,11 @@ const DataContextAthleteProvider = ({children}) => {
             })
             .catch(error => console.log(error))
     }
-    const sendMessage = (content) => {
-        sendMessageApi(athlete.id, coach.id, content)
-            .then(response => console.log(response))
-            .catch(error => console.log(error))
-    }
 
     return (
         <DataContextAthlete.Provider value = {{trainingPlans, trainingRealizations,
                 setActiveTrainingFunction, activeTraining, getAthlete, athlete, coach, checkPendingCoachingRequests, requestCount,
-                getCoachingRequest, coachingRequest, sendCoachingReply, getUserStravaData, stravaUserData, sendMessage
+                getCoachingRequest, coachingRequest, sendCoachingReply, getUserStravaData, stravaUserData
             }}>
             {children}
         </DataContextAthlete.Provider>

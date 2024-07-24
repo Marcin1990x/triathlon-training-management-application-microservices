@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import LoginComponent from "./LoginComponent";
+import LoginComponent from "./loginComponent/LoginComponent";
 import AthleteComponent from "./athleteComponent/AthleteComponent";
 import CoachComponent from "./coachComponent/CoachComponent";
 import AuthProvider from "./security/AuthContext";
@@ -7,7 +7,7 @@ import WeekdayListVisibilityProvider from "./coachComponent/contexts/WeekdayList
 import DataContextAthletesProvider from "./coachComponent/contexts/DataContextAthletes";
 import DataContextTrainingsProvider from "./coachComponent/contexts/DataContextTrainings";
 import RegisterComponent from "./registerComponent/RegisterComponent";
-import HeaderComponent from "./header/HeaderComponent";
+import HeaderComponent from "./headerComponent/HeaderComponent";
 import NewUserComponent from "./newUserComponent/NewUserComponent";
 import DataContextAthleteProvider from "./athleteComponent/contexts/DataContextAthlete";
 import AddAthleteComponent from "./coachComponent/AddAthleteComponent";
@@ -42,7 +42,9 @@ export default function TriathlonTrainingManagement() {
                                         <DataContextAthletesProvider>
                                             <DataContextTrainingsProvider>
                                                 <WeekdayListVisibilityProvider>
-                                                    <CoachComponent />
+                                                    <DataContextAthleteProvider>
+                                                        <CoachComponent />
+                                                    </DataContextAthleteProvider>
                                                 </WeekdayListVisibilityProvider> 
                                             </DataContextTrainingsProvider>
                                         </DataContextAthletesProvider>

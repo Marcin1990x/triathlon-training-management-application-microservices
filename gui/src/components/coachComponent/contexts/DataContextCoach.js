@@ -1,6 +1,5 @@
 import { createContext, useContext, useState } from "react";
 import { getCoachByIdApi } from "../../api/CoachApiService";
-import { toast } from "react-hot-toast";
 import { useAuth } from "../../security/AuthContext";
 
 const DataContextCoach = createContext()

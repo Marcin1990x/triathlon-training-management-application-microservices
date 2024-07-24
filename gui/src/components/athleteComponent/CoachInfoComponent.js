@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { useDataContextAthlete } from "./contexts/DataContextAthlete"
 import { toast } from "react-hot-toast"
-import ChatBoxComponent from "./ChatBoxComponent"
+import ChatBoxComponent from "../chatComponent/ChatBoxComponent"
 
 const CoachInfoComponent = () => {
 
