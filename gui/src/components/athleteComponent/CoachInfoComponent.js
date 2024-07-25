@@ -7,7 +7,7 @@ const CoachInfoComponent = () => {
 
     const [checkView, setCheckView] = useState(false)
 
-    const {coach, requestCount, getCoachingRequest, 
+    const {coach, athlete, requestCount, getCoachingRequest, 
         coachingRequest, sendCoachingReply, checkPendingCoachingRequests} = useDataContextAthlete()
 
     const successToast = (message) => toast.success(message)
@@ -52,7 +52,7 @@ const CoachInfoComponent = () => {
             {coach && 
                 <p>{coach.firstName} {coach.lastName}</p>
             }
-            <ChatBoxComponent/>
+            <ChatBoxComponent coachId={coach?.id} athleteId={athlete?.id}/>
         </div>
     )
 }

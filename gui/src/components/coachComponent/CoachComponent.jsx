@@ -77,7 +77,9 @@ export default function CoachComponent() {
                     {dataContextAthletes.athleteView && 
                         <div>
                             <CoachAthletesComponent/> 
-                            <ChatBoxComponent/>
+                            {dataContextAthletes.athleteId != null &&
+                                <ChatBoxComponent coachId={authContext.coachId} athleteId={dataContextAthletes.athleteId}/>
+                            }
                         </div>
                     }
                     {!dataContextAthletes.athleteView && <CoachTrainingPlansComponent/>}

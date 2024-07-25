@@ -42,9 +42,7 @@ export default function TriathlonTrainingManagement() {
                                         <DataContextAthletesProvider>
                                             <DataContextTrainingsProvider>
                                                 <WeekdayListVisibilityProvider>
-                                                    <DataContextAthleteProvider>
                                                         <CoachComponent />
-                                                    </DataContextAthleteProvider>
                                                 </WeekdayListVisibilityProvider> 
                                             </DataContextTrainingsProvider>
                                         </DataContextAthletesProvider>

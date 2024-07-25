@@ -6,16 +6,12 @@ import { getChatMessagesApi } from "../api/ChatApiService"
 import './ChatBoxComponent.css'
 import { useAuth } from "../security/AuthContext"
 import { sendMessageApi } from "../api/UserApiService"
-import { useDataContextAthletes } from "../coachComponent/contexts/DataContextAthletes"
 
 var stompClient = null
 
-const ChatBoxComponent = () => {
+const ChatBoxComponent = ({athleteId, coachId}) => {
 
     const dataContextAthleteData = useDataContextAthlete()
-    const dataContextAthletesData = useDataContextAthletes()
-    const authData = useAuth()
-
     const {isCoach, isAthlete} = useAuth()
 
     const [chat, setChat] = useState([])
@@ -26,8 +22,6 @@ const ChatBoxComponent = () => {
     }
 
     const handleSendMessage = () => {
-
-        console.log('Message to send: ' + message)
         sendMessage(message)
     }
     const sendMessage = (content) => {
@@ -36,7 +30,7 @@ const ChatBoxComponent = () => {
                 .then(response => console.log(response))
                 .catch(error => console.log(error))
         } else if(isCoach) {
-            sendMessageApi(dataContextAthletesData.athleteId, authData.coachId, content)
+            sendMessageApi(athleteId, coachId, content)
                 .then(response => console.log(response))
                 .catch(error => console.log(error))
         }
@@ -47,9 +41,6 @@ const ChatBoxComponent = () => {
     })
 
     const connectToChat = () => {
-
-        console.log('test: ' + dataContextAthletesData.athleteId)
-        console.log('test2: ' + authData.isCoach)
 
         getChatHistory()
 
@@ -71,7 +62,7 @@ const ChatBoxComponent = () => {
                 })
                 .catch(error => console.log(error))
         } else if(isCoach){
-            getChatMessagesApi(dataContextAthletesData.athleteId, authData.coachId)
+            getChatMessagesApi(athleteId, coachId)
                 .then(response => {
                     console.log(response)
                     setChat(prevChat => [...prevChat, ...response.data])
@@ -88,7 +79,7 @@ const ChatBoxComponent = () => {
         if(isAthlete){
             source = dataContextAthleteData.athlete.id + '_' + dataContextAthleteData.coach.id
         } else if(isCoach) {
-            source = dataContextAthletesData.athleteId + '_' + authData.coachId
+            source = athleteId + '_' + coachId
         }
         stompClient.subscribe("/user/" + source + "/private", onPublicMessageReceived)
     }
