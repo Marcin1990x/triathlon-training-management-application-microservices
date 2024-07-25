@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { over } from "stompjs"
 import SockJS from "sockjs-client"
 import { getChatMessagesApi } from "../api/ChatApiService"
@@ -9,7 +9,9 @@ var stompClient = null
 
 const ChatBoxComponent = ({athleteId, coachId}) => {
 
-    const [chat, setChat] = useState([])
+    useEffect(() => disconnectFromChat(), [athleteId])
+
+    const [chat, setChat] = useState(new Map())
     const [message, setMessage] = useState('')
 
     const handleMessageChange = (event) => {
@@ -38,7 +40,10 @@ const ChatBoxComponent = ({athleteId, coachId}) => {
         stompClient.connect({}, onConnected, onError)
     }
     const disconnectFromChat = () => {
-        stompClient.disconnect()
+        if(connection.connected) {
+            stompClient.disconnect()
+            setConnection({"connected":false})
+        }
     }
 
     const getChatHistory = () => {
@@ -46,7 +51,7 @@ const ChatBoxComponent = ({athleteId, coachId}) => {
         getChatMessagesApi(athleteId, coachId)
             .then(response => {
                 console.log(response)
-                setChat(prevChat => [...prevChat, ...response.data])
+                chat.set(athleteId, response.data)
             })
             .catch(error => console.log(error))
     }
@@ -54,33 +59,36 @@ const ChatBoxComponent = ({athleteId, coachId}) => {
     const onConnected = () => {
         setConnection({"connected":true})
         let source = athleteId + '_' + coachId
-        stompClient.subscribe("/user/" + source + "/private", onPublicMessageReceived)
+        stompClient.subscribe("/user/" + source + "/private", onMessageReceived)
     }
-    const onPublicMessageReceived = (payload) => {
+    const onMessageReceived = (payload) => {
         let payloadData = JSON.parse(payload.body)
-        setChat(prevChat => [...prevChat, payloadData])
+        if(chat.get(payloadData.athleteId)){
+            const newChat = new Map(chat)
+            newChat.get(payloadData.athleteId).push(payloadData)
+            setChat(newChat)
+        } else {
+            let list = []
+            list.push(payloadData)
+            chat.set(payloadData.athleteId, list)
+            setChat(new Map(chat))
+        }
     }
 
     const onError = (error) => {
         console.log(error)
     }
 
+    const activeChat = chat.get(athleteId) || []
+
     return(
         <div className="chatBoxComponent">
             <div className="chatBox">
-                <div className="connect">
-                    {!connection.connected &&
-                        <button className="btn btn-outline-info m-2" onClick={connectToChat}>Open chat</button>
-                    }
-                    {connection.connected &&
-                        <button className="btn btn-outline-info m-2" onClick={disconnectFromChat}>Disconnect - test</button>
-                    }
-                </div>
                 {connection.connected &&
                 <div>
                     <div className="chat-content">
                         <ul className="message-list">
-                            {chat.map((message, index) =>(
+                            {activeChat.map((message, index) =>(
                                 <li className="message-item" key = {index}>
                                     {message.content}{message.athleteId}_{message.coachId} - {message.timestamp}
                                 </li>
@@ -94,6 +102,14 @@ const ChatBoxComponent = ({athleteId, coachId}) => {
                     </div>
                 </div>
                 }
+                <div className="connect">
+                    {!connection.connected &&
+                        <button className="btn btn-outline-info m-2" onClick={connectToChat}>Open chat</button>
+                    }
+                    {connection.connected &&
+                        <button className="btn btn-outline-info m-2" onClick={disconnectFromChat}>Close chat</button>
+                    }
+                </div>
             </div>
         </div>
     )
