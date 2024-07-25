@@ -1,18 +1,13 @@
 import { useState } from "react"
 import { over } from "stompjs"
 import SockJS from "sockjs-client"
-import { useDataContextAthlete } from "../athleteComponent/contexts/DataContextAthlete"
 import { getChatMessagesApi } from "../api/ChatApiService"
 import './ChatBoxComponent.css'
-import { useAuth } from "../security/AuthContext"
 import { sendMessageApi } from "../api/UserApiService"
 
 var stompClient = null
 
 const ChatBoxComponent = ({athleteId, coachId}) => {
-
-    const dataContextAthleteData = useDataContextAthlete()
-    const {isCoach, isAthlete} = useAuth()
 
     const [chat, setChat] = useState([])
     const [message, setMessage] = useState('')
@@ -25,15 +20,9 @@ const ChatBoxComponent = ({athleteId, coachId}) => {
         sendMessage(message)
     }
     const sendMessage = (content) => {
-        if(isAthlete){
-            sendMessageApi(dataContextAthleteData.athlete.id, dataContextAthleteData.coach.id, content)
-                .then(response => console.log(response))
-                .catch(error => console.log(error))
-        } else if(isCoach) {
-            sendMessageApi(athleteId, coachId, content)
-                .then(response => console.log(response))
-                .catch(error => console.log(error))
-        }
+        sendMessageApi(athleteId, coachId, content)
+            .then(response => console.log(response))
+            .catch(error => console.log(error))
     }
 
     const [connection, setConnection] = useState({
@@ -54,33 +43,17 @@ const ChatBoxComponent = ({athleteId, coachId}) => {
 
     const getChatHistory = () => {
 
-        if(isAthlete){
-            getChatMessagesApi(dataContextAthleteData.athlete.id, dataContextAthleteData.coach.id)
-                .then(response => {
-                    console.log(response)
-                    setChat(prevChat => [...prevChat, ...response.data])
-                })
-                .catch(error => console.log(error))
-        } else if(isCoach){
-            getChatMessagesApi(athleteId, coachId)
-                .then(response => {
-                    console.log(response)
-                    setChat(prevChat => [...prevChat, ...response.data])
-                })
-                .catch(error => console.log(error))
-        }
+        getChatMessagesApi(athleteId, coachId)
+            .then(response => {
+                console.log(response)
+                setChat(prevChat => [...prevChat, ...response.data])
+            })
+            .catch(error => console.log(error))
     }
 
     const onConnected = () => {
         setConnection({"connected":true})
-
-        let source
-
-        if(isAthlete){
-            source = dataContextAthleteData.athlete.id + '_' + dataContextAthleteData.coach.id
-        } else if(isCoach) {
-            source = athleteId + '_' + coachId
-        }
+        let source = athleteId + '_' + coachId
         stompClient.subscribe("/user/" + source + "/private", onPublicMessageReceived)
     }
     const onPublicMessageReceived = (payload) => {
