@@ -30,7 +30,6 @@ const ChatBoxComponent = ({athleteId, coachId}) => {
     const [connection, setConnection] = useState({
         connected:false
     })
-
     const connectToChat = () => {
 
         getChatHistory()
@@ -45,7 +44,6 @@ const ChatBoxComponent = ({athleteId, coachId}) => {
             setConnection({"connected":false})
         }
     }
-
     const getChatHistory = () => {
 
         getChatMessagesApi(athleteId, coachId)
@@ -55,7 +53,6 @@ const ChatBoxComponent = ({athleteId, coachId}) => {
             })
             .catch(error => console.log(error))
     }
-
     const onConnected = () => {
         setConnection({"connected":true})
         let source = athleteId + '_' + coachId
@@ -63,22 +60,27 @@ const ChatBoxComponent = ({athleteId, coachId}) => {
     }
     const onMessageReceived = (payload) => {
         let payloadData = JSON.parse(payload.body)
-        if(chat.get(payloadData.athleteId)){
-            const newChat = new Map(chat)
-            newChat.get(payloadData.athleteId).push(payloadData)
-            setChat(newChat)
-        } else {
-            let list = []
-            list.push(payloadData)
-            chat.set(payloadData.athleteId, list)
-            setChat(new Map(chat))
+
+        let athleteId = parseInt(payloadData.athleteId)
+
+        if(chat.get(athleteId)){
+
+            setChat(prevChat => {
+                const updatedChat = new Map(prevChat)
+
+                const currentArray = updatedChat.get(athleteId)
+
+                const updatedArray = [...currentArray, payloadData]
+
+                updatedChat.set(athleteId, updatedArray)
+
+                return updatedChat
+            })
         }
     }
-
     const onError = (error) => {
         console.log(error)
     }
-
     const activeChat = chat.get(athleteId) || []
 
     return(
