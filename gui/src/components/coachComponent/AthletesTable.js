@@ -42,6 +42,7 @@ const AthletesTable = () => {
                         listVisibility.setVisibility(true)
                         activateRealization(null)
                         handleRowClick(index)
+                        dataContextAthletes.setAthleteNameForChat(athlete.firstName)
                       }
                     }>+</button>
               </td>

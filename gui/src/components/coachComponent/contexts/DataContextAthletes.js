@@ -13,10 +13,15 @@ const DataContextAthletesProvider = ({children}) => {
     const [athletePlans, setAthletePlans] = useState([])
     const [athleteRealizations, setAthleteRealizations] = useState([])
     const [athleteId, setAthleteId] = useState(null)
+    const [chatAthleteName, setChatAthleteName] = useState('')
 
     const successToast = (message) => toast.success(message)
 
     const authContext = useAuth()
+
+    const setAthleteNameForChat = (name) => {
+        setChatAthleteName(name)
+    }
 
     const getAthlete = () => {
 
@@ -98,9 +103,13 @@ const DataContextAthletesProvider = ({children}) => {
         setAthleteView(!athleteView)
     }
     return (
-        <DataContextAthletes.Provider value = {{getAthletes, athletes, athletePlans, athleteRealizations, athleteId, 
-            setPlansAndRealizationsForAthlete, removeTrainingPlan, addPlanMode, setAddPlanMode, setNewPlanDate,
-                addTrainingPlanToAthleteWithDate, handleAddPlanMode, toggleView, athleteView, setAthleteId}}>
+        <DataContextAthletes.Provider value = 
+            {{ 
+                getAthletes, athletes, athletePlans, athleteRealizations, athleteId, 
+                setPlansAndRealizationsForAthlete, removeTrainingPlan, addPlanMode, setAddPlanMode, setNewPlanDate,
+                addTrainingPlanToAthleteWithDate, handleAddPlanMode, toggleView, athleteView, setAthleteId, setAthleteNameForChat,
+                chatAthleteName
+            }}>
             {children}
         </DataContextAthletes.Provider>
     )

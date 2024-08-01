@@ -7,7 +7,7 @@ import { sendMessageApi } from "../api/UserApiService"
 
 var stompClient = null
 
-const ChatBoxComponent = ({athleteId, coachId}) => {
+const ChatBoxComponent = ({athleteId, coachId, name}) => {
 
     useEffect(() => disconnectFromChat(), [athleteId])
 
@@ -19,6 +19,7 @@ const ChatBoxComponent = ({athleteId, coachId}) => {
     }
 
     const handleSendMessage = () => {
+        setMessage('')
         sendMessage(message)
     }
     const sendMessage = (content) => {
@@ -83,6 +84,37 @@ const ChatBoxComponent = ({athleteId, coachId}) => {
     }
     const activeChat = chat.get(athleteId) || []
 
+    const chatMessage = (message) => {
+        return (
+            <div className="message">
+                <ul className="list-group list-group-flush">
+                    <li className="list-group-item list-group-item-dark"><b>{formatTimestamp(message.timestamp)}</b></li>
+                    <li className="list-group-item ">{message.content}</li>
+                </ul>
+            </div>
+        )
+    }
+    const formatTimestamp = (timestamp) => {
+        const date = new Date(timestamp)
+        const now = new Date()
+        const hours = String(date.getHours()).padStart(2, '0');
+        const minutes = String(date.getMinutes()).padStart(2, '0');
+        const time = `${hours}:${minutes}`
+
+        if(date.toDateString() === now.toDateString()) {
+            return `Today ${time}`
+        }
+        const msInDay = 24 * 60 * 60 * 1000;
+        const dayDifference = Math.floor((now - date) / msInDay);
+
+        if (dayDifference <= 6) {
+            const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+            const dayOfWeek = daysOfWeek[date.getDay()];
+            return `${dayOfWeek} ${time}`;
+        }
+        return 'Older';
+    }
+
     return(
         <div className="chatBoxComponent">
             <div className="chatBox">
@@ -92,7 +124,7 @@ const ChatBoxComponent = ({athleteId, coachId}) => {
                         <ul className="message-list">
                             {activeChat.map((message, index) =>(
                                 <li className="message-item" key = {index}>
-                                    {message.content}{message.athleteId}_{message.coachId} - {message.timestamp}
+                                    {chatMessage(message)}
                                 </li>
                             ))
                             }
@@ -106,7 +138,7 @@ const ChatBoxComponent = ({athleteId, coachId}) => {
                 }
                 <div className="connect">
                     {!connection.connected &&
-                        <button className="btn btn-outline-info m-2" onClick={connectToChat}>Open chat</button>
+                        <button className="btn btn-outline-info m-2" onClick={connectToChat}>Chat with {name}</button>
                     }
                     {connection.connected &&
                         <button className="btn btn-outline-info m-2" onClick={disconnectFromChat}>Close chat</button>

@@ -52,7 +52,9 @@ const CoachInfoComponent = () => {
             {coach && 
                 <p>{coach.firstName} {coach.lastName}</p>
             }
-            <ChatBoxComponent coachId={coach?.id} athleteId={athlete?.id}/>
+            {coach &&
+            <ChatBoxComponent coachId={coach?.id} athleteId={athlete?.id} name = {coach?.firstName}/>
+            }
         </div>
     )
 }

@@ -78,7 +78,8 @@ export default function CoachComponent() {
                         <div>
                             <CoachAthletesComponent/> 
                             {dataContextAthletes.athleteId != null &&
-                                <ChatBoxComponent coachId={authContext.coachId} athleteId={dataContextAthletes.athleteId}/>
+                                <ChatBoxComponent coachId={authContext.coachId} athleteId={dataContextAthletes.athleteId} 
+                                name = {dataContextAthletes.chatAthleteName}/>
                             }
                         </div>
                     }
