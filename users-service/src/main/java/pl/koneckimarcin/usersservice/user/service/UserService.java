@@ -194,12 +194,13 @@ public class UserService {
         return user.getEmailAddress();
     }
 
-    public void sendMessage(Long athleteId, Long coachId, String message) {;
+    public void sendMessage(Long athleteId, Long coachId, String message, String senderTypeAndId) {;
 
         KafkaMessage kafkaMessage = new KafkaMessage(
                 String.valueOf(athleteId),
                 String.valueOf(coachId),
-                message
+                message,
+                senderTypeAndId
         );
         kafkaMessage.setTimestamp(LocalDateTime.now().toString());
 

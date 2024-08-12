@@ -54,8 +54,8 @@ public class UserController implements UserOperations {
     }
 
     @Override
-    public void sendMessage(Long athleteId, Long coachId, String message) {
+    public void sendMessage(Long athleteId, Long coachId, String message, String senderTypeAndId) {
 
-        userService.sendMessage(athleteId, coachId, message);
+        userService.sendMessage(athleteId, coachId, message, senderTypeAndId);
     }
 }

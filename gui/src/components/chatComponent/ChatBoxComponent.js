@@ -4,12 +4,15 @@ import SockJS from "sockjs-client"
 import { getChatMessagesApi } from "../api/ChatApiService"
 import './ChatBoxComponent.css'
 import { sendMessageApi } from "../api/UserApiService"
+import { useAuth } from "../security/AuthContext"
 
 var stompClient = null
 
 const ChatBoxComponent = ({athleteId, coachId, name}) => {
 
     useEffect(() => disconnectFromChat(), [athleteId])
+
+    const {isAthlete, isCoach} = useAuth()
 
     const [chat, setChat] = useState(new Map())
     const [message, setMessage] = useState('')
@@ -23,9 +26,22 @@ const ChatBoxComponent = ({athleteId, coachId, name}) => {
         sendMessage(message)
     }
     const sendMessage = (content) => {
-        sendMessageApi(athleteId, coachId, content)
+
+        const sender = senderTypeAndId()
+
+        sendMessageApi(athleteId, coachId, content, sender)
             .then(response => console.log(response))
             .catch(error => console.log(error))
+    }
+
+    const senderTypeAndId = () => {
+        
+        if(isAthlete) {
+            return 'A_' + athleteId
+        }
+        if(isCoach) {
+            return 'C_' + coachId
+        }
     }
 
     const [connection, setConnection] = useState({

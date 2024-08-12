@@ -8,13 +8,16 @@ public class KafkaMessage {
 
     private String timestamp;
 
+    private String senderTypeAndId;
+
     public KafkaMessage() {
     }
 
-    public KafkaMessage(String athleteId, String coachId, String content) {
+    public KafkaMessage(String athleteId, String coachId, String content, String senderTypeAndId) {
         this.athleteId = athleteId;
         this.coachId = coachId;
         this.content = content;
+        this.senderTypeAndId = senderTypeAndId;
     }
 
     public String getAthleteId() {
@@ -49,6 +52,14 @@ public class KafkaMessage {
         this.timestamp = timestamp;
     }
 
+    public String getSenderTypeAndId() {
+        return senderTypeAndId;
+    }
+
+    public void setSenderTypeAndId(String senderTypeAndId) {
+        this.senderTypeAndId = senderTypeAndId;
+    }
+
     @Override
     public String toString() {
         return "KafkaMessage{" +
@@ -56,6 +67,7 @@ public class KafkaMessage {
                 ", coachId='" + coachId + '\'' +
                 ", content='" + content + '\'' +
                 ", timestamp='" + timestamp + '\'' +
+                ", senderTypeAndId='" + senderTypeAndId + '\'' +
                 '}';
     }
 }
