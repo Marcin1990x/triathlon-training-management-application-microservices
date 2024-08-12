@@ -5,6 +5,7 @@ import { getChatMessagesApi } from "../api/ChatApiService"
 import './ChatBoxComponent.css'
 import { sendMessageApi } from "../api/UserApiService"
 import { useAuth } from "../security/AuthContext"
+import { toast } from "react-hot-toast"
 
 var stompClient = null
 
@@ -17,13 +18,19 @@ const ChatBoxComponent = ({athleteId, coachId, name}) => {
     const [chat, setChat] = useState(new Map())
     const [message, setMessage] = useState('')
 
+    const errorToast = (info) => toast.error(info)
+
     const handleMessageChange = (event) => {
         setMessage(event.target.value)
     }
 
     const handleSendMessage = () => {
-        setMessage('')
-        sendMessage(message)
+        if(message != '') {
+            setMessage('')
+            sendMessage(message)
+        } else {
+            errorToast('Message can not be empty.')
+        }
     }
     const sendMessage = (content) => {
 
@@ -104,8 +111,17 @@ const ChatBoxComponent = ({athleteId, coachId, name}) => {
         return (
             <div className="message">
                 <ul className="list-group list-group-flush">
-                    <li className="list-group-item list-group-item-dark"><b>{formatTimestamp(message.timestamp)}</b></li>
-                    <li className="list-group-item ">{message.content}</li>
+                    <li className="list-group-item list-group-item-dark"
+                        style = {{
+                            fontSize: 12
+                        }}
+                        >{formatTimestamp(message.timestamp)}</li>
+                    <li className="list-group-item"
+                        style = {{
+                            backgroundColor: message.senderTypeAndId === senderTypeAndId() ? "lightblue" : "white",
+                            fontSize: 12
+                        }} > {messageContent(message)}
+                    </li>
                 </ul>
             </div>
         )
@@ -131,6 +147,13 @@ const ChatBoxComponent = ({athleteId, coachId, name}) => {
         return 'Older';
     }
 
+    const messageContent = (message) => {
+        if(message.senderTypeAndId == senderTypeAndId()){
+            return 'Me: ' + message.content
+        } else {
+            return message.content
+        }
+    }
     return(
         <div className="chatBoxComponent">
             <div className="chatBox">
