@@ -16,15 +16,19 @@ public class KafkaMessageEntity {
 
     private String timestamp;
 
+    private String senderTypeAndId;
+
     public KafkaMessageEntity() {
     }
 
-    public KafkaMessageEntity(String id, String athleteId, String coachId, String content, String timestamp) {
+    public KafkaMessageEntity(String id, String athleteId, String coachId, String content, String timestamp,
+                              String senderTypeAndId) {
         this.id = id;
         this.athleteId = athleteId;
         this.coachId = coachId;
         this.content = content;
         this.timestamp = timestamp;
+        this.senderTypeAndId = senderTypeAndId;
     }
 
     public String getId() {
@@ -67,6 +71,14 @@ public class KafkaMessageEntity {
         this.timestamp = timestamp;
     }
 
+    public String getSenderTypeAndId() {
+        return senderTypeAndId;
+    }
+
+    public void setSenderTypeAndId(String senderTypeAndId) {
+        this.senderTypeAndId = senderTypeAndId;
+    }
+
     @Override
     public String toString() {
         return "KafkaMessageEntity{" +
@@ -75,6 +87,7 @@ public class KafkaMessageEntity {
                 ", coachId='" + coachId + '\'' +
                 ", content='" + content + '\'' +
                 ", timestamp='" + timestamp + '\'' +
+                ", senderTypeAndId='" + senderTypeAndId + '\'' +
                 '}';
     }
 }
