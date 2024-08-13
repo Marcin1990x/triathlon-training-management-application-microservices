@@ -178,6 +178,7 @@ services:
         - microservices-network
       environment:
         - SPRING_PROFILES_ACTIVE=docker
+        - SPRING_KAFKA_BOOTSTRAP_SERVERS=broker0:29092
     email-container:
       container_name: email-container
       image: marcin1990/email-container:latest
@@ -193,6 +194,19 @@ services:
         - SPRING_KAFKA_BOOTSTRAP_SERVERS=broker0:29092
         - SPRING_MAIL_USERNAME=*
         - SPRING_MAIL_PASSWORD=*
+    chat-container:
+      container_name: chat-container
+      image: marcin1990/chat-container:latest
+      ports:
+        - "8088:8088"
+      depends_on:
+        - broker0
+        - service-registry-container
+      networks:
+        - microservices-network
+      environment:
+        - SPRING_PROFILES_ACTIVE=docker
+        - SPRING_KAFKA_BOOTSTRAP_SERVERS=broker0:29092
 networks:
   microservices-network:
     driver: bridge
