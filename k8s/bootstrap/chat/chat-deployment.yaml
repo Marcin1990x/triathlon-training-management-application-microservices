@@ -1,9 +1,9 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: trainings
+  name: chat
   labels:
-    app: trainings
+    app: chat
 spec:
   replicas: 1
   strategy:
@@ -13,16 +13,16 @@ spec:
       maxUnavailable: 1
   template:
     metadata:
-      name: trainings
+      name: chat
       labels:
-        app: trainings
+        app: chat
     spec:
       containers:
-        - name: trainings
-          image: marcin1990/trainings-container:latest
+        - name: chat
+          image: marcin1990/chat-container:latest
           imagePullPolicy: Always
           ports:
-            - containerPort: 8084
+            - containerPort: 8088
           env:
             - name: SPRING_PROFILES_ACTIVE
               value: k8s
@@ -31,5 +31,5 @@ spec:
       restartPolicy: Always
   selector:
     matchLabels:
-      app: trainings
+      app: chat
             

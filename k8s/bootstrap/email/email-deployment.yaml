@@ -1,9 +1,9 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: trainings
+  name: email
   labels:
-    app: trainings
+    app: email
 spec:
   replicas: 1
   strategy:
@@ -13,23 +13,27 @@ spec:
       maxUnavailable: 1
   template:
     metadata:
-      name: trainings
+      name: email
       labels:
-        app: trainings
+        app: email
     spec:
       containers:
-        - name: trainings
-          image: marcin1990/trainings-container:latest
+        - name: email
+          image: marcin1990/email-container:latest
           imagePullPolicy: Always
           ports:
-            - containerPort: 8084
+            - containerPort: 8087
           env:
             - name: SPRING_PROFILES_ACTIVE
               value: k8s
             - name: SPRING_KAFKA_BOOTSTRAP_SERVERS
               value: broker0:29092
+            - name: SPRING_MAIL_USERNAME
+              value: test
+            - name: SPRING_MAIL_PASSWORD
+              value: test
       restartPolicy: Always
   selector:
     matchLabels:
-      app: trainings
+      app: email
             

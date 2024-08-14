@@ -5,7 +5,7 @@ metadata:
   labels:
     app: users
 spec:
-  replicas: 2
+  replicas: 1
   strategy:
     type: RollingUpdate
     rollingUpdate:
@@ -26,6 +26,8 @@ spec:
           env:
             - name: SPRING_PROFILES_ACTIVE
               value: k8s
+            - name: SPRING_KAFKA_BOOTSTRAP_SERVERS
+              value: broker0:29092
           livenessProbe:
             httpGet:
               path: /users/health
